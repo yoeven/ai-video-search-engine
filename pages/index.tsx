@@ -8,8 +8,8 @@ const Home: NextPage = () => {
 
   const onSearch = async (query: string) => {
     const encodedQuery = encodeURIComponent(query);
-    const res = await fetch(`https://suggestqueries.google.com/complete/search?client=chrome&ds=bo&q=${encodedQuery}`);
-    const data = await res.json();
+    const res = await fetch(`https://video-search-engine-ai.vercel.app/api/suggestions?query=${encodedQuery}`);
+    const data = await res.text();
     console.log(data);
   };
 
