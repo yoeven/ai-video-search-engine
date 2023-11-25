@@ -1,0 +1,27 @@
+query GetIndexes($where: indexes_bool_exp = {}, $order_by: [indexes_order_by!] = {}, $limit: Int) {
+  indexes(where: $where, order_by: $order_by, limit: $limit) {
+    duration_seconds
+    id
+    nsfw
+    status
+    tags
+    transcript
+    transcript_timestamped
+    updated_at
+    video_id
+    video_source
+    video_url
+    description
+    active
+    created_at
+    title
+    width
+    height
+  }
+}
+
+mutation InsertIndex($object: indexes_insert_input = {}) {
+  insert_indexes_one(object: $object) {
+    id
+  }
+}
