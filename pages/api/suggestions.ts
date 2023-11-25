@@ -21,7 +21,8 @@ const handler = async (
 
     const jsonString = jsonUnclean.replace("json(", "").replace(")", "").replace("json && ", "");
     const json = JSON.parse(jsonString);
-    const suggestions = json?.[1] || [];
+    let suggestions = json?.[1] || [];
+    suggestions = suggestions.map((s: any) => s[0]);
 
     return NextResponse.json(
       {
