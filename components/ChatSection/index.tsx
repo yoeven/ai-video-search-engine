@@ -178,21 +178,10 @@ const ChatSection = forwardRef<IChatSectionRef, any>((props, ref) => {
   if (!index) return null;
 
   return (
-    <Flex
-      // onClick={(e) => {
-      //   e.stopPropagation();
-      // }}
-      mb={"1rem"}
-      px={"0.5rem"}
-      justifyContent={"center"}
-      w={"100%"}
-      color={"white"}
-      bottom={0}
-      pos={"fixed"}
-    >
+    <Flex mb={"1rem"} px={"0.5rem"} justifyContent={"center"} w={["100%"]} color={"white"} bottom={0} pos={"fixed"}>
       <Flex
         ref={scope}
-        flex={1}
+        // flex={1}
         flexDir={"column"}
         justifyContent={"space-between"}
         onClick={() => !isOpen && onOpen()}
