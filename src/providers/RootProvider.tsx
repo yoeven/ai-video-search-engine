@@ -9,7 +9,7 @@ import utc from "dayjs/plugin/utc";
 import { ChakraProvider, extendTheme, Flex, withDefaultColorScheme } from "@chakra-ui/react";
 import FullScreenLoaderContext from "./FullScreenLoaderContext";
 import { Toaster } from "react-hot-toast";
-// import AuthContext from "./AuthContext";
+import AuthContext from "./AuthContext";
 import PlatformProvider from "./PlatformContext";
 import { withProse } from "@nikolovlazar/chakra-ui-prose";
 
@@ -69,13 +69,14 @@ const theme = extendTheme(
           dialog: {
             mx: "0.5rem",
             backgroundColor: "bg.500",
+            color: "white",
           },
           overlay: {
             background: "blackAlpha.300",
             backdropFilter: "blur(10px) hue-rotate(15deg)",
           },
           closeButton: {
-            color: "gray.500",
+            color: "white",
           },
         },
       },
@@ -103,15 +104,15 @@ const RootProvider: React.FC<IProps> = ({ children }) => {
   return (
     <ChakraProvider theme={theme}>
       <FullScreenLoaderContext>
-        {/* <AuthContext> */}
-        <PlatformProvider>
-          <Flex bgColor={"#F7FAFC"} minH={"100vh"}>
-            {/* <NavMenu /> */}
-            {children}
-            {/* <Footer /> */}
-          </Flex>
-        </PlatformProvider>
-        {/* </AuthContext> */}
+        <AuthContext>
+          <PlatformProvider>
+            <Flex bgColor={"#F7FAFC"} minH={"100vh"}>
+              {/* <NavMenu /> */}
+              {children}
+              {/* <Footer /> */}
+            </Flex>
+          </PlatformProvider>
+        </AuthContext>
       </FullScreenLoaderContext>
       <Toaster />
     </ChakraProvider>

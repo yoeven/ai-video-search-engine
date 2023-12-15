@@ -10,6 +10,8 @@ import { validateSchema } from "./validateSchema";
 //   VerifyUserProfileQueryVariables,
 // } from "@graphql/generated/graphql";
 import { jwtVerify } from "jose";
+import { gqlServerClient } from "./graphqlServerClient";
+import { GetUsersDocument, GetUsersQuery, GetUsersQueryVariables } from "@graphql/generated/graphql";
 
 export interface NextRequestCustom<T = any> extends NextRequest {
   params: T;
@@ -49,10 +51,7 @@ const baseEdgeHandlerWrapper = (handler: (req: NextRequestCustom, con: NextFetch
       };
 
       if (!config.skipAuth) {
-        if (
-          headers.authorization &&
-          (config.authMethod?.includes(AuthMethods.jwt_key) || path.includes("/api/internal/") || path.includes("/api/v1/"))
-        ) {
+        if (headers.authorization && config.authMethod?.includes(AuthMethods.jwt_key)) {
           const token = headers?.authorization?.replace("Bearer ", "") || null;
 
           if (!token) {
@@ -81,39 +80,23 @@ const baseEdgeHandlerWrapper = (handler: (req: NextRequestCustom, con: NextFetch
             user_id: hasuraClaims["x-hasura-user-id"],
           };
 
-          // if (config.verifyProfile || path.includes("/api/v1/")) {
-          //   const userResult = await gqlServerClient.request<VerifyUserProfileQuery, VerifyUserProfileQueryVariables>(VerifyUserProfileDocument, {
-          //     id: request?.userClaims?.user_id || "",
-          //   });
+          if (config.verifyProfile) {
+            const userResult = await gqlServerClient.request<GetUsersQuery, GetUsersQueryVariables>(GetUsersDocument, {
+              where: {
+                id: {
+                  _eq: request.userClaims?.user_id,
+                },
+              },
+            });
 
-          //   if (!userResult.user_profiles_by_pk?.id) {
-          //     throw new HandledError("User profile doesn't exists", undefined, 400);
-          //   }
+            if (!userResult.users?.[0].id) {
+              throw new HandledError("User profile doesn't exists", undefined, 400);
+            }
 
-          //   (request as any)["userClaims"]["profile"] = {
-          //     email: userResult.user_profiles_by_pk?.email,
-          //   };
-
-          //   if (params?.["project_id"]) {
-          //     const foundProjectAccess = userResult.user_profiles_by_pk?.project_accesses.find(
-          //       (a) => a.project.id == params?.["project_id"] && a.accepted
-          //     );
-
-          //     if (!foundProjectAccess) {
-          //       throw new HandledError("Unauthorized project", undefined, 401);
-          //     }
-
-          //     (request as any)["userClaims"]["profile"]["project_access"] = foundProjectAccess;
-          //     request.projectId = params["project_id"];
-
-          //     if (path.includes("/api/v1/")) {
-          //       //check usage
-          //       checkUsage(request.nextUrl.pathname, await getProjectAccess(request.projectId));
-          //     }
-          //   } else if (path.includes("/api/v1/")) {
-          //     throw new HandledError("Project required", undefined, 401);
-          //   }
-          // }
+            (request as any)["userClaims"]["profile"] = {
+              email: userResult.users?.[0]?.email,
+            };
+          }
 
           authMethod = AuthMethods.jwt_key;
         } else if (headers["x-admin-api-key"]) {

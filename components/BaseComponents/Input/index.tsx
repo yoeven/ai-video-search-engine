@@ -41,10 +41,10 @@ const Input = forwardRef<any, InputProps>(
             transition={"all 250ms ease"}
             py={"1.2rem"}
             _placeholder={{
-              color: "gray.300",
+              color: "gray.500",
             }}
             _focus={{
-              transform: !disableAnimation ? "translate(0,-2px); scale(1.02);" : "none",
+              // transform: !disableAnimation ? "translate(0,-2px); scale(1.02);" : "none",
               outline: "none",
               borderColor: "bg.100",
               boxShadow: "none",

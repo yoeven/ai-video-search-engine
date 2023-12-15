@@ -1,9 +1,8 @@
-// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
 import ytdl from "ytdl-core";
 import { convertXML } from "simple-xml-to-json";
 import * as entities from "entities";
-import { embedText } from "src/helpers/embedding";
+import { embedText, embedTextTimeStamped } from "src/helpers/embedding";
 import { gqlServerClient } from "src/helpers/graphqlServerClient";
 import {
   GetIndexesDocument,
@@ -13,10 +12,17 @@ import {
   InsertIndexMutation,
   InsertIndexMutationVariables,
 } from "@graphql/generated/graphql";
+import { TextTimeStamped } from "src/types";
+import { pipeline } from "@xenova/transformers";
 
 interface Params {
   url: string;
 }
+
+export const config = {
+  maxDuration: 120,
+  memory: 1024,
+};
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
@@ -46,6 +52,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       throw new Error("Invalid URL");
     }
 
+    console.log("videoId", videoId);
     const resp = await gqlServerClient.request<GetIndexesQuery, GetIndexesQueryVariables>(GetIndexesDocument, {
       where: {
         video_id: {
@@ -88,7 +95,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const width = highestQualityVideo.width;
     const height = highestQualityVideo.height;
 
-    let captionTimeStamped: any[] = [];
+    let captionTimeStamped: TextTimeStamped[] = [];
     let captionText: string;
     if (captionTracks.length > 0) {
       const englishCaptions = captionTracks.filter((c) => c.languageCode.includes("en"));
@@ -106,17 +113,21 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       const captionResp = await fetch(captionUrl);
       const captionXML = await captionResp.text();
       const captionsTimeStamped = convertXML(captionXML).transcript.children;
+
       captionTimeStamped = captionsTimeStamped.map((c: any) => ({
-        text: entities.decodeHTML(entities.decodeXML(c.text.content)),
+        content: entities
+          .decodeHTML(entities.decodeXML(c.text.content))
+          .replace(/(\r\n|\n|\r)/gm, " ")
+          .trim(),
         start: parseFloat(c.text.start),
         end: parseFloat(c.text.start) + parseFloat(c.text.dur),
         dur: parseFloat(c.text.dur),
       }));
 
-      captionText = captionTimeStamped.map((c) => c.text).join(" ");
+      captionText = captionTimeStamped.map((c) => c.content).join(" ");
       captionText = captionText.replace(/(\r\n|\n|\r)/gm, " ").trim();
     } else {
-      throw new Error("No captions found");
+      throw new Error(`No captions found for ${cleanURL}`);
     }
 
     if (!captionText || !captionTimeStamped) {
@@ -127,9 +138,16 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const descriptionClean = description?.replace(/(\r\n|\n|\r)/gm, " ").trim();
     const tagsClean = tags.map((t) => t.replace(/(\r\n|\n|\r)/gm, " ").trim()).join(", ");
 
-    const textForEmbedding = `Title: ${titleClean}\nDescription: ${descriptionClean}\nTags: ${tagsClean}\nTranscription: ${captionText}`;
+    const textForEmbedding = `Title: ${titleClean}\nDescription: ${descriptionClean}\nTags: ${tagsClean}`;
 
-    const embeddings = await embedText(textForEmbedding);
+    const pipe = await pipeline("feature-extraction", "Supabase/gte-small");
+
+    const [videoInfoEmbedding, captionEmbeddingSets] = await Promise.all([
+      embedText(textForEmbedding, pipe),
+      embedTextTimeStamped(captionTimeStamped, pipe),
+    ]);
+
+    const embeddingSets = [...videoInfoEmbedding, ...captionEmbeddingSets];
 
     await gqlServerClient.request<InsertIndexMutation, InsertIndexMutationVariables>(InsertIndexDocument, {
       object: {
@@ -148,16 +166,20 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         width,
         height,
         embeddings: {
-          data: embeddings.embeddings.map((e, index) => ({
-            embedding: JSON.stringify(e),
-            content: embeddings.textSplits[index],
+          data: embeddingSets.map((e) => ({
+            embedding: JSON.stringify(e.embedding),
+            content: e.content,
+            start_time: e?.start ?? null,
+            end_time: e?.end ?? null,
+            duration_time: e?.dur ?? null,
           })),
         },
       },
     });
 
-    res.status(200).json({ video_id: videoId, captionTimeStamped, captionText });
+    res.status(200).json({ video_id: videoId, caption_time_stamped: captionTimeStamped, caption_text: captionText });
   } catch (error: any) {
+    console.log(error);
     res.status(400).json({ error: error?.message });
   }
 };

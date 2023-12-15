@@ -1,0 +1,20 @@
+query GetChats($where: chats_bool_exp = {}) {
+  chats(where: $where) {
+    active
+    created_at
+    id
+    index_id
+    jigsawstack_chat_session_id
+    updated_at
+    user_id
+  }
+}
+
+mutation InsertChats($objects: [chats_insert_input!] = []) {
+  insert_chats(objects: $objects) {
+    affected_rows
+    returning {
+      id
+    }
+  }
+}

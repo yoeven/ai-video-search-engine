@@ -19,8 +19,6 @@ export type HandlerConfig = {
 };
 
 export enum AuthMethods {
-  api_key = "api_key",
-  public_api_key = "public_api_key",
   admin_key = "admin_key",
   jwt_key = "jwt_key",
   none = "none",
@@ -54,4 +52,18 @@ export interface HasuraEventPayload<T = any> {
     schema: string;
     name: string;
   };
+}
+
+export interface TextTimeStamped {
+  start: number;
+  end: number;
+  dur: number;
+  content: string;
+}
+
+export interface ChatMessage {
+  message: string;
+  role: "user" | "ai";
+  created_at: string;
+  id: string;
 }

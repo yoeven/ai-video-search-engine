@@ -1,0 +1,13 @@
+query GetUsers($where: users_bool_exp = {}) {
+  users(where: $where) {
+    id
+    email
+    created_at
+  }
+}
+
+mutation InsertUser($object: users_insert_input = {}) {
+  insert_users_one(object: $object) {
+    id
+  }
+}
