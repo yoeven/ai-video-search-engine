@@ -180,7 +180,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     res.status(200).json({ video_id: videoId, caption_time_stamped: captionTimeStamped, caption_text: captionText });
   } catch (error: any) {
     console.log(error);
-    res.status(400).json({ error: error?.message });
+    res.status(400).json({ message: error?.message, error: true });
   }
 };
 

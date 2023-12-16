@@ -1,5 +1,5 @@
 import { NextPage } from "next";
-import { Flex, Text } from "@chakra-ui/react";
+import { Button, Flex, IconButton, MenuButton, Text } from "@chakra-ui/react";
 import Layout from "components/BaseComponents/Layout";
 import Input from "components/BaseComponents/Input";
 import { useEffect, useRef, useState } from "react";
@@ -14,6 +14,11 @@ import SummaryModal, { ISummaryModalRef } from "components/SummaryModal";
 import ChatSection, { IChatSectionRef } from "components/ChatSection";
 import { useAuth } from "src/providers/AuthContext";
 import { usePlatform } from "src/providers/PlatformContext";
+import Icon from "components/BaseComponents/Icon";
+import { IoMdMenu } from "react-icons/io";
+import Menu from "components/BaseComponents/Menu";
+import { signOut } from "src/helpers/authClientService";
+import toast from "react-hot-toast";
 
 const Home: NextPage = () => {
   const { isAuth, openAuthModal } = useAuth();
@@ -75,34 +80,84 @@ const Home: NextPage = () => {
   return (
     <Layout justifyContent={"center"}>
       <Flex pos={"relative"} flexDir={"column"} w={["100%", "lg"]}>
-        <Input
-          ref={ref}
-          placeholder={"Search or question"}
-          autoFocus
-          borderRadius={"3xl"}
-          py={"1.3rem"}
-          px={"1rem"}
-          value={query}
-          onFocus={() => setInputFocused(true)}
-          onBlur={() => {
-            setTimeout(() => {
-              setInputFocused(false);
-            }, 300);
-          }}
-          onChange={(e) => {
-            setQuery(e.target.value);
-            setInputValue(e.target.value);
-          }}
-          onKeyDown={(e) => {
-            if (e.key === "Enter") {
-              onSearch(query);
-              setInputFocused(false);
-              setInputValue("");
-              setSuggestions([]);
-              ref.current?.blur();
+        <Flex>
+          <Input
+            ref={ref}
+            placeholder={"Search or question"}
+            autoFocus
+            borderRadius={"3xl"}
+            py={"1.3rem"}
+            pl={"1rem"}
+            pr={"2.6rem"}
+            value={query}
+            onFocus={() => setInputFocused(true)}
+            onBlur={() => {
+              setTimeout(() => {
+                setInputFocused(false);
+              }, 300);
+            }}
+            onChange={(e) => {
+              setQuery(e.target.value);
+              setInputValue(e.target.value);
+            }}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                onSearch(query);
+                setInputFocused(false);
+                setInputValue("");
+                setSuggestions([]);
+                ref.current?.blur();
+              }
+            }}
+            rightElementWrapperProps={{
+              pointerEvents: "auto",
+              pt: "0.2rem",
+              pr: "0.3rem",
+            }}
+            renderRightElement={
+              <Menu
+                options={[
+                  {
+                    label: "Index videos",
+                    value: "index_videos",
+                  },
+                  isAuth
+                    ? {
+                        label: "Sign out",
+                        value: "sign_out",
+                        color: "red.500",
+                        onClick: async () => {
+                          await signOut();
+                          toast.success("Signed out");
+                        },
+                      }
+                    : {
+                        label: "Sign in",
+                        value: "sign_in",
+                        onClick: () => {
+                          openAuthModal();
+                        },
+                      },
+                ]}
+                placement={"top"}
+                gutter={15}
+                renderButtonIsMenu
+                renderButton={
+                  <MenuButton
+                    _hover={{
+                      color: "white",
+                    }}
+                    color={"gray.400"}
+                  >
+                    <Flex>
+                      <Icon as={IoMdMenu} size={"1.5rem"} />
+                    </Flex>
+                  </MenuButton>
+                }
+              />
             }
-          }}
-        />
+          />
+        </Flex>
 
         {suggestions.length > 0 && inputFocused && (
           <Flex
@@ -137,6 +192,53 @@ const Home: NextPage = () => {
             ))}
           </Flex>
         )}
+      </Flex>
+
+      <Flex mt={"1rem"} gap={["0.5rem", "1rem"]}>
+        {[
+          {
+            value: "Human brain",
+            query: "How does the human brain work?",
+          },
+          {
+            value: "Learn Suapbase",
+            query: "How to get started with Supabase?",
+          },
+          {
+            value: "Startups",
+            query: "How to start a startup?",
+          },
+          {
+            value: "AI Image generation",
+            query: "What are some ways to get started with AI image generation?",
+          },
+        ].map((i) => (
+          <Flex
+            key={i.query}
+            _hover={{
+              borderColor: "teal.500",
+            }}
+            onClick={() => {
+              setQuery(i.query);
+              setInputValue("");
+              setSuggestions([]);
+              onSearch(i.query);
+              setInputFocused(false);
+            }}
+            cursor={"pointer"}
+            borderWidth={"1px"}
+            borderColor={"gray.400"}
+            py={"0.2rem"}
+            px={"0.5rem"}
+            borderRadius={"10rem"}
+            justifyContent={"center"}
+            alignItems={"center"}
+          >
+            <Text fontSize={["xs", "sm"]} textAlign={"center"}>
+              {i.value}
+            </Text>
+          </Flex>
+        ))}
       </Flex>
 
       <Flex px={"1rem"} w={"100%"} gap={"1rem"} justifyContent={"center"} flexWrap={"wrap"} flexDir={"row"} mt={["2rem", "4rem"]}>

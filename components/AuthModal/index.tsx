@@ -53,7 +53,7 @@ const AuthModal = forwardRef<IAuthModalRef, IProps>(({ onValidated }, ref) => {
       open: open,
       close: onClose,
     }),
-    []
+    [isAuth]
   );
 
   const open = () => {
@@ -63,6 +63,12 @@ const AuthModal = forwardRef<IAuthModalRef, IProps>(({ onValidated }, ref) => {
   };
 
   const close = () => {
+    setValues({
+      email: undefined,
+      otp: undefined,
+    });
+    setOTPSent(false);
+    setOTPSentDateTime(null);
     onClose();
   };
 
@@ -131,7 +137,7 @@ const AuthModal = forwardRef<IAuthModalRef, IProps>(({ onValidated }, ref) => {
       onValidated?.();
       close();
 
-      toast.success("OTP verified");
+      toast.success("Signed in successfully");
     } catch (error: any) {
       console.log(error?.message);
       toast(error?.message);

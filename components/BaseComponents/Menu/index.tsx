@@ -1,5 +1,5 @@
 import React, { memo } from "react";
-import { Menu as CMenu, MenuButton, MenuList, MenuItem, MenuProps, Box, Flex } from "@chakra-ui/react";
+import { Menu as CMenu, MenuButton, MenuList, MenuItem, MenuProps, Box, useDisclosure, Flex } from "@chakra-ui/react";
 
 export interface IMenuOptionProps {
   label: string;
@@ -10,7 +10,7 @@ export interface IMenuOptionProps {
 }
 
 export interface IMenuProps extends Partial<MenuProps> {
-  renderButton: () => JSX.Element;
+  renderButton: JSX.Element;
   renderButtonIsMenu?: boolean;
   options?: IMenuOptionProps[];
   onSelect?: (value: string, index: number) => void;
@@ -22,7 +22,7 @@ const Menu: React.FC<IMenuProps> = ({ renderButton, options, onSelect, children,
   return (
     <CMenu {...rest}>
       {renderButtonIsMenu ? (
-        renderButton()
+        renderButton
       ) : (
         <MenuButton
           as={Box}
@@ -30,7 +30,7 @@ const Menu: React.FC<IMenuProps> = ({ renderButton, options, onSelect, children,
             e.stopPropagation();
           }}
         >
-          {renderButton()}
+          {renderButton}
         </MenuButton>
       )}
 
@@ -45,11 +45,12 @@ const Menu: React.FC<IMenuProps> = ({ renderButton, options, onSelect, children,
             }}
             _hover={{
               bgColor: "bg.400",
+              color: "white",
             }}
             fontSize={"sm"}
             borderRadius={"lg"}
             bgColor={selectedValue == o.value ? "bg.800" : "bg.600"}
-            color={o.color}
+            color={o?.color || "gray.200"}
           >
             {o.renderLabel ? o.renderLabel() : o.label}
           </MenuItem>

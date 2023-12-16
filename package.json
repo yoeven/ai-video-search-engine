@@ -20,7 +20,7 @@
     "@fontsource/inter": "^5.0.15",
     "@nikolovlazar/chakra-ui-prose": "^1.2.1",
     "@supabase/supabase-js": "^2.38.5",
-    "@xenova/transformers": "^2.9.0",
+    "@xenova/transformers": "^2.11.0",
     "dayjs": "^1.11.10",
     "entities": "^4.5.0",
     "framer-motion": "^10.16.5",

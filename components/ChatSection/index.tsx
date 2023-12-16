@@ -224,7 +224,9 @@ const ChatSection = forwardRef<IChatSectionRef, any>((props, ref) => {
                   </Flex>
                 )}
 
-                <Text mt={"0.2rem"}>{message.message}</Text>
+                <Text whiteSpace={"pre-line"} mt={"0.2rem"}>
+                  {message.message}
+                </Text>
               </Flex>
             ))}
           </Flex>

@@ -2638,7 +2638,7 @@
   dependencies:
     tslib "^2.3.0"
 
-"@xenova/transformers@^2.9.0":
+"@xenova/transformers@^2.11.0":
   version "2.11.0"
   resolved "https://registry.yarnpkg.com/@xenova/transformers/-/transformers-2.11.0.tgz#db9695240e5880823bee9199f27d7e51e7a09379"
   integrity sha512-i/oaTbVJI+pbkWiUZydmaGFlSh3167N+gimkIJBlHf150wQWffwGE9dPttLsS9cLlmty95Z1MkVQmibl/j7bSg==
