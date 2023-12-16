@@ -51,7 +51,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       throw new Error("Invalid URL");
     }
 
-    console.log("videoId", videoId);
     const resp = await gqlServerClient.request<GetIndexesQuery, GetIndexesQueryVariables>(GetIndexesDocument, {
       where: {
         video_id: {
@@ -72,6 +71,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           throw new Error("Video indexing failed");
         }
       }
+
       throw new Error("Video already indexed");
     }
 
@@ -114,13 +114,15 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         }
       }
 
-      if (!captionUrl) throw new Error("No english caption url found");
-
       console.log(videoId, " ,captionUrl", captionUrl);
+
+      if (!captionUrl) throw new Error("No english caption url found");
 
       const captionResp = await fetch(captionUrl);
       const captionXML = await captionResp.text();
-      const captionsTimeStamped = convertXML(captionXML).transcript.children;
+      let captionsTimeStamped = convertXML(captionXML).transcript.children;
+
+      captionsTimeStamped = captionsTimeStamped.filter((c: any) => c?.text?.content?.length > 0);
 
       captionTimeStamped = captionsTimeStamped.map((c: any) => ({
         content: entities
@@ -135,7 +137,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       captionText = captionTimeStamped.map((c) => c.content).join(" ");
       captionText = captionText.replace(/(\r\n|\n|\r)/gm, " ").trim();
     } else {
-      throw new Error(`No captions found for ${cleanURL}`);
+      throw new Error(`No captions found`);
     }
 
     if (!captionText || !captionTimeStamped) {
@@ -187,6 +189,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     res.status(200).json({ video_id: videoId, caption_time_stamped: captionTimeStamped, caption_text: captionText });
   } catch (error: any) {
+    console.log("error", error);
     console.log(error?.message);
     res.status(400).json({ message: error?.message, error: true });
   }

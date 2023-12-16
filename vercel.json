@@ -1,0 +1,7 @@
+{
+  "functions": {
+    "api/video/index.ts": {
+      "maxDuration": 200
+    }
+  }
+}
