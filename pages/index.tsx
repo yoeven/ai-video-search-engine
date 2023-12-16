@@ -53,8 +53,11 @@ const Home: NextPage = () => {
 
   const onInputChange = async (query: string) => {
     const encodedQuery = encodeURIComponent(query);
-    const baseurl = process.env.NODE_ENV == "production" ? "/api/suggestions" : `https://asve.vercel.app/api/suggestions?query=${encodedQuery}`;
-    const res = await fetch(`${baseurl}?query=${encodedQuery}`);
+    let baseurl = process.env.NODE_ENV == "production" ? "/api/suggestions" : `https://avse.vercel.app/api/suggestions`;
+    baseurl += `?query=${encodedQuery}`;
+
+    console.log(baseurl);
+    const res = await fetch(baseurl);
     const data = await res.json();
     setSuggestions(data.suggestions);
     console.log(data);
@@ -83,7 +86,7 @@ const Home: NextPage = () => {
 
   return (
     <Layout justifyContent={"space-between"}>
-      {!query && results.length <= 0 && <Flex alignItems={"center"} flexDir={"column"}></Flex>}
+      {(!query || results.length == 0) && <Flex alignItems={"center"} flexDir={"column"}></Flex>}
 
       <Flex justifyContent={"center"} alignItems={"center"} flexDir={"column"}>
         {/*search input */}
@@ -205,7 +208,7 @@ const Home: NextPage = () => {
           )}
         </Flex>
         {/*search suggestions */}
-        {!query && results.length <= 0 && (
+        {results.length <= 0 && !loading && (
           <Flex justifyContent={"center"} mt={"1rem"} gap={["0.5rem", "1rem"]} flexWrap={"wrap"}>
             {[
               {
