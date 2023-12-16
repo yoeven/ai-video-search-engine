@@ -20,8 +20,8 @@ interface Params {
 }
 
 export const config = {
-  maxDuration: 120,
-  memory: 1024,
+  maxDuration: 200,
+  memory: 2048,
 };
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {

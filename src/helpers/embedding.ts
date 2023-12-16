@@ -3,7 +3,7 @@ import { Pipeline } from "@xenova/transformers";
 import { TextTimeStamped } from "src/types";
 import { splitTextTimestampedByChar } from "src/utils";
 
-const oneTokenToChar = 3;
+const oneTokenToChar = 2.7;
 const tokens = 500;
 const maxChar = oneTokenToChar * tokens;
 

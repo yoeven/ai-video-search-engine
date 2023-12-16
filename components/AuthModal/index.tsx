@@ -8,7 +8,6 @@ import {
   Text,
   useDisclosure,
   Button,
-  Box,
   PinInput,
   PinInputField,
 } from "@chakra-ui/react";
