@@ -1,5 +1,5 @@
 import { NextPage } from "next";
-import { Box, Flex, Heading, MenuButton, Text } from "@chakra-ui/react";
+import { Box, Flex, MenuButton, Text } from "@chakra-ui/react";
 import Layout from "components/BaseComponents/Layout";
 import Input from "components/BaseComponents/Input";
 import { useEffect, useRef, useState } from "react";
@@ -21,7 +21,6 @@ import { signOut } from "src/helpers/authClientService";
 import toast from "react-hot-toast";
 import IndexVideoModal, { IIndexVideoModalRef } from "components/IndexVideoModal";
 import Image from "components/BaseComponents/Image";
-import Link from "next/link";
 
 const Home: NextPage = () => {
   const { isAuth, openAuthModal } = useAuth();
