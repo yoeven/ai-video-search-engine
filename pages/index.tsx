@@ -333,7 +333,7 @@ const Home: NextPage = () => {
             </Box>
           ))}
         </Flex>
-        <Box as={"a"} mt={"1rem"}>
+        <Box as={"a"} mt={"1rem"} href={"https://github.com/yoeven/ai-video-search-engine"} target={"_blank"}>
           <Text color={"gray.600"} fontSize={"sm"} cursor={"pointer"} fontWeight={"bold"} mt={"0.5rem"}>
             View code on Github
           </Text>
