@@ -1,5 +1,5 @@
 import { NextPage } from "next";
-import { Button, Flex, IconButton, MenuButton, Text } from "@chakra-ui/react";
+import { Box, Flex, Heading, MenuButton, Text } from "@chakra-ui/react";
 import Layout from "components/BaseComponents/Layout";
 import Input from "components/BaseComponents/Input";
 import { useEffect, useRef, useState } from "react";
@@ -19,6 +19,9 @@ import { IoMdMenu } from "react-icons/io";
 import Menu from "components/BaseComponents/Menu";
 import { signOut } from "src/helpers/authClientService";
 import toast from "react-hot-toast";
+import IndexVideoModal, { IIndexVideoModalRef } from "components/IndexVideoModal";
+import Image from "components/BaseComponents/Image";
+import Link from "next/link";
 
 const Home: NextPage = () => {
   const { isAuth, openAuthModal } = useAuth();
@@ -26,6 +29,7 @@ const Home: NextPage = () => {
   const ref = useRef<HTMLInputElement>(null);
   const summaryModalRef = useRef<ISummaryModalRef>(null);
   const chatSectionRef = useRef<IChatSectionRef>(null);
+  const indexVideoModalRef = useRef<IIndexVideoModalRef>(null);
   const [inputFocused, setInputFocused] = useState<boolean>(false);
   const [inputValue, setInputValue] = useState<string>("");
   const [query, setQuery] = useState<string>("");
@@ -78,198 +82,258 @@ const Home: NextPage = () => {
   };
 
   return (
-    <Layout justifyContent={"center"}>
-      <Flex pos={"relative"} flexDir={"column"} w={["100%", "lg"]}>
-        <Flex>
-          <Input
-            ref={ref}
-            placeholder={"Search or question"}
-            autoFocus
-            borderRadius={"3xl"}
-            py={"1.3rem"}
-            pl={"1rem"}
-            pr={"2.6rem"}
-            value={query}
-            onFocus={() => setInputFocused(true)}
-            onBlur={() => {
-              setTimeout(() => {
-                setInputFocused(false);
-              }, 300);
-            }}
-            onChange={(e) => {
-              setQuery(e.target.value);
-              setInputValue(e.target.value);
-            }}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                onSearch(query);
-                setInputFocused(false);
-                setInputValue("");
-                setSuggestions([]);
-                ref.current?.blur();
-              }
-            }}
-            rightElementWrapperProps={{
-              pointerEvents: "auto",
-              pt: "0.2rem",
-              pr: "0.3rem",
-            }}
-            renderRightElement={
-              <Menu
-                options={[
-                  {
-                    label: "Index videos",
-                    value: "index_videos",
-                  },
-                  isAuth
-                    ? {
-                        label: "Sign out",
-                        value: "sign_out",
-                        color: "red.500",
-                        onClick: async () => {
-                          await signOut();
-                          toast.success("Signed out");
-                        },
-                      }
-                    : {
-                        label: "Sign in",
-                        value: "sign_in",
-                        onClick: () => {
-                          openAuthModal();
-                        },
-                      },
-                ]}
-                placement={"top"}
-                gutter={15}
-                renderButtonIsMenu
-                renderButton={
-                  <MenuButton
-                    _hover={{
-                      color: "white",
-                    }}
-                    color={"gray.400"}
-                  >
-                    <Flex>
-                      <Icon as={IoMdMenu} size={"1.5rem"} />
-                    </Flex>
-                  </MenuButton>
-                }
-              />
-            }
-          />
-        </Flex>
+    <Layout justifyContent={"space-between"}>
+      {!query && results.length <= 0 && <Flex alignItems={"center"} flexDir={"column"}></Flex>}
 
-        {suggestions.length > 0 && inputFocused && (
-          <Flex
-            top={"2.5rem"}
-            w={"100%"}
-            pos={"absolute"}
-            borderRadius={"xl"}
-            px={"1.5rem"}
-            py={"1rem"}
-            bgColor={"bg.600"}
-            mt={"0.5rem"}
-            flexDir={"column"}
-            gap={"0.2rem"}
-            zIndex={1}
-          >
-            {suggestions.map((suggestion) => (
-              <Text
-                cursor={"pointer"}
-                color={"white"}
-                key={suggestion}
-                _hover={{ textDecoration: "underline" }}
-                onClick={() => {
-                  setQuery(suggestion);
+      {/*search input */}
+      <Flex justifyContent={"center"} alignItems={"center"} flexDir={"column"}>
+        <Flex pos={"relative"} flexDir={"column"} w={["100%", "lg"]}>
+          <Flex>
+            <Input
+              ref={ref}
+              placeholder={"Search or question"}
+              autoFocus
+              borderRadius={"3xl"}
+              py={"1.3rem"}
+              pl={"1rem"}
+              pr={"2.6rem"}
+              value={query}
+              onFocus={() => setInputFocused(true)}
+              onBlur={() => {
+                setTimeout(() => {
+                  setInputFocused(false);
+                }, 300);
+              }}
+              onChange={(e) => {
+                setQuery(e.target.value);
+                setInputValue(e.target.value);
+              }}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  onSearch(query);
+                  setInputFocused(false);
                   setInputValue("");
                   setSuggestions([]);
-                  onSearch(suggestion);
+                  ref.current?.blur();
+                }
+              }}
+              rightElementWrapperProps={{
+                pointerEvents: "auto",
+                pt: "0.2rem",
+                pr: "0.3rem",
+              }}
+              renderRightElement={
+                <Menu
+                  options={[
+                    {
+                      label: "Index videos",
+                      value: "index_videos",
+                      onClick: () => {
+                        isAuth ? indexVideoModalRef.current?.open() : openAuthModal();
+                      },
+                    },
+                    isAuth
+                      ? {
+                          label: "Sign out",
+                          value: "sign_out",
+                          color: "red.500",
+                          onClick: async () => {
+                            await signOut();
+                            toast.success("Signed out");
+                          },
+                        }
+                      : {
+                          label: "Sign in",
+                          value: "sign_in",
+                          onClick: () => {
+                            openAuthModal();
+                          },
+                        },
+                  ]}
+                  placement={"top"}
+                  gutter={15}
+                  renderButtonIsMenu
+                  renderButton={
+                    <MenuButton
+                      _hover={{
+                        color: "white",
+                      }}
+                      color={"gray.400"}
+                    >
+                      <Flex>
+                        <Icon as={IoMdMenu} size={"1.5rem"} />
+                      </Flex>
+                    </MenuButton>
+                  }
+                />
+              }
+            />
+          </Flex>
+
+          <Flex mt={"1rem"} gap={["0.5rem", "1rem"]}>
+            {[
+              {
+                value: "Human brain",
+                query: "How does the human brain work?",
+              },
+              {
+                value: "Learn Suapbase",
+                query: "How to get started with Supabase?",
+              },
+              {
+                value: "Startups",
+                query: "How to start a startup?",
+              },
+              {
+                value: "AI Image generation",
+                query: "What are some ways to get started with AI image generation?",
+              },
+            ].map((i) => (
+              <Flex
+                key={i.query}
+                _hover={{
+                  borderColor: "teal.500",
+                }}
+                onClick={() => {
+                  setQuery(i.query);
+                  setInputValue("");
+                  setSuggestions([]);
+                  onSearch(i.query);
                   setInputFocused(false);
                 }}
+                cursor={"pointer"}
+                borderWidth={"1px"}
+                borderColor={"gray.400"}
+                py={"0.2rem"}
+                px={"0.5rem"}
+                borderRadius={"10rem"}
+                justifyContent={"center"}
+                alignItems={"center"}
               >
-                {suggestion}
-              </Text>
-            ))}
-          </Flex>
-        )}
-      </Flex>
-
-      <Flex mt={"1rem"} gap={["0.5rem", "1rem"]}>
-        {[
-          {
-            value: "Human brain",
-            query: "How does the human brain work?",
-          },
-          {
-            value: "Learn Suapbase",
-            query: "How to get started with Supabase?",
-          },
-          {
-            value: "Startups",
-            query: "How to start a startup?",
-          },
-          {
-            value: "AI Image generation",
-            query: "What are some ways to get started with AI image generation?",
-          },
-        ].map((i) => (
-          <Flex
-            key={i.query}
-            _hover={{
-              borderColor: "teal.500",
-            }}
-            onClick={() => {
-              setQuery(i.query);
-              setInputValue("");
-              setSuggestions([]);
-              onSearch(i.query);
-              setInputFocused(false);
-            }}
-            cursor={"pointer"}
-            borderWidth={"1px"}
-            borderColor={"gray.400"}
-            py={"0.2rem"}
-            px={"0.5rem"}
-            borderRadius={"10rem"}
-            justifyContent={"center"}
-            alignItems={"center"}
-          >
-            <Text fontSize={["xs", "sm"]} textAlign={"center"}>
-              {i.value}
-            </Text>
-          </Flex>
-        ))}
-      </Flex>
-
-      <Flex px={"1rem"} w={"100%"} gap={"1rem"} justifyContent={"center"} flexWrap={"wrap"} flexDir={"row"} mt={["2rem", "4rem"]}>
-        {loading ? (
-          <Masonry
-            breakpointCols={{
-              default: 4,
-              1200: 2,
-              700: 1,
-            }}
-            className="my-masonry-grid"
-            columnClassName="my-masonry-grid_column"
-          >
-            {new Array(8).fill(0).map((data, index) => (
-              <Flex key={index} marginBottom={"30px"}>
-                <ReactSingleLoader height={index % 2 ? 300 : 400} width={isMobile ? window.innerWidth - 50 : undefined} />
+                <Text fontSize={["xs", "sm"]} textAlign={"center"}>
+                  {i.value}
+                </Text>
               </Flex>
             ))}
-          </Masonry>
-        ) : (
-          <ResultList
-            results={results}
-            searchEmbeddingQuery={searchEmbeddingQuery}
-            onSummaryClick={(index) => summaryModalRef.current?.open(index)}
-            onChatClick={(index) => (isAuth ? chatSectionRef.current?.open(index) : openAuthModal())}
-          />
-        )}
+          </Flex>
+
+          {suggestions.length > 0 && inputFocused && (
+            <Flex
+              top={"2.5rem"}
+              w={"100%"}
+              pos={"absolute"}
+              borderRadius={"xl"}
+              px={"1.5rem"}
+              py={"1rem"}
+              bgColor={"bg.600"}
+              mt={"0.5rem"}
+              flexDir={"column"}
+              gap={"0.2rem"}
+              zIndex={1}
+            >
+              {suggestions.map((suggestion) => (
+                <Text
+                  cursor={"pointer"}
+                  color={"white"}
+                  key={suggestion}
+                  _hover={{ textDecoration: "underline" }}
+                  onClick={() => {
+                    setQuery(suggestion);
+                    setInputValue("");
+                    setSuggestions([]);
+                    onSearch(suggestion);
+                    setInputFocused(false);
+                  }}
+                >
+                  {suggestion}
+                </Text>
+              ))}
+            </Flex>
+          )}
+        </Flex>
+
+        {/*results */}
+        <Flex px={"1rem"} w={"100%"} gap={"1rem"} justifyContent={"center"} flexWrap={"wrap"} flexDir={"row"} mt={["2rem", "4rem"]}>
+          {loading ? (
+            <Masonry
+              breakpointCols={{
+                default: 4,
+                1200: 2,
+                700: 1,
+              }}
+              className="my-masonry-grid"
+              columnClassName="my-masonry-grid_column"
+            >
+              {new Array(8).fill(0).map((data, index) => (
+                <Flex key={index} marginBottom={"30px"}>
+                  <ReactSingleLoader height={index % 2 ? 300 : 400} width={isMobile ? window.innerWidth - 50 : undefined} />
+                </Flex>
+              ))}
+            </Masonry>
+          ) : (
+            <ResultList
+              results={results}
+              searchEmbeddingQuery={searchEmbeddingQuery}
+              onSummaryClick={(index) => summaryModalRef.current?.open(index)}
+              onChatClick={(index) => (isAuth ? chatSectionRef.current?.open(index) : openAuthModal())}
+            />
+          )}
+        </Flex>
+        <SummaryModal ref={summaryModalRef} />
+        <ChatSection ref={chatSectionRef} />
+        <IndexVideoModal ref={indexVideoModalRef} />
       </Flex>
 
-      <SummaryModal ref={summaryModalRef} />
-      <ChatSection ref={chatSectionRef} />
+      {/*footer */}
+      <Flex mt={"5rem"} alignItems={"center"} flexDir={"column"}>
+        <Text fontSize={"sm"} mb={"1rem"}>
+          Powered by
+        </Text>
+        <Flex gap={"1rem"}>
+          {[
+            {
+              img_url: "https://supabase.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fsupabase-logo-wordmark--light.daaeffd3.png&w=128&q=100",
+              url: "https://supabase.com",
+            },
+            {
+              img_url:
+                "https://cdn.hashnode.com/res/hashnode/image/upload/v1698985359097/sjWDg6Ide.png?w=1000&h=250&fit=crop&crop=entropy&auto=compress,format&format=webp",
+              url: "https://jigsawstack.com",
+            },
+            {
+              img_url: "https://asset.brandfetch.io/idDpCfN4VD/idVSlSKMEu.svg",
+              url: "https://vercel.com",
+            },
+
+            {
+              img_url: "https://asset.brandfetch.io/idP2XuN3gk/idKY_Qa0rU.svg",
+              url: "https://hasura.com",
+            },
+          ].map((brand) => (
+            <Box as={"a"} key={brand.img_url} href={brand.url} target={"_blank"}>
+              <Flex
+                cursor={"pointer"}
+                _hover={{
+                  borderColor: "teal.500",
+                }}
+                w={"6rem"}
+                h={"2.5rem"}
+                borderWidth={"1px"}
+                p={"0.5rem"}
+                borderRadius={"md"}
+                borderColor={"gray.300"}
+              >
+                <Image src={brand.img_url} objectFit={"contain"} alt={"Supabase"} />
+              </Flex>
+            </Box>
+          ))}
+        </Flex>
+        <Box as={"a"} mt={"1rem"}>
+          <Text fontSize={"sm"} cursor={"pointer"} fontWeight={"bold"} mt={"0.5rem"}>
+            View code on Github
+          </Text>
+        </Box>
+      </Flex>
     </Layout>
   );
 };

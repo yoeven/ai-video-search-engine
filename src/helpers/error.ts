@@ -35,7 +35,7 @@ export const handleError = (error: any) => {
   console.error(error);
   console.error(JSON.stringify(error));
   return NextResponse.json(
-    { message: "Something went wrong :(. Please contact support@jigsawstack.com", success: false },
+    { message: "Something went wrong :(. Please contact yoevenkhem@gmail.com", success: false },
 
     {
       status: 500,

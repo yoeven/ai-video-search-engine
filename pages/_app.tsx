@@ -17,50 +17,11 @@ const App: React.FC<AppProps> = ({ Component, pageProps }) => {
       <Head>
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
       </Head>
-      {/* <DefaultSeo
-        titleTemplate="JigsawStack | %s"
-        title="Dashboard"
-        description={
-          "JigsawStack provides all the APIs you need in one place, with high reliability and simple pricing. It's built from the ground up to be blazing fast and DX friendly."
-        }
-        openGraph={{
-          type: "website",
-          locale: "en_US",
-          url: "https://jigsawstack.com",
-          site_name: "JigsawStack",
-          images: [
-            {
-              url: "https://dash.jigsawstack.com/banner.png",
-              alt: "JigsawStack",
-            },
-          ],
-        }}
-        additionalLinkTags={[
-          {
-            rel: "icon",
-            href: "/logo_small.png",
-          },
-        ]}
-        additionalMetaTags={[
-          {
-            name: "twitter:image",
-            content: "https://dash.jigsawstack.com/banner.png",
-          },
-          {
-            name: "twitter:card",
-            content: "summary_large_image",
-          },
-          {
-            name: "twitter:title",
-            content: "JigsawStack",
-          },
-          {
-            name: "twitter:description",
-            content:
-              "JigsawStack provides all the APIs you need in one place, with high reliability and simple pricing. It's built from the ground up to be blazing fast and DX friendly.",
-          },
-        ]}
-      /> */}
+      <DefaultSeo
+        titleTemplate="%s | AI Video Search Engine"
+        title="Home"
+        description={"Search videos with a question and get related answers from the video and chat with any video"}
+      />
       <RootProvider {...pageProps}>
         <Component {...pageProps} />
       </RootProvider>

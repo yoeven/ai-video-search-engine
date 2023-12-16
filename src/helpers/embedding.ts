@@ -3,7 +3,7 @@ import { Pipeline } from "@xenova/transformers";
 import { TextTimeStamped } from "src/types";
 import { splitTextTimestampedByChar } from "src/utils";
 
-const oneTokenToChar = 2.7;
+const oneTokenToChar = 3;
 const tokens = 500;
 const maxChar = oneTokenToChar * tokens;
 
@@ -14,13 +14,26 @@ const tokenSplitter = new TokenTextSplitter({
 });
 
 export const embedTextTimeStamped = async (textSets: TextTimeStamped[], pipe: Pipeline) => {
-  const textSplits = splitTextTimestampedByChar(textSets, maxChar);
+  let _maxChar = maxChar;
+  let textSplits = splitTextTimestampedByChar(textSets, _maxChar);
 
-  const testSplitAccuracies = await Promise.all(textSplits.map((ts) => tokenSplitter.splitText(ts.content)));
+  let splitAccuracy = false;
 
-  for (const testSplitAccuracy of testSplitAccuracies) {
-    if (testSplitAccuracy.length > 1) {
-      throw new Error("Splitter accuracy is not 100%");
+  while (!splitAccuracy) {
+    const testSplitAccuracies = await Promise.all(textSplits.map((ts) => tokenSplitter.splitText(ts.content)));
+
+    for (const testSplitAccuracy of testSplitAccuracies) {
+      if (testSplitAccuracy.length > 1) {
+        console.log("Splitter accuracy is not 100%");
+        _maxChar -= 100;
+        if (_maxChar < 100) {
+          throw new Error("Splitter accuracy is not 100%");
+        }
+        textSplits = splitTextTimestampedByChar(textSets, _maxChar);
+      } else {
+        console.log("Success split at: ", _maxChar);
+        splitAccuracy = true;
+      }
     }
   }
 
@@ -54,10 +67,10 @@ export const embedTextTimeStamped = async (textSets: TextTimeStamped[], pipe: Pi
 export const embedText = async (text: string, pipe: Pipeline) => {
   const cleanText = text.replace(/(\r\n|\n|\r)/gm, " ").trim();
 
-  console.log(cleanText);
+  // console.log(cleanText);
 
   const textSplits = await tokenSplitter.splitText(cleanText);
-  console.log(textSplits);
+  // console.log(textSplits);
   console.log("num of splits", textSplits.length);
 
   // const pipe = await pipeline("feature-extraction", "Supabase/gte-small");

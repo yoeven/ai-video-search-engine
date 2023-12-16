@@ -28,7 +28,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const body = req.query as any as Params;
     const url = new URL(body.url);
-    console.log("url", url);
     let source: "youtube" | "tiktok";
     let videoId: string | undefined;
     let cleanURL: string | undefined;
@@ -86,6 +85,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     });
 
     const captionTracks = videoInfo?.player_response?.captions?.playerCaptionsTracklistRenderer?.captionTracks || [];
+    const translationLanguages = videoInfo?.player_response?.captions?.playerCaptionsTracklistRenderer?.translationLanguages || [];
 
     const title = videoInfo?.videoDetails?.title;
     const description = videoInfo?.videoDetails.description;
@@ -98,17 +98,25 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     let captionTimeStamped: TextTimeStamped[] = [];
     let captionText: string;
     if (captionTracks.length > 0) {
+      let captionUrl: string | null = null;
       const englishCaptions = captionTracks.filter((c) => c.languageCode.includes("en"));
       const selectedCaption =
         englishCaptions.find((c) => !c.name.simpleText.includes("auto-generated")) ||
-        englishCaptions.find((c) => c.name.simpleText.includes("auto-generated")) ||
-        captionTracks?.[0];
+        englishCaptions.find((c) => c.name.simpleText.includes("auto-generated"));
 
-      if (!selectedCaption) {
-        throw new Error("No english caption found");
+      if (selectedCaption) {
+        captionUrl = selectedCaption.baseUrl;
+      } else {
+        const englishTranslation = translationLanguages.find((t) => t.languageCode == "en");
+        if (englishTranslation) {
+          console.log("translated caption url");
+          captionUrl = captionTracks?.[0].baseUrl + "&tlang=en";
+        }
       }
 
-      const captionUrl = selectedCaption.baseUrl;
+      if (!captionUrl) throw new Error("No english caption url found");
+
+      console.log(videoId, " ,captionUrl", captionUrl);
 
       const captionResp = await fetch(captionUrl);
       const captionXML = await captionResp.text();
@@ -179,7 +187,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     res.status(200).json({ video_id: videoId, caption_time_stamped: captionTimeStamped, caption_text: captionText });
   } catch (error: any) {
-    console.log(error);
+    console.log(error?.message);
     res.status(400).json({ message: error?.message, error: true });
   }
 };

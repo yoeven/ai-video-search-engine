@@ -11,7 +11,6 @@ import FullScreenLoaderContext from "./FullScreenLoaderContext";
 import { Toaster } from "react-hot-toast";
 import AuthContext from "./AuthContext";
 import PlatformProvider from "./PlatformContext";
-import { withProse } from "@nikolovlazar/chakra-ui-prose";
 
 // import NavMenu from "components/NavMenu";
 
@@ -91,8 +90,7 @@ const theme = extendTheme(
     },
     useSystemColorMode: false,
   },
-  withDefaultColorScheme({ colorScheme: "primary" }),
-  withProse()
+  withDefaultColorScheme({ colorScheme: "primary" })
 );
 
 interface IProps {
