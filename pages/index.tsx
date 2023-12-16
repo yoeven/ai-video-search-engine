@@ -85,8 +85,8 @@ const Home: NextPage = () => {
     <Layout justifyContent={"space-between"}>
       {!query && results.length <= 0 && <Flex alignItems={"center"} flexDir={"column"}></Flex>}
 
-      {/*search input */}
       <Flex justifyContent={"center"} alignItems={"center"} flexDir={"column"}>
+        {/*search input */}
         <Flex pos={"relative"} flexDir={"column"} w={["100%", "lg"]}>
           <Flex>
             <Input
@@ -170,53 +170,6 @@ const Home: NextPage = () => {
             />
           </Flex>
 
-          <Flex mt={"1rem"} gap={["0.5rem", "1rem"]}>
-            {[
-              {
-                value: "Human brain",
-                query: "How does the human brain work?",
-              },
-              {
-                value: "Learn Suapbase",
-                query: "How to get started with Supabase?",
-              },
-              {
-                value: "Startups",
-                query: "How to start a startup?",
-              },
-              {
-                value: "AI Image generation",
-                query: "What are some ways to get started with AI image generation?",
-              },
-            ].map((i) => (
-              <Flex
-                key={i.query}
-                _hover={{
-                  borderColor: "teal.500",
-                }}
-                onClick={() => {
-                  setQuery(i.query);
-                  setInputValue("");
-                  setSuggestions([]);
-                  onSearch(i.query);
-                  setInputFocused(false);
-                }}
-                cursor={"pointer"}
-                borderWidth={"1px"}
-                borderColor={"gray.400"}
-                py={"0.2rem"}
-                px={"0.5rem"}
-                borderRadius={"10rem"}
-                justifyContent={"center"}
-                alignItems={"center"}
-              >
-                <Text fontSize={["xs", "sm"]} textAlign={"center"}>
-                  {i.value}
-                </Text>
-              </Flex>
-            ))}
-          </Flex>
-
           {suggestions.length > 0 && inputFocused && (
             <Flex
               top={"2.5rem"}
@@ -251,6 +204,59 @@ const Home: NextPage = () => {
             </Flex>
           )}
         </Flex>
+        {/*search suggestions */}
+        {!query && results.length <= 0 && (
+          <Flex justifyContent={"center"} mt={"1rem"} gap={["0.5rem", "1rem"]} flexWrap={"wrap"}>
+            {[
+              {
+                value: "Human brain",
+                query: "How does the human brain work?",
+              },
+              {
+                value: "Learn Suapbase",
+                query: "How to get started with Supabase?",
+              },
+              {
+                value: "Startups",
+                query: "How to start a startup?",
+              },
+              {
+                value: "AI Image generation",
+                query: "What are some ways to get started with AI image generation?",
+              },
+              {
+                value: "Future of startups",
+                query: "What is the future of startups?",
+              },
+            ].map((i) => (
+              <Flex
+                key={i.query}
+                _hover={{
+                  borderColor: "teal.500",
+                }}
+                onClick={() => {
+                  setQuery(i.query);
+                  setInputValue("");
+                  setSuggestions([]);
+                  onSearch(i.query);
+                  setInputFocused(false);
+                }}
+                cursor={"pointer"}
+                borderWidth={"1px"}
+                borderColor={"gray.400"}
+                py={"0.2rem"}
+                px={"0.5rem"}
+                borderRadius={"10rem"}
+                justifyContent={"center"}
+                alignItems={"center"}
+              >
+                <Text fontSize={["xs", "sm"]} textAlign={"center"}>
+                  {i.value}
+                </Text>
+              </Flex>
+            ))}
+          </Flex>
+        )}
 
         {/*results */}
         <Flex px={"1rem"} w={"100%"} gap={"1rem"} justifyContent={"center"} flexWrap={"wrap"} flexDir={"row"} mt={["2rem", "4rem"]}>
@@ -289,7 +295,7 @@ const Home: NextPage = () => {
         <Text fontSize={"sm"} mb={"1rem"}>
           Powered by
         </Text>
-        <Flex gap={"1rem"}>
+        <Flex flexWrap={"wrap"} justifyContent={"center"} gap={"1rem"}>
           {[
             {
               img_url: "https://supabase.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fsupabase-logo-wordmark--light.daaeffd3.png&w=128&q=100",
@@ -329,7 +335,7 @@ const Home: NextPage = () => {
           ))}
         </Flex>
         <Box as={"a"} mt={"1rem"}>
-          <Text fontSize={"sm"} cursor={"pointer"} fontWeight={"bold"} mt={"0.5rem"}>
+          <Text color={"gray.600"} fontSize={"sm"} cursor={"pointer"} fontWeight={"bold"} mt={"0.5rem"}>
             View code on Github
           </Text>
         </Box>
