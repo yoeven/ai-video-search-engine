@@ -53,7 +53,8 @@ const Home: NextPage = () => {
 
   const onInputChange = async (query: string) => {
     const encodedQuery = encodeURIComponent(query);
-    const res = await fetch(`https://video-search-engine-ai.vercel.app/api/suggestions?query=${encodedQuery}`);
+    const baseurl = process.env.NODE_ENV == "production" ? "/api/suggestions" : `https://asve.vercel.app/api/suggestions?query=${encodedQuery}`;
+    const res = await fetch(`${baseurl}?query=${encodedQuery}`);
     const data = await res.json();
     setSuggestions(data.suggestions);
     console.log(data);
