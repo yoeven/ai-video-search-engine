@@ -1,6 +1,6 @@
 {
   "functions": {
-    "api/video/index.ts": {
+    "pages/api/video/index.ts": {
       "maxDuration": 200
     }
   }
