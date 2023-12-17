@@ -88,7 +88,10 @@ const Home: NextPage<IProps> = ({ sumDurationSeconds, sumVideos }) => {
   };
 
   const onSearch = async (value: string) => {
-    if (!value || value.length <= 3) return;
+    if (!value || value.length <= 6) {
+      toast.error("Question is too short");
+      return;
+    }
     setLoading(true);
     const pipe = await pipeline("feature-extraction", "Supabase/gte-small");
     const e = await embedText(value, pipe);
@@ -103,7 +106,11 @@ const Home: NextPage<IProps> = ({ sumDurationSeconds, sumVideos }) => {
       },
     });
 
-    console.log("items", resp.data.match_indexes.length);
+    if (resp.data.match_indexes.length <= 0) {
+      toast.error("No results found. Try indexing more related videos to your question", {
+        duration: 10000,
+      });
+    }
 
     setResults(resp.data.match_indexes);
     setSearchEmbeddingQuery(searchEmbeddingQuery);
@@ -112,7 +119,7 @@ const Home: NextPage<IProps> = ({ sumDurationSeconds, sumVideos }) => {
 
   return (
     <Layout justifyContent={"space-between"}>
-      {(!query || results.length == 0) && <Flex minH={"8rem"} alignItems={"center"} flexDir={"column"}></Flex>}
+      {results.length <= 0 && !loading && <Flex minH={"8rem"} alignItems={"center"} flexDir={"column"}></Flex>}
 
       <Flex justifyContent={"center"} alignItems={"center"} flexDir={"column"}>
         {/*search input */}

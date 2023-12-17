@@ -10,8 +10,6 @@ import Image from "components/BaseComponents/Image";
 import { memo, useEffect, useState } from "react";
 import { gqlClient } from "src/helpers/graphqlClient";
 import { FaPlay } from "react-icons/fa";
-import ReactSingleLoader from "components/ResultLoader/singleLoader";
-import { usePlatform } from "src/providers/PlatformContext";
 
 interface IProps {
   index: GetMatchIndexesQuery["match_indexes"][0];
@@ -111,7 +109,9 @@ const IndexCard: React.FC<IProps> = ({ index, indexCount, searchEmbeddingQuery, 
               {playWhenReady ? (
                 <Flex flexDir={"column"} alignItems={"center"}>
                   <Spinner />
-                  <Text textAlign={"center"}>Finding related clips</Text>
+                  <Text mt={"1rem"} textAlign={"center"}>
+                    Finding related clips
+                  </Text>
                 </Flex>
               ) : (
                 <Icon as={FaPlay} size={"2.5rem"} />
