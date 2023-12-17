@@ -336,27 +336,30 @@ const Home: NextPage<IProps> = ({ sumDurationSeconds, sumVideos }) => {
 
       {/*footer */}
       <Flex mt={"5rem"} alignItems={"center"} flexDir={"column"}>
-        <Text fontSize={"sm"} mb={"1rem"}>
+        <Text fontWeight={"500"} fontSize={"sm"} mb={"1rem"}>
           Powered by
         </Text>
-        <Flex flexWrap={"wrap"} justifyContent={"center"} gap={"1rem"}>
+        <Flex flexWrap={"wrap"} justifyContent={"center"} gap={"0.5rem"}>
           {[
             {
-              img_url: "https://supabase.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fsupabase-logo-wordmark--light.daaeffd3.png&w=128&q=100",
+              img_url: "/supabase.png",
               url: "https://supabase.com",
+            },
+            {
+              img_url: "/vercel.png",
+              url: "https://vercel.com",
             },
             {
               img_url: "/jigsawstack.png",
               url: "https://jigsawstack.com",
             },
             {
-              img_url: "https://asset.brandfetch.io/idDpCfN4VD/idVSlSKMEu.svg",
-              url: "https://vercel.com",
-            },
-
-            {
-              img_url: "https://asset.brandfetch.io/idP2XuN3gk/idKY_Qa0rU.svg",
+              img_url: "/hasura.png",
               url: "https://hasura.com",
+            },
+            {
+              img_url: "/flyio.png",
+              url: "https://fly.io",
             },
           ].map((brand) => (
             <Box as={"a"} key={brand.img_url} href={brand.url} target={"_blank"}>
@@ -365,7 +368,7 @@ const Home: NextPage<IProps> = ({ sumDurationSeconds, sumVideos }) => {
                 _hover={{
                   borderColor: "teal.500",
                 }}
-                w={"6rem"}
+                w={"2.5rem"}
                 h={"2.5rem"}
                 borderWidth={"1px"}
                 p={"0.5rem"}
@@ -378,7 +381,7 @@ const Home: NextPage<IProps> = ({ sumDurationSeconds, sumVideos }) => {
           ))}
         </Flex>
         <Box as={"a"} mt={"1rem"} href={"https://github.com/yoeven/ai-video-search-engine"} target={"_blank"}>
-          <Text color={"gray.600"} fontSize={"sm"} cursor={"pointer"} fontWeight={"bold"} mt={"0.5rem"}>
+          <Text color={"gray.600"} fontSize={"xs"} cursor={"pointer"} fontWeight={"500"} mt={"0.5rem"}>
             View code on Github
           </Text>
         </Box>

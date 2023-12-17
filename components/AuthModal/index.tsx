@@ -172,7 +172,6 @@ const AuthModal = forwardRef<IAuthModalRef, IProps>(({ onValidated }, ref) => {
 
             {!OTPSent && (
               <Input
-                autoFocus
                 type={"email"}
                 placeholder={"Email"}
                 value={values?.email}
@@ -190,7 +189,7 @@ const AuthModal = forwardRef<IAuthModalRef, IProps>(({ onValidated }, ref) => {
 
             {OTPSent && (
               <Flex gap={"0.5rem"} justifyContent={"center"} flexDir={"row"}>
-                <PinInput autoFocus onChange={(v) => updateValue("otp", v)} onComplete={(v) => onVerifyOTP(v)} otp>
+                <PinInput onChange={(v) => updateValue("otp", v)} onComplete={(v) => onVerifyOTP(v)} otp>
                   <PinInputField />
                   <PinInputField />
                   <PinInputField />
