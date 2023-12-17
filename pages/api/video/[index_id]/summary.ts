@@ -20,7 +20,7 @@ export const config = {
 
 const tokenSplitter = new TokenTextSplitter({
   encodingName: "cl100k_base",
-  chunkSize: 15000,
+  chunkSize: 5000,
   chunkOverlap: 0,
 });
 
