@@ -35,3 +35,5 @@ timeout = "5s"
 grace_period = "10s"
 method = "GET"
 path = "/healthz"
+
+# Learn more here https://gist.github.com/yoeven/4bc5c3228f010835c07139d363389af9

@@ -42,6 +42,7 @@ export const getStaticProps = (async (context) => {
       sumDurationSeconds: resp.indexes_aggregate.aggregate?.sum?.duration_seconds || 0,
       sumVideos: resp.indexes_aggregate.aggregate?.count || 0,
     },
+    revalidate: 60 * 30,
   };
 }) satisfies GetStaticProps<IProps>;
 

@@ -1,10 +1,8 @@
 import { Flex, Modal, ModalBody, ModalCloseButton, ModalContent, ModalOverlay, Text, useDisclosure, Button } from "@chakra-ui/react";
 import Input from "components/BaseComponents/Input";
-
 import { forwardRef, memo, useImperativeHandle, useState } from "react";
 import toast from "react-hot-toast";
 import { iFetch } from "src/helpers/ifetch";
-import { useAuth } from "src/providers/AuthContext";
 
 export interface IIndexVideoModalRef {
   open: () => void;
