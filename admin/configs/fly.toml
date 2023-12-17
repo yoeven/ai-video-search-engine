@@ -1,0 +1,37 @@
+# fly.toml app configuration file generated for videosearchengine-hasura-prod on 2023-11-24T12:22:18+08:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = "avse-hasura-prod"
+primary_region = "dfw"
+
+[build]
+image = "hasura/graphql-engine:v2.25.1-ce"
+
+[env]
+ADMIN_KEY = "<key for secured communication between hasura and your serverless functions>"
+HASURA_GRAPHQL_ADMIN_SECRET = "<admin key to access graphql instance>"
+HASURA_GRAPHQL_DATABASE_URL = "<supabase postgres url>"
+HASURA_GRAPHQL_DEV_MODE = "true"
+HASURA_GRAPHQL_ENABLE_CONSOLE = "true"
+HASURA_GRAPHQL_JWT_SECRET = "{\"key\":\"<jwt secret from supabase auth>\",\"type\":\"HS256\",\"claims_namespace_path\":\"$.app_metadata.hasura\",\"allowed_skew\":86400}"
+HASURA_GRAPHQL_UNAUTHORIZED_ROLE = "public"
+PORT = "8080"
+
+[http_service]
+internal_port = 8080
+force_https = true
+auto_stop_machines = false
+auto_start_machines = true
+min_machines_running = 1
+[http_service.concurrency]
+hard_limit = 250
+soft_limit = 200
+
+[[http_service.checks]]
+interval = "1m0s"
+timeout = "5s"
+grace_period = "10s"
+method = "GET"
+path = "/healthz"

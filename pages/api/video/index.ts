@@ -75,9 +75,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       throw new Error("Video already indexed");
     }
 
+    console.log("clean", cleanURL);
+
     const videoInfo = await ytdl.getInfo(cleanURL, {
       lang: "en",
     });
+
+    // const isLive = videoInfo?.videoDetails?.isLiveContent;
 
     const highestQualityVideo = ytdl.chooseFormat(videoInfo.formats, {
       filter: "video",
@@ -159,6 +163,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     const embeddingSets = [...videoInfoEmbedding, ...captionEmbeddingSets];
 
+    console.log("upload to db");
     await gqlServerClient.request<InsertIndexMutation, InsertIndexMutationVariables>(InsertIndexDocument, {
       object: {
         video_id: videoId,
