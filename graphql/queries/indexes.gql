@@ -81,16 +81,12 @@ fragment indexesFragment on indexes {
   status
   tags
   transcript
-  transcript_timestamped
   updated_at
   video_id
   video_source
   video_url
-  description
   active
   created_at
   title
-  width
-  height
   similarity
 }

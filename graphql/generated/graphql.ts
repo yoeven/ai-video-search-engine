@@ -2965,7 +2965,7 @@ export type GetIndexesQueryVariables = Exact<{
 }>;
 
 
-export type GetIndexesQuery = { __typename?: 'query_root', indexes: Array<{ __typename?: 'indexes', duration_seconds: any, id: any, nsfw: boolean, status: string, tags: any, transcript?: string | null, transcript_timestamped?: any | null, updated_at: any, video_id: string, video_source: string, video_url: string, description?: string | null, active: boolean, created_at: any, title?: string | null, width?: number | null, height?: number | null, similarity?: any | null }> };
+export type GetIndexesQuery = { __typename?: 'query_root', indexes: Array<{ __typename?: 'indexes', duration_seconds: any, id: any, nsfw: boolean, status: string, tags: any, transcript?: string | null, updated_at: any, video_id: string, video_source: string, video_url: string, active: boolean, created_at: any, title?: string | null, similarity?: any | null }> };
 
 export type InsertIndexMutationVariables = Exact<{
   object?: InputMaybe<Indexes_Insert_Input>;
@@ -2988,7 +2988,7 @@ export type GetMatchIndexesQueryVariables = Exact<{
 }>;
 
 
-export type GetMatchIndexesQuery = { __typename?: 'query_root', match_indexes: Array<{ __typename?: 'indexes', duration_seconds: any, id: any, nsfw: boolean, status: string, tags: any, transcript?: string | null, transcript_timestamped?: any | null, updated_at: any, video_id: string, video_source: string, video_url: string, description?: string | null, active: boolean, created_at: any, title?: string | null, width?: number | null, height?: number | null, similarity?: any | null }> };
+export type GetMatchIndexesQuery = { __typename?: 'query_root', match_indexes: Array<{ __typename?: 'indexes', duration_seconds: any, id: any, nsfw: boolean, status: string, tags: any, transcript?: string | null, updated_at: any, video_id: string, video_source: string, video_url: string, active: boolean, created_at: any, title?: string | null, similarity?: any | null }> };
 
 export type GetMatchEmbeddingsByIndexQueryVariables = Exact<{
   _index_id?: InputMaybe<Scalars['uuid']['input']>;
@@ -3021,7 +3021,7 @@ export type GetIndexAggregateQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type GetIndexAggregateQuery = { __typename?: 'query_root', indexes_aggregate: { __typename?: 'indexes_aggregate', aggregate?: { __typename?: 'indexes_aggregate_fields', count: number, sum?: { __typename?: 'indexes_sum_fields', duration_seconds?: any | null } | null } | null } };
 
-export type IndexesFragmentFragment = { __typename?: 'indexes', duration_seconds: any, id: any, nsfw: boolean, status: string, tags: any, transcript?: string | null, transcript_timestamped?: any | null, updated_at: any, video_id: string, video_source: string, video_url: string, description?: string | null, active: boolean, created_at: any, title?: string | null, width?: number | null, height?: number | null, similarity?: any | null };
+export type IndexesFragmentFragment = { __typename?: 'indexes', duration_seconds: any, id: any, nsfw: boolean, status: string, tags: any, transcript?: string | null, updated_at: any, video_id: string, video_source: string, video_url: string, active: boolean, created_at: any, title?: string | null, similarity?: any | null };
 
 export type GetUsersQueryVariables = Exact<{
   where?: InputMaybe<Users_Bool_Exp>;
@@ -3045,17 +3045,13 @@ export const IndexesFragmentFragmentDoc = gql`
   status
   tags
   transcript
-  transcript_timestamped
   updated_at
   video_id
   video_source
   video_url
-  description
   active
   created_at
   title
-  width
-  height
   similarity
 }
     `;
