@@ -1,0 +1,17 @@
+table:
+  name: chats
+  schema: public
+select_permissions:
+  - role: user
+    permission:
+      columns:
+        - id
+        - user_id
+        - jigsawstack_chat_session_id
+        - index_id
+        - active
+        - created_at
+        - updated_at
+      filter:
+        user_id:
+          _eq: X-Hasura-User-Id

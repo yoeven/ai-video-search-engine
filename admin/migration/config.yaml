@@ -1,0 +1,7 @@
+version: 3
+endpoint: <yourhasuraendpoint.fly.dev>
+admin_secret: <hasura secret>
+metadata_directory: metadata
+actions:
+  kind: synchronous
+  handler_webhook_baseurl: http://localhost:3000

@@ -1,0 +1,2 @@
+- "!include public_match_embeddings.yaml"
+- "!include public_match_indexes.yaml"

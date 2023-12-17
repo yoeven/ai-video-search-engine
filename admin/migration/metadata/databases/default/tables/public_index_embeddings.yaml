@@ -1,0 +1,36 @@
+table:
+  name: index_embeddings
+  schema: public
+object_relationships:
+  - name: index
+    using:
+      foreign_key_constraint_on: index_id
+select_permissions:
+  - role: public
+    permission:
+      columns:
+        - content
+        - created_at
+        - duration_time
+        - embedding
+        - end_time
+        - id
+        - index_id
+        - similarity
+        - start_time
+        - updated_at
+      filter: {}
+  - role: user
+    permission:
+      columns:
+        - embedding
+        - duration_time
+        - end_time
+        - similarity
+        - start_time
+        - content
+        - created_at
+        - updated_at
+        - id
+        - index_id
+      filter: {}

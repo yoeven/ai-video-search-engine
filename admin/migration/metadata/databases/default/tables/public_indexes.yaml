@@ -1,0 +1,66 @@
+table:
+  name: indexes
+  schema: public
+array_relationships:
+  - name: embeddings
+    using:
+      foreign_key_constraint_on:
+        column: index_id
+        table:
+          name: index_embeddings
+          schema: public
+select_permissions:
+  - role: public
+    permission:
+      columns:
+        - active
+        - nsfw
+        - height
+        - width
+        - tags
+        - transcript_timestamped
+        - duration_seconds
+        - similarity
+        - description
+        - status
+        - title
+        - transcript
+        - video_id
+        - video_source
+        - video_url
+        - created_at
+        - updated_at
+        - id
+      filter:
+        _and:
+          - active:
+              _eq: true
+          - status:
+              _eq: completed
+  - role: user
+    permission:
+      columns:
+        - active
+        - created_at
+        - description
+        - duration_seconds
+        - height
+        - id
+        - nsfw
+        - similarity
+        - status
+        - tags
+        - title
+        - transcript
+        - transcript_timestamped
+        - updated_at
+        - video_id
+        - video_source
+        - video_url
+        - width
+      filter:
+        _and:
+          - active:
+              _eq: true
+          - status:
+              _eq: completed
