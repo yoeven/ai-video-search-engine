@@ -24,7 +24,6 @@ const config: CodegenConfig = {
   documents: "./graphql/queries/*.gql",
   generates: {
     "./graphql/generated/graphql.ts": {
-      // preset: "client",
       config: {
         preResolveTypes: true,
         withHooks: false,

@@ -2,20 +2,12 @@ import { NextFetchEvent, NextRequest, NextResponse } from "next/server";
 import { AuthMethods, HandlerConfig } from "src/types";
 import { HandledError, handleError } from "./error";
 import { validateSchema } from "./validateSchema";
-// import { gqlServerClient } from "./graphqlServerClient";
-// import {
-//   User_ProfilesFragmentFragment,
-//   VerifyUserProfileDocument,
-//   VerifyUserProfileQuery,
-//   VerifyUserProfileQueryVariables,
-// } from "@graphql/generated/graphql";
 import { jwtVerify } from "jose";
 import { gqlServerClient } from "./graphqlServerClient";
 import { GetUsersDocument, GetUsersQuery, GetUsersQueryVariables } from "@graphql/generated/graphql";
 
 export interface NextRequestCustom<T = any> extends NextRequest {
   params: T;
-  projectId: string;
   userClaims?: {
     "x-hasura-allowed-roles": string[];
     "x-hasura-default-role": string;
@@ -31,8 +23,6 @@ export interface NextRequestCustom<T = any> extends NextRequest {
 const baseEdgeHandlerWrapper = (handler: (req: NextRequestCustom, con: NextFetchEvent) => Promise<NextResponse>, config: HandlerConfig) => {
   return async (request: NextRequestCustom, context: NextFetchEvent) => {
     let returnResp: NextResponse;
-
-    let authMethod: AuthMethods = AuthMethods.none;
 
     const path = request.nextUrl.pathname;
 
@@ -97,19 +87,13 @@ const baseEdgeHandlerWrapper = (handler: (req: NextRequestCustom, con: NextFetch
               email: userResult.users?.[0]?.email,
             };
           }
-
-          authMethod = AuthMethods.jwt_key;
         } else if (headers["x-admin-api-key"]) {
           if (headers["x-admin-api-key"] != process.env.ADMIN_KEY) {
             throw new HandledError("Invalid admin secret", undefined, 401);
           }
-
-          authMethod = AuthMethods.admin_key;
         } else {
           throw new HandledError("Unauthorized", undefined, 401);
         }
-      } else {
-        authMethod = AuthMethods.none;
       }
 
       // Check if valid path and method
@@ -133,7 +117,6 @@ const baseEdgeHandlerWrapper = (handler: (req: NextRequestCustom, con: NextFetch
         request.params = params;
       }
 
-      // Continue to next request handler
       const resp = await handler(request, context);
 
       returnResp = resp;

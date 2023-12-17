@@ -31,6 +31,9 @@ const handler = async (
       },
       {
         status: 200,
+        headers: {
+          "cache-control": "public, s-maxage=2592000",
+        },
       }
     );
   } catch (error) {
@@ -40,7 +43,6 @@ const handler = async (
 
 export const handlerConfig: HandlerConfig = {
   method: ["GET"],
-  //   validationSchema: CurrencyFormatterSchema,
   skipAuth: true,
 };
 

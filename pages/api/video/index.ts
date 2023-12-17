@@ -23,18 +23,20 @@ interface Params {
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
-    const token = req.headers?.authorization?.replace("Bearer ", "") || null;
+    if (process.env.NODE_ENV === "production") {
+      const token = req.headers?.authorization?.replace("Bearer ", "") || null;
 
-    if (!token) {
-      throw new HandledError("Invalid token", undefined, 401);
-    }
+      if (!token) {
+        throw new HandledError("Invalid token", undefined, 401);
+      }
 
-    const jwtPayload = (await jwtVerify(token, new TextEncoder().encode(process.env.JWT_SECRET))).payload as any;
+      const jwtPayload = (await jwtVerify(token, new TextEncoder().encode(process.env.JWT_SECRET))).payload as any;
 
-    let hasuraClaims = jwtPayload?.app_metadata?.["hasura"];
+      let hasuraClaims = jwtPayload?.app_metadata?.["hasura"];
 
-    if (!hasuraClaims) {
-      throw new HandledError("Invalid token", undefined, 401);
+      if (!hasuraClaims) {
+        throw new HandledError("Invalid token", undefined, 401);
+      }
     }
 
     const body = req.query as any as Params;

@@ -1,4 +1,4 @@
-import { GetStaticProps, InferGetStaticPropsType, NextPage } from "next";
+import { GetStaticProps, NextPage } from "next";
 import { Box, Flex, MenuButton, Text } from "@chakra-ui/react";
 import Layout from "components/BaseComponents/Layout";
 import Input from "components/BaseComponents/Input";
@@ -346,8 +346,7 @@ const Home: NextPage<IProps> = ({ sumDurationSeconds, sumVideos }) => {
               url: "https://supabase.com",
             },
             {
-              img_url:
-                "https://cdn.hashnode.com/res/hashnode/image/upload/v1698985359097/sjWDg6Ide.png?w=1000&h=250&fit=crop&crop=entropy&auto=compress,format&format=webp",
+              img_url: "/jigsawstack.png",
               url: "https://jigsawstack.com",
             },
             {
