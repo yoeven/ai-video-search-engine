@@ -250,23 +250,23 @@ const Home: NextPage<IProps> = ({ sumDurationSeconds, sumVideos }) => {
               {[
                 {
                   value: "Human brain",
-                  query: "How does the human brain work?",
+                  query: "How does the human brain work",
                 },
                 {
                   value: "Learn Suapbase",
-                  query: "How to get started with Supabase?",
+                  query: "How to get started with Supabase",
                 },
                 {
                   value: "Startups",
-                  query: "How to start a startup?",
+                  query: "What is the best way to start a startup",
                 },
                 {
                   value: "AI Image generation",
-                  query: "What are some ways to get started with AI image generation?",
+                  query: "What are some ways to get started with AI image generation and stable diffusion",
                 },
                 {
                   value: "Future of startups",
-                  query: "What is the future of startups?",
+                  query: "What is the future of startups",
                 },
               ].map((i) => (
                 <Flex
