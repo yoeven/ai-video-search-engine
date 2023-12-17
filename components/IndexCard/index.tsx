@@ -1,4 +1,4 @@
-import { Button, Flex, Text } from "@chakra-ui/react";
+import { Button, Flex, Spinner, Text } from "@chakra-ui/react";
 import {
   GetMatchEmbeddingsByIndexDocument,
   GetMatchEmbeddingsByIndexQuery,
@@ -22,21 +22,20 @@ interface IProps {
 }
 
 const IndexCard: React.FC<IProps> = ({ index, indexCount, searchEmbeddingQuery, onSummaryClick, onChatClick }) => {
-  const { isMobile } = usePlatform();
   const [relevantContent, setRelevantContent] = useState<GetMatchEmbeddingsByIndexQuery["match_embeddings"]>();
   const [showVideo, setShowVideo] = useState<boolean>(false);
+  const [playWhenReady, setPlayWhenReady] = useState<boolean>(false);
 
   useEffect(() => {
     init();
   }, []);
 
   const init = async () => {
-    console.log("init count");
     const resp = await gqlClient.query<GetMatchEmbeddingsByIndexQuery, GetMatchEmbeddingsByIndexQueryVariables>({
       query: GetMatchEmbeddingsByIndexDocument,
       variables: {
         query_embedding: JSON.stringify(searchEmbeddingQuery),
-        match_threshold: 0.82,
+        match_threshold: 0.85,
         _index_id: index.id,
         where: {
           start_time: {
@@ -44,23 +43,28 @@ const IndexCard: React.FC<IProps> = ({ index, indexCount, searchEmbeddingQuery, 
           },
         },
       },
-      fetchPolicy: "no-cache",
     });
 
     const matchedEmbeddings = resp.data.match_embeddings;
     setRelevantContent(matchedEmbeddings);
   };
 
-  if (!relevantContent) {
-    return (
-      <Flex h={indexCount % 2 ? "sm" : "md"} w={"100%"}>
-        <ReactSingleLoader height={indexCount % 2 ? 300 : 400} width={isMobile ? window.innerWidth - 50 : undefined} />
-      </Flex>
-    );
-  }
+  useEffect(() => {
+    if (playWhenReady && relevantContent && !showVideo) {
+      setShowVideo(true);
+    }
+  }, [relevantContent, playWhenReady, showVideo]);
 
-  const startTime = relevantContent.length ? Math.round(relevantContent[0].start_time) : null;
-  const endTime = relevantContent.length ? Math.round(relevantContent[0].end_time) : null;
+  const onPlayClick = () => {
+    if (relevantContent) {
+      setShowVideo(true);
+    } else {
+      setPlayWhenReady(true);
+    }
+  };
+
+  const startTime = relevantContent && relevantContent.length ? Math.round(relevantContent[0].start_time) : null;
+  const endTime = relevantContent && relevantContent.length ? Math.round(relevantContent[0].end_time) : null;
 
   return (
     <Flex
@@ -94,7 +98,7 @@ const IndexCard: React.FC<IProps> = ({ index, indexCount, searchEmbeddingQuery, 
             />
             <Flex
               cursor={"pointer"}
-              onClick={() => setShowVideo(true)}
+              onClick={() => onPlayClick()}
               justifyContent={"center"}
               alignItems={"center"}
               w={"100%"}
@@ -104,10 +108,18 @@ const IndexCard: React.FC<IProps> = ({ index, indexCount, searchEmbeddingQuery, 
               color={"white"}
               flexDir={"column"}
             >
-              <Icon as={FaPlay} size={"2.5rem"} />
-              {endTime != null && startTime != null ? (
+              {playWhenReady ? (
+                <Flex flexDir={"column"} alignItems={"center"}>
+                  <Spinner />
+                  <Text textAlign={"center"}>Finding related clips</Text>
+                </Flex>
+              ) : (
+                <Icon as={FaPlay} size={"2.5rem"} />
+              )}
+
+              {relevantContent ? (
                 <Text mt={"1rem"} fontWeight={"500"}>
-                  {endTime - startTime}s clip
+                  {endTime && startTime ? `${endTime - startTime}s clip` : "Full Video"}
                 </Text>
               ) : null}
             </Flex>

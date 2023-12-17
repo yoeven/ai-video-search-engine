@@ -1,6 +1,6 @@
 import { GetMatchIndexesQuery } from "@graphql/generated/graphql";
 import IndexCard from "components/IndexCard";
-import { memo, useEffect } from "react";
+import { memo } from "react";
 import Masonry from "react-masonry-css";
 
 interface IProps {

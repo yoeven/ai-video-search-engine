@@ -18,7 +18,7 @@ export const getAuthHeader = async () => {
 export const getAccessToken = async () => {
   const { data, error } = await supabase.auth.getSession();
 
-  console.log("getAccessToken", data);
+  // console.log("getAccessToken", data);
 
   if (data.session?.access_token && !error) {
     return data.session?.access_token;

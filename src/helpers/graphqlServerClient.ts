@@ -9,4 +9,5 @@ export const gqlServerClient = new GraphQLClient(hasuraEndPoint, {
     "x-hasura-admin-secret": hasuraAdminSecret,
     "content-type": "application/json",
   },
+  fetch: fetch,
 });

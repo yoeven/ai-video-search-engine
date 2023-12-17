@@ -8,6 +8,7 @@ import {
   InputRightElementProps,
   InputLeftElementProps,
   Text,
+  InputGroupProps,
 } from "@chakra-ui/react";
 
 export interface InputProps extends CInputProps {
@@ -17,14 +18,27 @@ export interface InputProps extends CInputProps {
   rightElementWrapperProps?: InputRightElementProps;
   label?: string;
   disableAnimation?: boolean;
+  inputGroupProps?: InputGroupProps;
 }
 
 const Input = forwardRef<any, InputProps>(
-  ({ renderLeftElement, renderRightElement, leftElementWrapperProps, rightElementWrapperProps, label, disableAnimation, ...inputProps }, ref) => {
+  (
+    {
+      renderLeftElement,
+      renderRightElement,
+      leftElementWrapperProps,
+      rightElementWrapperProps,
+      label,
+      disableAnimation,
+      inputGroupProps,
+      ...inputProps
+    },
+    ref
+  ) => {
     return (
       <>
         {label && <Text mb={"1rem"}>{label}</Text>}
-        <InputGroup>
+        <InputGroup {...inputGroupProps}>
           {renderLeftElement && (
             <InputLeftElement pointerEvents="none" {...leftElementWrapperProps}>
               {renderLeftElement}

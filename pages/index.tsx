@@ -1,11 +1,18 @@
-import { NextPage } from "next";
+import { GetStaticProps, InferGetStaticPropsType, NextPage } from "next";
 import { Box, Flex, MenuButton, Text } from "@chakra-ui/react";
 import Layout from "components/BaseComponents/Layout";
 import Input from "components/BaseComponents/Input";
 import { useEffect, useRef, useState } from "react";
 import { embedText } from "src/helpers/embedding";
 import { gqlClient } from "src/helpers/graphqlClient";
-import { GetMatchIndexesDocument, GetMatchIndexesQuery, GetMatchIndexesQueryVariables } from "@graphql/generated/graphql";
+import {
+  GetIndexAggregateDocument,
+  GetIndexAggregateQuery,
+  GetIndexAggregateQueryVariables,
+  GetMatchIndexesDocument,
+  GetMatchIndexesQuery,
+  GetMatchIndexesQueryVariables,
+} from "@graphql/generated/graphql";
 import ResultList from "components/ResultList";
 import { pipeline } from "@xenova/transformers";
 import ReactSingleLoader from "components/ResultLoader/singleLoader";
@@ -21,8 +28,24 @@ import { signOut } from "src/helpers/authClientService";
 import toast from "react-hot-toast";
 import IndexVideoModal, { IIndexVideoModalRef } from "components/IndexVideoModal";
 import Image from "components/BaseComponents/Image";
+import { gqlServerClient } from "src/helpers/graphqlServerClient";
 
-const Home: NextPage = () => {
+interface IProps {
+  sumDurationSeconds: number;
+  sumVideos: number;
+}
+
+export const getStaticProps = (async (context) => {
+  const resp = await gqlServerClient.request<GetIndexAggregateQuery, GetIndexAggregateQueryVariables>(GetIndexAggregateDocument);
+  return {
+    props: {
+      sumDurationSeconds: resp.indexes_aggregate.aggregate?.sum?.duration_seconds || 0,
+      sumVideos: resp.indexes_aggregate.aggregate?.count || 0,
+    },
+  };
+}) satisfies GetStaticProps<IProps>;
+
+const Home: NextPage<IProps> = ({ sumDurationSeconds, sumVideos }) => {
   const { isAuth, openAuthModal } = useAuth();
   const { isMobile } = usePlatform();
   const ref = useRef<HTMLInputElement>(null);
@@ -64,6 +87,7 @@ const Home: NextPage = () => {
   };
 
   const onSearch = async (value: string) => {
+    if (!value || value.length <= 3) return;
     setLoading(true);
     const pipe = await pipeline("feature-extraction", "Supabase/gte-small");
     const e = await embedText(value, pipe);
@@ -73,11 +97,12 @@ const Home: NextPage = () => {
       query: GetMatchIndexesDocument,
       variables: {
         query_embedding: JSON.stringify(searchEmbeddingQuery),
-        match_threshold: 0.82,
+        match_threshold: 0.85,
+        limit: 100,
       },
     });
 
-    console.log(resp);
+    console.log("items", resp.data.match_indexes.length);
 
     setResults(resp.data.match_indexes);
     setSearchEmbeddingQuery(searchEmbeddingQuery);
@@ -86,7 +111,7 @@ const Home: NextPage = () => {
 
   return (
     <Layout justifyContent={"space-between"}>
-      {(!query || results.length == 0) && <Flex alignItems={"center"} flexDir={"column"}></Flex>}
+      {(!query || results.length == 0) && <Flex minH={"8rem"} alignItems={"center"} flexDir={"column"}></Flex>}
 
       <Flex justifyContent={"center"} alignItems={"center"} flexDir={"column"}>
         {/*search input */}
@@ -94,7 +119,7 @@ const Home: NextPage = () => {
           <Flex>
             <Input
               ref={ref}
-              placeholder={"Search or question"}
+              placeholder={"Ask a specific question"}
               autoFocus
               borderRadius={"3xl"}
               py={"1.3rem"}
@@ -119,6 +144,9 @@ const Home: NextPage = () => {
                   setSuggestions([]);
                   ref.current?.blur();
                 }
+              }}
+              inputGroupProps={{
+                zIndex: 1,
               }}
               rightElementWrapperProps={{
                 pointerEvents: "auto",
@@ -209,56 +237,61 @@ const Home: NextPage = () => {
         </Flex>
         {/*search suggestions */}
         {results.length <= 0 && !loading && (
-          <Flex justifyContent={"center"} mt={"1rem"} gap={["0.5rem", "1rem"]} flexWrap={"wrap"}>
-            {[
-              {
-                value: "Human brain",
-                query: "How does the human brain work?",
-              },
-              {
-                value: "Learn Suapbase",
-                query: "How to get started with Supabase?",
-              },
-              {
-                value: "Startups",
-                query: "How to start a startup?",
-              },
-              {
-                value: "AI Image generation",
-                query: "What are some ways to get started with AI image generation?",
-              },
-              {
-                value: "Future of startups",
-                query: "What is the future of startups?",
-              },
-            ].map((i) => (
-              <Flex
-                key={i.query}
-                _hover={{
-                  borderColor: "teal.500",
-                }}
-                onClick={() => {
-                  setQuery(i.query);
-                  setInputValue("");
-                  setSuggestions([]);
-                  onSearch(i.query);
-                  setInputFocused(false);
-                }}
-                cursor={"pointer"}
-                borderWidth={"1px"}
-                borderColor={"gray.400"}
-                py={"0.2rem"}
-                px={"0.5rem"}
-                borderRadius={"10rem"}
-                justifyContent={"center"}
-                alignItems={"center"}
-              >
-                <Text fontSize={["xs", "sm"]} textAlign={"center"}>
-                  {i.value}
-                </Text>
-              </Flex>
-            ))}
-          </Flex>
+          <>
+            <Flex justifyContent={"center"} mt={"1rem"} gap={["0.5rem", "1rem"]} flexWrap={"wrap"}>
+              {[
+                {
+                  value: "Human brain",
+                  query: "How does the human brain work?",
+                },
+                {
+                  value: "Learn Suapbase",
+                  query: "How to get started with Supabase?",
+                },
+                {
+                  value: "Startups",
+                  query: "How to start a startup?",
+                },
+                {
+                  value: "AI Image generation",
+                  query: "What are some ways to get started with AI image generation?",
+                },
+                {
+                  value: "Future of startups",
+                  query: "What is the future of startups?",
+                },
+              ].map((i) => (
+                <Flex
+                  key={i.query}
+                  _hover={{
+                    borderColor: "teal.500",
+                  }}
+                  onClick={() => {
+                    setQuery(i.query);
+                    setInputValue("");
+                    setSuggestions([]);
+                    onSearch(i.query);
+                    setInputFocused(false);
+                  }}
+                  cursor={"pointer"}
+                  borderWidth={"1px"}
+                  borderColor={"gray.400"}
+                  py={"0.2rem"}
+                  px={"0.5rem"}
+                  borderRadius={"10rem"}
+                  justifyContent={"center"}
+                  alignItems={"center"}
+                >
+                  <Text fontSize={["xs", "sm"]} textAlign={"center"}>
+                    {i.value}
+                  </Text>
+                </Flex>
+              ))}
+            </Flex>
+            <Text color={"gray.500"} mt={"1rem"}>
+              {Math.round(sumDurationSeconds / 60)} minutes / {sumVideos} videos indexed
+            </Text>
+          </>
         )}
 
         {/*results */}

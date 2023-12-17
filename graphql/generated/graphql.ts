@@ -2984,6 +2984,7 @@ export type InsertEmbeddingsMutation = { __typename?: 'mutation_root', insert_in
 export type GetMatchIndexesQueryVariables = Exact<{
   query_embedding?: InputMaybe<Scalars['vector']['input']>;
   match_threshold?: InputMaybe<Scalars['float8']['input']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
 }>;
 
 
@@ -3014,6 +3015,11 @@ export type UpdateIndexesMutationVariables = Exact<{
 
 
 export type UpdateIndexesMutation = { __typename?: 'mutation_root', update_indexes?: { __typename?: 'indexes_mutation_response', affected_rows: number, returning: Array<{ __typename?: 'indexes', id: any }> } | null };
+
+export type GetIndexAggregateQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetIndexAggregateQuery = { __typename?: 'query_root', indexes_aggregate: { __typename?: 'indexes_aggregate', aggregate?: { __typename?: 'indexes_aggregate_fields', count: number, sum?: { __typename?: 'indexes_sum_fields', duration_seconds?: any | null } | null } | null } };
 
 export type IndexesFragmentFragment = { __typename?: 'indexes', duration_seconds: any, id: any, nsfw: boolean, status: string, tags: any, transcript?: string | null, transcript_timestamped?: any | null, updated_at: any, video_id: string, video_source: string, video_url: string, description?: string | null, active: boolean, created_at: any, title?: string | null, width?: number | null, height?: number | null, similarity?: any | null };
 
@@ -3101,10 +3107,11 @@ export const InsertEmbeddingsDocument = gql`
 }
     `;
 export const GetMatchIndexesDocument = gql`
-    query GetMatchIndexes($query_embedding: vector, $match_threshold: float8 = "0.81") {
+    query GetMatchIndexes($query_embedding: vector, $match_threshold: float8 = "0.81", $limit: Int) {
   match_indexes(
     args: {match_threshold: $match_threshold, query_embedding: $query_embedding}
     order_by: {similarity: desc}
+    limit: $limit
   ) {
     ...indexesFragment
   }
@@ -3141,6 +3148,18 @@ export const UpdateIndexesDocument = gql`
     affected_rows
     returning {
       id
+    }
+  }
+}
+    `;
+export const GetIndexAggregateDocument = gql`
+    query GetIndexAggregate {
+  indexes_aggregate {
+    aggregate {
+      count(columns: id)
+      sum {
+        duration_seconds
+      }
     }
   }
 }

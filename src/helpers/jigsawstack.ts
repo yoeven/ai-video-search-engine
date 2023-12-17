@@ -1,5 +1,4 @@
 const BASEURL = "https://api.jigsawstack.com/v1";
-// const BASEURL = "http://localhost:3000/api/v1";
 const key = process.env.JIGSAWSTACK_KEY || "";
 
 const JigsawStackFetch = async (path: string, method: string, body?: any) => {

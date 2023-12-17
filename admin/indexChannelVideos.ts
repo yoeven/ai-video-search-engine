@@ -3,8 +3,8 @@ import ytpl from "ytpl";
 import { retry } from "ts-retry-promise";
 import { chunk, uniq } from "src/utils";
 
-// const indexVideoBaseUrl = "http://localhost:3000/api/video";
-const indexVideoBaseUrl = "http://avse.vercel.app/api/video";
+const indexVideoBaseUrl = "http://localhost:3000/api/video";
+// const indexVideoBaseUrl = "https://avse.vercel.app/api/video";
 
 const indexVideo = async (videoURL: string) => {
   const resp = await fetch(`${indexVideoBaseUrl}?url=${videoURL}`);
@@ -73,11 +73,13 @@ const indexChannelVideos = async (videoUrlFromChannel: string) => {
         retry(() => indexVideo(v), {
           retries: 3,
           timeout: "INFINITELY",
+          delay: 1000,
+          backoff: "EXPONENTIAL",
           retryIf: (error) => {
             const shouldRetry = !skipErrors.includes(error?.message || "");
 
             if (shouldRetry) {
-              console.log("retry error: ", error?.message);
+              console.log("retry error:", error?.message);
             }
 
             return shouldRetry;
@@ -103,7 +105,7 @@ const indexChannelVideos = async (videoUrlFromChannel: string) => {
   console.log("Completed all videos: ", channelName);
 };
 
-indexChannelVideos("https://www.youtube.com/watch?v=5abffC-K40c&ab_channel=freeCodeCamp.org");
+indexChannelVideos("https://www.youtube.com/watch?v=R2fAYn8R318&ab_channel=YCombinator");
 
 // How to run:
 // 1. start nextjs server `yarn dev`

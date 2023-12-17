@@ -19,8 +19,8 @@ mutation InsertEmbeddings($objects: [index_embeddings_insert_input!] = []) {
   }
 }
 
-query GetMatchIndexes($query_embedding: vector, $match_threshold: float8 = "0.81") {
-  match_indexes(args: { match_threshold: $match_threshold, query_embedding: $query_embedding }, order_by: { similarity: desc }) {
+query GetMatchIndexes($query_embedding: vector, $match_threshold: float8 = "0.81", $limit: Int) {
+  match_indexes(args: { match_threshold: $match_threshold, query_embedding: $query_embedding }, order_by: { similarity: desc }, limit: $limit) {
     ...indexesFragment
   }
 }
@@ -59,6 +59,17 @@ mutation UpdateIndexes($where: indexes_bool_exp = {}, $_set: indexes_set_input =
     affected_rows
     returning {
       id
+    }
+  }
+}
+
+query GetIndexAggregate {
+  indexes_aggregate {
+    aggregate {
+      count(columns: id)
+      sum {
+        duration_seconds
+      }
     }
   }
 }

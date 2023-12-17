@@ -20,7 +20,7 @@ export interface IMenuProps extends Partial<MenuProps> {
 
 const Menu: React.FC<IMenuProps> = ({ renderButton, options, onSelect, children, selectedValue, renderButtonIsMenu, ...rest }) => {
   return (
-    <CMenu {...rest}>
+    <CMenu strategy={"absolute"} {...rest}>
       {renderButtonIsMenu ? (
         renderButton
       ) : (

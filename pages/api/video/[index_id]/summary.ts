@@ -1,7 +1,6 @@
 import { NextFetchEvent, NextResponse } from "next/server";
 import { handleError } from "src/helpers/error";
 import baseEdgeHandlerWrapper, { NextRequestCustom } from "src/helpers/baseEdgeHandlerWrapper";
-
 import { HandlerConfig } from "src/types";
 import { gqlServerClient } from "src/helpers/graphqlServerClient";
 import {
@@ -13,10 +12,17 @@ import {
   UpdateIndexesMutationVariables,
 } from "@graphql/generated/graphql";
 import { summary } from "src/helpers/jigsawstack";
+import { TokenTextSplitter } from "langchain/text_splitter";
 
 export const config = {
   runtime: "edge",
 };
+
+const tokenSplitter = new TokenTextSplitter({
+  encodingName: "cl100k_base",
+  chunkSize: 15000,
+  chunkOverlap: 0,
+});
 
 const handler = async (req: NextRequestCustom, con: NextFetchEvent) => {
   try {
@@ -25,6 +31,8 @@ const handler = async (req: NextRequestCustom, con: NextFetchEvent) => {
     const resp = await gqlServerClient.request<GetIndexSummaryQuery, GetIndexSummaryQueryVariables>(GetIndexSummaryDocument, {
       id: params.index_id,
     });
+
+    console.log("index", params);
 
     const index = resp.indexes_by_pk;
 
@@ -36,7 +44,19 @@ const handler = async (req: NextRequestCustom, con: NextFetchEvent) => {
     let summaryPoints = index?.summary_points || null;
 
     if (!summaryText || !summaryPoints) {
-      const summaryResults = await Promise.all([summary(index.transcript || "", "text"), summary(index.transcript || "", "points")]);
+      let textToSummarize = index.transcript || "";
+
+      const textArr = await tokenSplitter.splitText(textToSummarize);
+
+      console.log("textArr splits", textArr.length);
+
+      textToSummarize = textArr[0];
+
+      if (!textToSummarize) {
+        throw new Error("Text to summarize is empty");
+      }
+
+      const summaryResults = await Promise.all([summary(textToSummarize, "text"), summary(textToSummarize, "points")]);
 
       const summaryTextResult = summaryResults?.[0];
       const summaryPointsResult = summaryResults?.[1];
