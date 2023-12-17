@@ -19,11 +19,6 @@ interface Params {
   url: string;
 }
 
-export const config = {
-  maxDuration: 200,
-  memory: 2048,
-};
-
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const body = req.query as any as Params;
