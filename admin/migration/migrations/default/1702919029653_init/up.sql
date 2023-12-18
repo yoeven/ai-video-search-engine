@@ -382,7 +382,6 @@ CREATE FUNCTION public.match_indexes(query_embedding extensions.vector, match_th
     LANGUAGE sql STABLE
     AS $$
 select
-distinct on (indexes.id)
     indexes.id,
     indexes.video_id,
     indexes.video_url,
@@ -406,7 +405,7 @@ distinct on (indexes.id)
 from indexes
 INNER JOIN index_embeddings ON indexes.id = index_embeddings.index_id
 where index_embeddings.embedding <=> query_embedding < 1 - match_threshold
-order by indexes.id, index_embeddings.embedding <=> query_embedding
+order by index_embeddings.embedding <=> query_embedding
 $$;
 CREATE FUNCTION public.set_current_timestamp_updated_at() RETURNS trigger
     LANGUAGE plpgsql
@@ -910,6 +909,7 @@ COMMENT ON INDEX auth.users_email_partial_key IS 'Auth: A partial unique index t
 CREATE INDEX users_instance_id_email_idx ON auth.users USING btree (instance_id, lower((email)::text));
 CREATE INDEX users_instance_id_idx ON auth.users USING btree (instance_id);
 CREATE INDEX index_embeddings_embedding_idx ON public.index_embeddings USING hnsw (embedding extensions.vector_cosine_ops);
+CREATE INDEX index_embeddings_index_id_idx ON public.index_embeddings USING btree (index_id);
 CREATE UNIQUE INDEX bname ON storage.buckets USING btree (name);
 CREATE UNIQUE INDEX bucketid_objname ON storage.objects USING btree (bucket_id, name);
 CREATE INDEX name_prefix_search ON storage.objects USING btree (name text_pattern_ops);

@@ -1930,22 +1930,7 @@ export type Match_Embeddings_Args = {
   query_embedding?: InputMaybe<Scalars['vector']['input']>;
 };
 
-export type Match_Embeddings_Two_Args = {
-  match_threshold?: InputMaybe<Scalars['float8']['input']>;
-  query_embedding?: InputMaybe<Scalars['vector']['input']>;
-};
-
-export type Match_Indexes_3_Args = {
-  match_threshold?: InputMaybe<Scalars['float8']['input']>;
-  query_embedding?: InputMaybe<Scalars['vector']['input']>;
-};
-
 export type Match_Indexes_Args = {
-  match_threshold?: InputMaybe<Scalars['float8']['input']>;
-  query_embedding?: InputMaybe<Scalars['vector']['input']>;
-};
-
-export type Match_Indexes_New_Args = {
   match_threshold?: InputMaybe<Scalars['float8']['input']>;
   query_embedding?: InputMaybe<Scalars['vector']['input']>;
 };
@@ -2340,22 +2325,10 @@ export type Query_Root = {
   match_embeddings: Array<Index_Embeddings>;
   /** execute function "match_embeddings" and query aggregates on result of table type "index_embeddings" */
   match_embeddings_aggregate: Index_Embeddings_Aggregate;
-  /** execute function "match_embeddings_two" which returns "index_embeddings" */
-  match_embeddings_two: Array<Index_Embeddings>;
-  /** execute function "match_embeddings_two" and query aggregates on result of table type "index_embeddings" */
-  match_embeddings_two_aggregate: Index_Embeddings_Aggregate;
   /** execute function "match_indexes" which returns "indexes" */
   match_indexes: Array<Indexes>;
-  /** execute function "match_indexes_3" which returns "indexes" */
-  match_indexes_3: Array<Indexes>;
-  /** execute function "match_indexes_3" and query aggregates on result of table type "indexes" */
-  match_indexes_3_aggregate: Indexes_Aggregate;
   /** execute function "match_indexes" and query aggregates on result of table type "indexes" */
   match_indexes_aggregate: Indexes_Aggregate;
-  /** execute function "match_indexes_new" which returns "indexes" */
-  match_indexes_new: Array<Indexes>;
-  /** execute function "match_indexes_new" and query aggregates on result of table type "indexes" */
-  match_indexes_new_aggregate: Indexes_Aggregate;
   /** fetch data from the table: "users" */
   users: Array<Users>;
   /** fetch aggregated fields from the table: "users" */
@@ -2477,26 +2450,6 @@ export type Query_RootMatch_Embeddings_AggregateArgs = {
 };
 
 
-export type Query_RootMatch_Embeddings_TwoArgs = {
-  args: Match_Embeddings_Two_Args;
-  distinct_on?: InputMaybe<Array<Index_Embeddings_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  order_by?: InputMaybe<Array<Index_Embeddings_Order_By>>;
-  where?: InputMaybe<Index_Embeddings_Bool_Exp>;
-};
-
-
-export type Query_RootMatch_Embeddings_Two_AggregateArgs = {
-  args: Match_Embeddings_Two_Args;
-  distinct_on?: InputMaybe<Array<Index_Embeddings_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  order_by?: InputMaybe<Array<Index_Embeddings_Order_By>>;
-  where?: InputMaybe<Index_Embeddings_Bool_Exp>;
-};
-
-
 export type Query_RootMatch_IndexesArgs = {
   args: Match_Indexes_Args;
   distinct_on?: InputMaybe<Array<Indexes_Select_Column>>;
@@ -2507,48 +2460,8 @@ export type Query_RootMatch_IndexesArgs = {
 };
 
 
-export type Query_RootMatch_Indexes_3Args = {
-  args: Match_Indexes_3_Args;
-  distinct_on?: InputMaybe<Array<Indexes_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  order_by?: InputMaybe<Array<Indexes_Order_By>>;
-  where?: InputMaybe<Indexes_Bool_Exp>;
-};
-
-
-export type Query_RootMatch_Indexes_3_AggregateArgs = {
-  args: Match_Indexes_3_Args;
-  distinct_on?: InputMaybe<Array<Indexes_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  order_by?: InputMaybe<Array<Indexes_Order_By>>;
-  where?: InputMaybe<Indexes_Bool_Exp>;
-};
-
-
 export type Query_RootMatch_Indexes_AggregateArgs = {
   args: Match_Indexes_Args;
-  distinct_on?: InputMaybe<Array<Indexes_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  order_by?: InputMaybe<Array<Indexes_Order_By>>;
-  where?: InputMaybe<Indexes_Bool_Exp>;
-};
-
-
-export type Query_RootMatch_Indexes_NewArgs = {
-  args: Match_Indexes_New_Args;
-  distinct_on?: InputMaybe<Array<Indexes_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  order_by?: InputMaybe<Array<Indexes_Order_By>>;
-  where?: InputMaybe<Indexes_Bool_Exp>;
-};
-
-
-export type Query_RootMatch_Indexes_New_AggregateArgs = {
-  args: Match_Indexes_New_Args;
   distinct_on?: InputMaybe<Array<Indexes_Select_Column>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
@@ -2630,22 +2543,10 @@ export type Subscription_Root = {
   match_embeddings: Array<Index_Embeddings>;
   /** execute function "match_embeddings" and query aggregates on result of table type "index_embeddings" */
   match_embeddings_aggregate: Index_Embeddings_Aggregate;
-  /** execute function "match_embeddings_two" which returns "index_embeddings" */
-  match_embeddings_two: Array<Index_Embeddings>;
-  /** execute function "match_embeddings_two" and query aggregates on result of table type "index_embeddings" */
-  match_embeddings_two_aggregate: Index_Embeddings_Aggregate;
   /** execute function "match_indexes" which returns "indexes" */
   match_indexes: Array<Indexes>;
-  /** execute function "match_indexes_3" which returns "indexes" */
-  match_indexes_3: Array<Indexes>;
-  /** execute function "match_indexes_3" and query aggregates on result of table type "indexes" */
-  match_indexes_3_aggregate: Indexes_Aggregate;
   /** execute function "match_indexes" and query aggregates on result of table type "indexes" */
   match_indexes_aggregate: Indexes_Aggregate;
-  /** execute function "match_indexes_new" which returns "indexes" */
-  match_indexes_new: Array<Indexes>;
-  /** execute function "match_indexes_new" and query aggregates on result of table type "indexes" */
-  match_indexes_new_aggregate: Indexes_Aggregate;
   /** fetch data from the table: "users" */
   users: Array<Users>;
   /** fetch aggregated fields from the table: "users" */
@@ -2797,26 +2698,6 @@ export type Subscription_RootMatch_Embeddings_AggregateArgs = {
 };
 
 
-export type Subscription_RootMatch_Embeddings_TwoArgs = {
-  args: Match_Embeddings_Two_Args;
-  distinct_on?: InputMaybe<Array<Index_Embeddings_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  order_by?: InputMaybe<Array<Index_Embeddings_Order_By>>;
-  where?: InputMaybe<Index_Embeddings_Bool_Exp>;
-};
-
-
-export type Subscription_RootMatch_Embeddings_Two_AggregateArgs = {
-  args: Match_Embeddings_Two_Args;
-  distinct_on?: InputMaybe<Array<Index_Embeddings_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  order_by?: InputMaybe<Array<Index_Embeddings_Order_By>>;
-  where?: InputMaybe<Index_Embeddings_Bool_Exp>;
-};
-
-
 export type Subscription_RootMatch_IndexesArgs = {
   args: Match_Indexes_Args;
   distinct_on?: InputMaybe<Array<Indexes_Select_Column>>;
@@ -2827,48 +2708,8 @@ export type Subscription_RootMatch_IndexesArgs = {
 };
 
 
-export type Subscription_RootMatch_Indexes_3Args = {
-  args: Match_Indexes_3_Args;
-  distinct_on?: InputMaybe<Array<Indexes_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  order_by?: InputMaybe<Array<Indexes_Order_By>>;
-  where?: InputMaybe<Indexes_Bool_Exp>;
-};
-
-
-export type Subscription_RootMatch_Indexes_3_AggregateArgs = {
-  args: Match_Indexes_3_Args;
-  distinct_on?: InputMaybe<Array<Indexes_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  order_by?: InputMaybe<Array<Indexes_Order_By>>;
-  where?: InputMaybe<Indexes_Bool_Exp>;
-};
-
-
 export type Subscription_RootMatch_Indexes_AggregateArgs = {
   args: Match_Indexes_Args;
-  distinct_on?: InputMaybe<Array<Indexes_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  order_by?: InputMaybe<Array<Indexes_Order_By>>;
-  where?: InputMaybe<Indexes_Bool_Exp>;
-};
-
-
-export type Subscription_RootMatch_Indexes_NewArgs = {
-  args: Match_Indexes_New_Args;
-  distinct_on?: InputMaybe<Array<Indexes_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  order_by?: InputMaybe<Array<Indexes_Order_By>>;
-  where?: InputMaybe<Indexes_Bool_Exp>;
-};
-
-
-export type Subscription_RootMatch_Indexes_New_AggregateArgs = {
-  args: Match_Indexes_New_Args;
   distinct_on?: InputMaybe<Array<Indexes_Select_Column>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
