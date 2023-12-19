@@ -32,8 +32,10 @@ With the rise of short form content with TikTok and Youtube. A lot more knowledg
 - You'll need a paid Supabase & Fly.io account if you're planning to index thousands to millions of videos
 - `admin/config/fly.toml` Consist of configs needed to deploy Hasura to fly
 - `admin/migration` Migration dump you can use to recreate the schema through Hasura CLI
+- `hasura init migration --endpoint <hasuraurl.fly.app> --admin-secret <admin_secret>` To update migration folder in `admin`
 - `admin/indexChannelVideos.ts` Script to index large number of videos locally with youtube channels
 - `.env.example` Keys needed to run to project
+
 
 ## FAQ
 Doesn't youtube do this?
