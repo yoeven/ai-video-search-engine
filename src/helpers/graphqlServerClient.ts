@@ -1,5 +1,4 @@
 import { GraphQLClient } from "graphql-request";
-import fetch from "node-fetch";
 
 const hasuraEndPoint = process.env.NEXT_PUBLIC_HASURA_ENDPOINT_URL || "";
 
@@ -10,5 +9,5 @@ export const gqlServerClient = new GraphQLClient(hasuraEndPoint, {
     "x-hasura-admin-secret": hasuraAdminSecret,
     "content-type": "application/json",
   },
-  fetch: fetch as any,
+  fetch: fetch,
 });
