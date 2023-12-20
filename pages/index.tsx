@@ -83,8 +83,7 @@ const Home: NextPage<IProps> = ({ sumDurationSeconds, sumVideos }) => {
     console.log(baseurl);
     const res = await fetch(baseurl);
     const data = await res.json();
-    setSuggestions(data.suggestions);
-    console.log(data);
+    setSuggestions(data?.suggestions?.length ? data.suggestions : []);
   };
 
   const onSearch = async (value: string) => {
