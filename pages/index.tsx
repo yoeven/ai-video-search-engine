@@ -252,7 +252,7 @@ const Home: NextPage<IProps> = ({ sumDurationSeconds, sumVideos }) => {
                   query: "How does the human brain work",
                 },
                 {
-                  value: "Learn Suapbase",
+                  value: "Learn Supabase",
                   query: "How to get started with Supabase",
                 },
                 {
