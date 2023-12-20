@@ -177,33 +177,40 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const embeddingSets = [...videoInfoEmbedding, ...captionEmbeddingSets];
 
     console.log("upload to db");
-    await gqlServerClient.request<InsertIndexMutation, InsertIndexMutationVariables>(InsertIndexDocument, {
-      object: {
-        video_id: videoId,
-        video_url: cleanURL,
-        video_source: source,
-        title,
-        description,
-        duration_seconds: durationSeconds,
-        tags,
-        transcript_timestamped: captionTimeStamped,
-        transcript: captionText,
-        active: true,
-        status: "completed",
-        nsfw: false,
-        width,
-        height,
-        embeddings: {
-          data: embeddingSets.map((e) => ({
-            embedding: JSON.stringify(e.embedding),
-            content: e.content,
-            start_time: e?.start ?? null,
-            end_time: e?.end ?? null,
-            duration_time: e?.dur ?? null,
-          })),
+
+    try {
+      await gqlServerClient.request<InsertIndexMutation, InsertIndexMutationVariables>(InsertIndexDocument, {
+        object: {
+          video_id: videoId,
+          video_url: cleanURL,
+          video_source: source,
+          title,
+          description,
+          duration_seconds: durationSeconds,
+          tags,
+          transcript_timestamped: captionTimeStamped,
+          transcript: captionText,
+          active: true,
+          status: "completed",
+          nsfw: false,
+          width,
+          height,
+          embeddings: {
+            data: embeddingSets.map((e) => ({
+              embedding: JSON.stringify(e.embedding),
+              content: e.content,
+              start_time: e?.start ?? null,
+              end_time: e?.end ?? null,
+              duration_time: e?.dur ?? null,
+            })),
+          },
         },
-      },
-    });
+      });
+    } catch (error: any) {
+      console.error("error", error);
+      console.error("error", error?.message);
+      throw new Error("Upload to db failed");
+    }
 
     res.status(200).json({ video_id: videoId });
   } catch (error: any) {
