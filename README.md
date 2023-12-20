@@ -3,7 +3,9 @@
 ## A video search engine powered by the latest tools in AI
 
 ## Why?
-With the rise of short form content with TikTok and Youtube. A lot more knowledge is in videos than ever before. Finding specific answers within millions of videos can be difficult for any one person to go through. So the question is if there is Google that indexes text on website making it easier for contextualise that content based on your question, why is there no Google that indexes video content making it easier for users to find answers within them. So I built this as a small way of taking that step towards building a search engine for videos.
+With the rise of short form content with TikTok and Youtube. A lot more knowledge is in videos than ever before. Finding specific answers within millions of videos can be difficult for any one person to go through. So the question is if there is Google that indexes text on website making it easier to find based on the context of on your question, why is there no Google that indexes video content making it easier for users to find answers within them.
+
+So I built this to showcase that it's very much possible with the technology and infrastructure that is readily available.
 
 ## Tech Stack
 - Supbase (PostgreSQL, PG_Vector, Auth)
