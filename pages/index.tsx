@@ -379,11 +379,16 @@ const Home: NextPage<IProps> = ({ sumDurationSeconds, sumVideos }) => {
             </Box>
           ))}
         </Flex>
-        <Box as={"a"} mt={"1rem"} href={"https://github.com/yoeven/ai-video-search-engine"} target={"_blank"}>
-          <Text color={"gray.600"} fontSize={"xs"} cursor={"pointer"} fontWeight={"500"} mt={"0.5rem"}>
+
+        <Text mt={"1.5rem"} color={"gray.600"} fontSize={"sm"} fontWeight={"500"}>
+          <Box as={"a"} href={"https://github.com/yoeven/ai-video-search-engine"} cursor={"pointer"} target={"_blank"}>
             View code on Github
-          </Text>
-        </Box>
+          </Box>{" "}
+          or{" "}
+          <Box as={"a"} href={"https://x.com/yoeven"} cursor={"pointer"} target={"_blank"} color={"black"}>
+            follow me on X
+          </Box>
+        </Text>
       </Flex>
     </Layout>
   );
