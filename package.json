@@ -10,7 +10,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "format": "prettier --write **/*.{ts,js,graphql}"
+    "format": "biome check --write ."
   },
   "dependencies": {
     "@apollo/client": "^3.8.7",
@@ -31,7 +31,6 @@
     "langchain": "^0.0.208",
     "next": "13.3.4",
     "next-seo": "^6.4.0",
-    "node-tiklydown": "^1.0.0",
     "react": "18.2.0",
     "react-content-loader": "^6.2.1",
     "react-dom": "18.2.0",
@@ -55,12 +54,12 @@
     "@types/react": "^18.2.45",
     "@types/react-dom": "^18.2.17",
     "@types/uuid": "^9.0.7",
+    "biome": "^0.3.3",
     "concurrently": "^8.2.2",
     "eslint": "^8",
     "eslint-config-next": "14.0.3",
-    "prettier": "^3.1.0",
     "tsx": "^4.4.0",
-    "typescript": "^5",
+    "typescript": "^5.7.2",
     "watch": "^1.0.2",
     "ytpl": "^2.3.0"
   }
