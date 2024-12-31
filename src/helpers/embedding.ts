@@ -2,6 +2,7 @@ import { TokenTextSplitter } from "langchain/text_splitter";
 import { Pipeline } from "@xenova/transformers";
 import { TextTimeStamped } from "src/types";
 import { splitTextTimestampedByChar } from "src/utils";
+import ky from "ky";
 
 const oneTokenToChar = 3;
 const tokens = 500;
@@ -98,4 +99,18 @@ export const embedText = async (text: string, pipe: Pipeline) => {
   }));
 
   return embeddingSets;
+};
+
+export const embedJSS = async (params: any) => {
+  const resp = await ky
+    .post<any>("https://api.jigsawstack.com/v1/embedding", {
+      json: params,
+      headers: {
+        "x-api-key": "",
+      },
+      timeout: 60000,
+    })
+    .json();
+
+  return resp;
 };

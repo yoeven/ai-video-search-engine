@@ -3,7 +3,7 @@ import { Box, Flex, MenuButton, Text } from "@chakra-ui/react";
 import Layout from "components/BaseComponents/Layout";
 import Input from "components/BaseComponents/Input";
 import { useEffect, useRef, useState } from "react";
-import { embedText } from "src/helpers/embedding";
+import { embedJSS, embedText } from "src/helpers/embedding";
 import { gqlClient } from "src/helpers/graphqlClient";
 import {
   GetIndexAggregateDocument,
@@ -57,7 +57,7 @@ const Home: NextPage<IProps> = ({ sumDurationSeconds, sumVideos }) => {
   const [inputValue, setInputValue] = useState<string>("");
   const [query, setQuery] = useState<string>("");
   const [suggestions, setSuggestions] = useState<string[]>([]);
-  const [results, setResults] = useState<GetMatchIndexesQuery["match_indexes"]>([]);
+  const [results, setResults] = useState<GetMatchIndexesQuery["match_indexes_jss"]>([]);
   const [searchEmbeddingQuery, setSearchEmbeddingQuery] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -92,26 +92,29 @@ const Home: NextPage<IProps> = ({ sumDurationSeconds, sumVideos }) => {
       return;
     }
     setLoading(true);
-    const pipe = await pipeline("feature-extraction", "Supabase/gte-small");
-    const e = await embedText(value, pipe);
-    const searchEmbeddingQuery = e[0].embedding;
+    const e = await embedJSS({
+      text: value,
+      type: "text",
+    });
+
+    const searchEmbeddingQuery = e.embeddings[0];
 
     const resp = await gqlClient.query<GetMatchIndexesQuery, GetMatchIndexesQueryVariables>({
       query: GetMatchIndexesDocument,
       variables: {
         query_embedding: JSON.stringify(searchEmbeddingQuery),
-        match_threshold: 0.85,
+        match_threshold: 0.78,
         limit: 100,
       },
     });
 
-    if (resp.data.match_indexes.length <= 0) {
+    if (resp.data.match_indexes_jss.length <= 0) {
       toast.error("No results found. Try indexing more related videos to your question", {
         duration: 10000,
       });
     }
 
-    setResults(resp.data.match_indexes);
+    setResults(resp.data.match_indexes_jss);
     setSearchEmbeddingQuery(searchEmbeddingQuery);
     setLoading(false);
   };

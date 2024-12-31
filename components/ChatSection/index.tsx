@@ -15,7 +15,7 @@ import { v4 as uuidv4 } from "uuid";
 import { usePlatform } from "src/providers/PlatformContext";
 
 export interface IChatSectionRef {
-  open: (index: GetMatchIndexesQuery["match_indexes"][0]) => void;
+  open: (index: GetMatchIndexesQuery["match_indexes_jss"][0]) => void;
   close: () => void;
 }
 
@@ -25,7 +25,7 @@ const ChatSection = forwardRef<IChatSectionRef, any>((props, ref) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const messageBoxRef = useRef<HTMLDivElement>(null);
   const [scope, animate] = useAnimate();
-  const [index, setIndex] = useState<GetMatchIndexesQuery["match_indexes"][0]>();
+  const [index, setIndex] = useState<GetMatchIndexesQuery["match_indexes_jss"][0]>();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [loading, setLoading] = useState<boolean>(false);
   const [inputValue, setInputValue] = useState<string>("");
@@ -40,7 +40,7 @@ const ChatSection = forwardRef<IChatSectionRef, any>((props, ref) => {
     []
   );
 
-  const open = (newIndex: GetMatchIndexesQuery["match_indexes"][0]) => {
+  const open = (newIndex: GetMatchIndexesQuery["match_indexes_jss"][0]) => {
     setIndex(newIndex);
     onOpen();
   };

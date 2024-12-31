@@ -15,6 +15,7 @@
   "dependencies": {
     "@apollo/client": "^3.8.7",
     "@chakra-ui/react": "^2.8.2",
+    "@distube/ytdl-core": "^4.15.8",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@fontsource/inter": "^5.0.15",
@@ -28,6 +29,7 @@
     "graphql-request": "^6.1.0",
     "graphql-ws": "^5.14.2",
     "jose": "^5.1.1",
+    "ky": "^1.7.4",
     "langchain": "^0.0.208",
     "next": "13.3.4",
     "next-seo": "^6.4.0",
@@ -41,7 +43,6 @@
     "simple-xml-to-json": "^1.1.7",
     "ts-retry-promise": "^0.7.1",
     "uuid": "^9.0.1",
-    "ytdl-core": "^4.11.5",
     "zod": "^3.22.4"
   },
   "devDependencies": {

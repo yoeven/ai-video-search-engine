@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import ytdl from "ytdl-core";
+import ytdl from "@distube/ytdl-core";
 import { convertXML } from "simple-xml-to-json";
 import * as entities from "entities";
 import { embedText, embedTextTimeStamped } from "src/helpers/embedding";
@@ -94,12 +94,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       lang: "en",
     });
 
-    // const isLive = videoInfo?.videoDetails?.isLiveContent;
-
-    const highestQualityVideo = ytdl.chooseFormat(videoInfo.formats, {
-      filter: "video",
-      quality: "highest",
+    let formatFilter = videoInfo.formats.filter((f) => f.hasVideo && f?.width && f?.height);
+    formatFilter = formatFilter.filter((f) => f.qualityLabel);
+    formatFilter = formatFilter.sort((a, b) => {
+      return parseInt(b.qualityLabel.replace("p", "")) - parseInt(a.qualityLabel.replace("p", ""));
     });
+
+    const highestQualityVideo = formatFilter?.[0];
 
     const captionTracks = videoInfo?.player_response?.captions?.playerCaptionsTracklistRenderer?.captionTracks || [];
     const translationLanguages = videoInfo?.player_response?.captions?.playerCaptionsTracklistRenderer?.translationLanguages || [];
@@ -109,8 +110,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const durationSeconds = videoInfo?.videoDetails?.lengthSeconds ? parseInt(videoInfo?.videoDetails?.lengthSeconds) : 0;
     const tags = videoInfo?.videoDetails?.keywords || [];
 
-    const width = highestQualityVideo.width;
-    const height = highestQualityVideo.height;
+    const width = highestQualityVideo?.width;
+    const height = highestQualityVideo?.height;
 
     let captionTimeStamped: TextTimeStamped[] = [];
     let captionText: string;
