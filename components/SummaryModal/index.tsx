@@ -18,13 +18,13 @@ import { forwardRef, memo, useEffect, useImperativeHandle, useRef, useState } fr
 import { iFetch } from "src/helpers/ifetch";
 
 export interface ISummaryModalRef {
-  open: (index: GetMatchIndexesQuery["match_indexes_jss"][0]) => void;
+  open: (index: GetMatchIndexesQuery["match_indexes_gte"][0]) => void;
   close: () => void;
 }
 
 const SummaryModal = forwardRef<ISummaryModalRef, any>((props, ref) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [index, setIndex] = useState<GetMatchIndexesQuery["match_indexes_jss"][0]>();
+  const [index, setIndex] = useState<GetMatchIndexesQuery["match_indexes_gte"][0]>();
   const [summary, setSummary] = useState<{
     summaryText: string;
     summaryPoint: string[];
@@ -44,7 +44,7 @@ const SummaryModal = forwardRef<ISummaryModalRef, any>((props, ref) => {
     []
   );
 
-  const open = (newIndex: GetMatchIndexesQuery["match_indexes_jss"][0]) => {
+  const open = (newIndex: GetMatchIndexesQuery["match_indexes_gte"][0]) => {
     setIndex(newIndex);
     onOpen();
   };

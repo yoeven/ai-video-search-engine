@@ -12,15 +12,15 @@ import { gqlClient } from "src/helpers/graphqlClient";
 import { FaPlay } from "react-icons/fa";
 
 interface IProps {
-  index: GetMatchIndexesQuery["match_indexes_jss"][0];
+  index: GetMatchIndexesQuery["match_indexes_gte"][0];
   indexCount: number;
   searchEmbeddingQuery: any[];
-  onSummaryClick: (index: GetMatchIndexesQuery["match_indexes_jss"][0]) => void;
-  onChatClick: (index: GetMatchIndexesQuery["match_indexes_jss"][0]) => void;
+  onSummaryClick: (index: GetMatchIndexesQuery["match_indexes_gte"][0]) => void;
+  onChatClick: (index: GetMatchIndexesQuery["match_indexes_gte"][0]) => void;
 }
 
 const IndexCard: React.FC<IProps> = ({ index, indexCount, searchEmbeddingQuery, onSummaryClick, onChatClick }) => {
-  const [relevantContent, setRelevantContent] = useState<GetMatchEmbeddingsByIndexQuery["match_embeddings_jss"]>();
+  const [relevantContent, setRelevantContent] = useState<GetMatchEmbeddingsByIndexQuery["match_embeddings_gte"]>();
   const [showVideo, setShowVideo] = useState<boolean>(false);
   const [playWhenReady, setPlayWhenReady] = useState<boolean>(false);
 
@@ -33,7 +33,7 @@ const IndexCard: React.FC<IProps> = ({ index, indexCount, searchEmbeddingQuery, 
       query: GetMatchEmbeddingsByIndexDocument,
       variables: {
         query_embedding: JSON.stringify(searchEmbeddingQuery),
-        match_threshold: 0.85,
+        match_threshold: 0.5,
         _index_id: index.id,
         where: {
           start_time: {
@@ -43,7 +43,7 @@ const IndexCard: React.FC<IProps> = ({ index, indexCount, searchEmbeddingQuery, 
       },
     });
 
-    const matchedEmbeddings = resp.data.match_embeddings_jss;
+    const matchedEmbeddings = resp.data.match_embeddings_gte;
     setRelevantContent(matchedEmbeddings);
   };
 

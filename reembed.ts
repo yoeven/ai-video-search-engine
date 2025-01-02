@@ -4,9 +4,9 @@ import {
   GetIndexesDocument,
   GetIndexesQuery,
   GetIndexesQueryVariables,
-  InsertEmbeddingsJssDocument,
-  InsertEmbeddingsJssMutation,
-  InsertEmbeddingsJssMutationVariables,
+  InsertEmbeddingsGteDocument,
+  InsertEmbeddingsGteMutation,
+  InsertEmbeddingsGteMutationVariables,
 } from "@graphql/generated/graphql";
 import { GraphQLClient } from "graphql-request";
 import ky, { HTTPError } from "ky";
@@ -36,11 +36,11 @@ const embed = async (params: any) => {
         "x-api-key": process.env.JIGSAWSTACK_KEY,
         "x-jigsaw-no-request-log": "true",
       },
-      timeout: 60000,
+      timeout: false,
     })
     .json()
     .catch(async (err: HTTPError) => {
-      const message = (await err?.response?.json<any>())?.message;
+      const message = (await err?.response?.json<any>())?.message || err.message;
       if (message) {
         console.error(`Error embedding: ${message}`);
         throw new Error(message);
@@ -92,12 +92,15 @@ const redo = async () => {
     console.log("Fetching indexes");
     const indexes = await gqlServerClient.request<GetIndexesQuery, GetIndexesQueryVariables>(GetIndexesDocument, {
       where: {
-        embeddings_jss_aggregate: {
+        embeddings_gte_aggregate: {
           count: {
             predicate: {
               _eq: 0,
             },
           },
+        },
+        description: {
+          _like: "%Startup%",
         },
       },
       limit: limit,
@@ -143,7 +146,6 @@ const redo = async () => {
               text: textForEmbedding,
             })
           : null,
-
         ...transcriptMappedSets.map((t) =>
           embed({
             type: "audio",
@@ -207,7 +209,7 @@ const redo = async () => {
       console.log("Inserting DB: ", id);
 
       await gqlServerClient
-        .request<InsertEmbeddingsJssMutation, InsertEmbeddingsJssMutationVariables>(InsertEmbeddingsJssDocument, {
+        .request<InsertEmbeddingsGteMutation, InsertEmbeddingsGteMutationVariables>(InsertEmbeddingsGteDocument, {
           objects: embeddingSets,
         })
         .catch((e) => {
@@ -229,12 +231,15 @@ const redo = async () => {
     //   })
     // );
 
-    await Promise.allSettled(indexMap);
+    const promiseResults = await Promise.allSettled(indexMap);
+
+    console.log("rejected: ", promiseResults.filter((p) => p.status === "rejected").length);
+    console.log("fulfilled: ", promiseResults.filter((p) => p.status === "fulfilled").length);
 
     console.log(`Completed ${indexMap.length} total indexes`);
 
     if (indexes.indexes.length === limit) {
-      // await redo();
+      await redo();
     }
   } catch (error) {
     console.error("Error: ", error);

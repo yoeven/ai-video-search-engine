@@ -19,8 +19,8 @@ mutation InsertEmbeddings($objects: [index_embeddings_insert_input!] = []) {
   }
 }
 
-mutation InsertEmbeddingsJSS($objects: [index_embeddings_jss_insert_input!] = []) {
-  insert_index_embeddings_jss(objects: $objects) {
+mutation InsertEmbeddingsGTE($objects: [index_embeddings_gte_insert_input!] = []) {
+  insert_index_embeddings_gte(objects: $objects) {
     affected_rows
     returning {
       id
@@ -29,24 +29,19 @@ mutation InsertEmbeddingsJSS($objects: [index_embeddings_jss_insert_input!] = []
 }
 
 query GetMatchIndexes($query_embedding: vector, $match_threshold: float8 = "0.81", $limit: Int) {
-  match_indexes_jss(
-    args: { match_threshold: $match_threshold, query_embedding: $query_embedding }
-    limit: $limit
-    distinct_on: id
-    order_by: [{ id: desc }, { similarity: desc }]
-  ) {
+  match_indexes_gte(args: {match_threshold: $match_threshold, query_embedding: $query_embedding}, limit: $limit, distinct_on: id, order_by: [{id: desc}, {similarity: desc}]) {
     ...indexesFragment
   }
 }
 
 query GetMatchEmbeddingsByIndex(
   $_index_id: uuid = ""
-  $match_threshold: float8 = 0.82
+  $match_threshold: float8 = 0.65
   $query_embedding: vector
-  $where: index_embeddings_jss_bool_exp = {}
-  $order_by: [index_embeddings_jss_order_by!] = {}
+  $where: index_embeddings_gte_bool_exp = {}
+  $order_by: [index_embeddings_gte_order_by!] = {}
 ) {
-  match_embeddings_jss(
+  match_embeddings_gte(
     args: { _index_id: $_index_id, match_threshold: $match_threshold, query_embedding: $query_embedding }
     where: $where
     order_by: $order_by
