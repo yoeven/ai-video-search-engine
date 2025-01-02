@@ -95,6 +95,7 @@ const Home: NextPage<IProps> = ({ sumDurationSeconds, sumVideos }) => {
     const e = await embedJSS({
       text: value,
       type: "text",
+      query: true,
     });
 
     const searchEmbeddingQuery = e.embeddings[0];
@@ -103,7 +104,7 @@ const Home: NextPage<IProps> = ({ sumDurationSeconds, sumVideos }) => {
       query: GetMatchIndexesDocument,
       variables: {
         query_embedding: JSON.stringify(searchEmbeddingQuery),
-        match_threshold: 0.78,
+        match_threshold: 0.85,
         limit: 100,
       },
     });
@@ -113,6 +114,8 @@ const Home: NextPage<IProps> = ({ sumDurationSeconds, sumVideos }) => {
         duration: 10000,
       });
     }
+
+    console.log("results: ", resp.data.match_indexes_jss.length);
 
     setResults(resp.data.match_indexes_jss);
     setSearchEmbeddingQuery(searchEmbeddingQuery);

@@ -33,7 +33,7 @@ const IndexCard: React.FC<IProps> = ({ index, indexCount, searchEmbeddingQuery, 
       query: GetMatchEmbeddingsByIndexDocument,
       variables: {
         query_embedding: JSON.stringify(searchEmbeddingQuery),
-        match_threshold: 0.78,
+        match_threshold: 0.85,
         _index_id: index.id,
         where: {
           start_time: {
