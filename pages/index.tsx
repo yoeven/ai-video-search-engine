@@ -355,7 +355,7 @@ const Home: NextPage<IProps> = ({ sumDurationSeconds, sumVideos }) => {
               url: "https://vercel.com",
             },
             {
-              img_url: "/jigsawstack.png",
+              img_url: "/jigsawstack.jpg",
               url: "https://jigsawstack.com",
             },
             {
@@ -380,7 +380,7 @@ const Home: NextPage<IProps> = ({ sumDurationSeconds, sumVideos }) => {
                 borderRadius={"md"}
                 borderColor={"gray.300"}
               >
-                <Image src={brand.img_url} objectFit={"contain"} alt={"Supabase"} />
+                <Image src={brand.img_url} objectFit={"contain"} alt={"Supabase"} borderRadius={"md"} />
               </Flex>
             </Box>
           ))}
