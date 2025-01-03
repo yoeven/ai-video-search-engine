@@ -22,9 +22,9 @@ So I built this to showcase that it's very much possible with the technology and
 - Stored in postgres DB with use of pg_vector extension and indexing
 
 ### Searching
-- Vector cosine search across the db based on question to return the relavant results
+- Vector cosine search across the db based on question to return the relevant results
 - Each video in the result will perform a second search to find related chunks of video to the question
-- The chunks will be mapped back to the timestamped transcript to play the relavant clip of the video
+- The chunks will be mapped back to the timestamped transcript to play the relevant clip of the video
 
 ### Summary & Chat
 - Transcription of video will be sent to JigsawStack API for summary in both point form and text
@@ -41,7 +41,7 @@ So I built this to showcase that it's very much possible with the technology and
 
 ## FAQ
 Doesn't youtube do this?
-- Not really, Youtube doesn't search the transcribed audio of the video but instead relies on the written content of the uploader such as title, description, tags. While all the audio content goes unindexed.
+- Not really, Youtube doesn't search the transcribed audio of the video but instead relies on the written content of the uploader such as title, description, tags. While all the audio content goes un-indexed.
 
 How's this stack gonna handle millions of videos?
 - It can handle millions but maybe not billions/trillions with this current setup. Which requires more replicas, instances and especially $

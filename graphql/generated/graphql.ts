@@ -2894,23 +2894,12 @@ export type Match_Embeddings_Gte_Args = {
   query_embedding?: InputMaybe<Scalars['vector']['input']>;
 };
 
-export type Match_Embeddings_Jss_Args = {
-  _index_id?: InputMaybe<Scalars['uuid']['input']>;
-  match_threshold?: InputMaybe<Scalars['float8']['input']>;
-  query_embedding?: InputMaybe<Scalars['vector']['input']>;
-};
-
 export type Match_Indexes_Args = {
   match_threshold?: InputMaybe<Scalars['float8']['input']>;
   query_embedding?: InputMaybe<Scalars['vector']['input']>;
 };
 
 export type Match_Indexes_Gte_Args = {
-  match_threshold?: InputMaybe<Scalars['float8']['input']>;
-  query_embedding?: InputMaybe<Scalars['vector']['input']>;
-};
-
-export type Match_Indexes_Jss_Args = {
   match_threshold?: InputMaybe<Scalars['float8']['input']>;
   query_embedding?: InputMaybe<Scalars['vector']['input']>;
 };
@@ -3445,10 +3434,6 @@ export type Query_Root = {
   match_embeddings_gte: Array<Index_Embeddings_Gte>;
   /** execute function "match_embeddings_gte" and query aggregates on result of table type "index_embeddings_gte" */
   match_embeddings_gte_aggregate: Index_Embeddings_Gte_Aggregate;
-  /** execute function "match_embeddings_jss" which returns "index_embeddings_jss" */
-  match_embeddings_jss: Array<Index_Embeddings_Jss>;
-  /** execute function "match_embeddings_jss" and query aggregates on result of table type "index_embeddings_jss" */
-  match_embeddings_jss_aggregate: Index_Embeddings_Jss_Aggregate;
   /** execute function "match_indexes" which returns "indexes" */
   match_indexes: Array<Indexes>;
   /** execute function "match_indexes" and query aggregates on result of table type "indexes" */
@@ -3457,10 +3442,6 @@ export type Query_Root = {
   match_indexes_gte: Array<Indexes>;
   /** execute function "match_indexes_gte" and query aggregates on result of table type "indexes" */
   match_indexes_gte_aggregate: Indexes_Aggregate;
-  /** execute function "match_indexes_jss" which returns "indexes" */
-  match_indexes_jss: Array<Indexes>;
-  /** execute function "match_indexes_jss" and query aggregates on result of table type "indexes" */
-  match_indexes_jss_aggregate: Indexes_Aggregate;
   /** fetch data from the table: "users" */
   users: Array<Users>;
   /** fetch aggregated fields from the table: "users" */
@@ -3648,26 +3629,6 @@ export type Query_RootMatch_Embeddings_Gte_AggregateArgs = {
 };
 
 
-export type Query_RootMatch_Embeddings_JssArgs = {
-  args: Match_Embeddings_Jss_Args;
-  distinct_on?: InputMaybe<Array<Index_Embeddings_Jss_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  order_by?: InputMaybe<Array<Index_Embeddings_Jss_Order_By>>;
-  where?: InputMaybe<Index_Embeddings_Jss_Bool_Exp>;
-};
-
-
-export type Query_RootMatch_Embeddings_Jss_AggregateArgs = {
-  args: Match_Embeddings_Jss_Args;
-  distinct_on?: InputMaybe<Array<Index_Embeddings_Jss_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  order_by?: InputMaybe<Array<Index_Embeddings_Jss_Order_By>>;
-  where?: InputMaybe<Index_Embeddings_Jss_Bool_Exp>;
-};
-
-
 export type Query_RootMatch_IndexesArgs = {
   args: Match_Indexes_Args;
   distinct_on?: InputMaybe<Array<Indexes_Select_Column>>;
@@ -3700,26 +3661,6 @@ export type Query_RootMatch_Indexes_GteArgs = {
 
 export type Query_RootMatch_Indexes_Gte_AggregateArgs = {
   args: Match_Indexes_Gte_Args;
-  distinct_on?: InputMaybe<Array<Indexes_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  order_by?: InputMaybe<Array<Indexes_Order_By>>;
-  where?: InputMaybe<Indexes_Bool_Exp>;
-};
-
-
-export type Query_RootMatch_Indexes_JssArgs = {
-  args: Match_Indexes_Jss_Args;
-  distinct_on?: InputMaybe<Array<Indexes_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  order_by?: InputMaybe<Array<Indexes_Order_By>>;
-  where?: InputMaybe<Indexes_Bool_Exp>;
-};
-
-
-export type Query_RootMatch_Indexes_Jss_AggregateArgs = {
-  args: Match_Indexes_Jss_Args;
   distinct_on?: InputMaybe<Array<Indexes_Select_Column>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
@@ -3821,10 +3762,6 @@ export type Subscription_Root = {
   match_embeddings_gte: Array<Index_Embeddings_Gte>;
   /** execute function "match_embeddings_gte" and query aggregates on result of table type "index_embeddings_gte" */
   match_embeddings_gte_aggregate: Index_Embeddings_Gte_Aggregate;
-  /** execute function "match_embeddings_jss" which returns "index_embeddings_jss" */
-  match_embeddings_jss: Array<Index_Embeddings_Jss>;
-  /** execute function "match_embeddings_jss" and query aggregates on result of table type "index_embeddings_jss" */
-  match_embeddings_jss_aggregate: Index_Embeddings_Jss_Aggregate;
   /** execute function "match_indexes" which returns "indexes" */
   match_indexes: Array<Indexes>;
   /** execute function "match_indexes" and query aggregates on result of table type "indexes" */
@@ -3833,10 +3770,6 @@ export type Subscription_Root = {
   match_indexes_gte: Array<Indexes>;
   /** execute function "match_indexes_gte" and query aggregates on result of table type "indexes" */
   match_indexes_gte_aggregate: Indexes_Aggregate;
-  /** execute function "match_indexes_jss" which returns "indexes" */
-  match_indexes_jss: Array<Indexes>;
-  /** execute function "match_indexes_jss" and query aggregates on result of table type "indexes" */
-  match_indexes_jss_aggregate: Indexes_Aggregate;
   /** fetch data from the table: "users" */
   users: Array<Users>;
   /** fetch aggregated fields from the table: "users" */
@@ -4068,26 +4001,6 @@ export type Subscription_RootMatch_Embeddings_Gte_AggregateArgs = {
 };
 
 
-export type Subscription_RootMatch_Embeddings_JssArgs = {
-  args: Match_Embeddings_Jss_Args;
-  distinct_on?: InputMaybe<Array<Index_Embeddings_Jss_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  order_by?: InputMaybe<Array<Index_Embeddings_Jss_Order_By>>;
-  where?: InputMaybe<Index_Embeddings_Jss_Bool_Exp>;
-};
-
-
-export type Subscription_RootMatch_Embeddings_Jss_AggregateArgs = {
-  args: Match_Embeddings_Jss_Args;
-  distinct_on?: InputMaybe<Array<Index_Embeddings_Jss_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  order_by?: InputMaybe<Array<Index_Embeddings_Jss_Order_By>>;
-  where?: InputMaybe<Index_Embeddings_Jss_Bool_Exp>;
-};
-
-
 export type Subscription_RootMatch_IndexesArgs = {
   args: Match_Indexes_Args;
   distinct_on?: InputMaybe<Array<Indexes_Select_Column>>;
@@ -4120,26 +4033,6 @@ export type Subscription_RootMatch_Indexes_GteArgs = {
 
 export type Subscription_RootMatch_Indexes_Gte_AggregateArgs = {
   args: Match_Indexes_Gte_Args;
-  distinct_on?: InputMaybe<Array<Indexes_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  order_by?: InputMaybe<Array<Indexes_Order_By>>;
-  where?: InputMaybe<Indexes_Bool_Exp>;
-};
-
-
-export type Subscription_RootMatch_Indexes_JssArgs = {
-  args: Match_Indexes_Jss_Args;
-  distinct_on?: InputMaybe<Array<Indexes_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  order_by?: InputMaybe<Array<Indexes_Order_By>>;
-  where?: InputMaybe<Indexes_Bool_Exp>;
-};
-
-
-export type Subscription_RootMatch_Indexes_Jss_AggregateArgs = {
-  args: Match_Indexes_Jss_Args;
   distinct_on?: InputMaybe<Array<Indexes_Select_Column>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
@@ -4395,7 +4288,16 @@ export type GetIndexesQueryVariables = Exact<{
 }>;
 
 
-export type GetIndexesQuery = { __typename?: 'query_root', indexes: Array<{ __typename?: 'indexes', duration_seconds: any, id: any, nsfw: boolean, status: string, tags: any, transcript?: string | null, updated_at: any, video_id: string, video_source: string, video_url: string, active: boolean, created_at: any, title?: string | null, description?: string | null, similarity?: any | null, transcript_timestamped?: any | null }> };
+export type GetIndexesQuery = { __typename?: 'query_root', indexes: Array<{ __typename?: 'indexes', duration_seconds: any, id: any, status: string, updated_at: any, video_id: string, video_source: string, video_url: string, active: boolean, created_at: any, title?: string | null, similarity?: any | null }> };
+
+export type GetIndexesFullQueryVariables = Exact<{
+  where?: InputMaybe<Indexes_Bool_Exp>;
+  order_by?: InputMaybe<Array<Indexes_Order_By> | Indexes_Order_By>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+}>;
+
+
+export type GetIndexesFullQuery = { __typename?: 'query_root', indexes: Array<{ __typename?: 'indexes', transcript?: string | null, duration_seconds: any, id: any, status: string, updated_at: any, video_id: string, video_source: string, video_url: string, active: boolean, created_at: any, title?: string | null, similarity?: any | null }> };
 
 export type InsertIndexMutationVariables = Exact<{
   object?: InputMaybe<Indexes_Insert_Input>;
@@ -4425,7 +4327,7 @@ export type GetMatchIndexesQueryVariables = Exact<{
 }>;
 
 
-export type GetMatchIndexesQuery = { __typename?: 'query_root', match_indexes_gte: Array<{ __typename?: 'indexes', duration_seconds: any, id: any, nsfw: boolean, status: string, tags: any, transcript?: string | null, updated_at: any, video_id: string, video_source: string, video_url: string, active: boolean, created_at: any, title?: string | null, description?: string | null, similarity?: any | null, transcript_timestamped?: any | null }> };
+export type GetMatchIndexesQuery = { __typename?: 'query_root', match_indexes_gte: Array<{ __typename?: 'indexes', duration_seconds: any, id: any, status: string, updated_at: any, video_id: string, video_source: string, video_url: string, active: boolean, created_at: any, title?: string | null, similarity?: any | null }> };
 
 export type GetMatchEmbeddingsByIndexQueryVariables = Exact<{
   _index_id?: InputMaybe<Scalars['uuid']['input']>;
@@ -4436,7 +4338,7 @@ export type GetMatchEmbeddingsByIndexQueryVariables = Exact<{
 }>;
 
 
-export type GetMatchEmbeddingsByIndexQuery = { __typename?: 'query_root', match_embeddings_gte: Array<{ __typename?: 'index_embeddings_gte', content: string, id: any, start_time?: any | null, end_time?: any | null, duration_time?: any | null, similarity?: any | null }> };
+export type GetMatchEmbeddingsByIndexQuery = { __typename?: 'query_root', match_embeddings_gte: Array<{ __typename?: 'index_embeddings_gte', id: any, start_time?: any | null, end_time?: any | null, duration_time?: any | null, similarity?: any | null }> };
 
 export type GetIndexSummaryQueryVariables = Exact<{
   id: Scalars['uuid']['input'];
@@ -4458,7 +4360,7 @@ export type GetIndexAggregateQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type GetIndexAggregateQuery = { __typename?: 'query_root', indexes_aggregate: { __typename?: 'indexes_aggregate', aggregate?: { __typename?: 'indexes_aggregate_fields', count: number, sum?: { __typename?: 'indexes_sum_fields', duration_seconds?: any | null } | null } | null } };
 
-export type IndexesFragmentFragment = { __typename?: 'indexes', duration_seconds: any, id: any, nsfw: boolean, status: string, tags: any, transcript?: string | null, updated_at: any, video_id: string, video_source: string, video_url: string, active: boolean, created_at: any, title?: string | null, description?: string | null, similarity?: any | null, transcript_timestamped?: any | null };
+export type IndexesFragmentFragment = { __typename?: 'indexes', duration_seconds: any, id: any, status: string, updated_at: any, video_id: string, video_source: string, video_url: string, active: boolean, created_at: any, title?: string | null, similarity?: any | null };
 
 export type GetUsersQueryVariables = Exact<{
   where?: InputMaybe<Users_Bool_Exp>;
@@ -4478,10 +4380,7 @@ export const IndexesFragmentFragmentDoc = gql`
     fragment indexesFragment on indexes {
   duration_seconds
   id
-  nsfw
   status
-  tags
-  transcript
   updated_at
   video_id
   video_source
@@ -4489,9 +4388,7 @@ export const IndexesFragmentFragmentDoc = gql`
   active
   created_at
   title
-  description
   similarity
-  transcript_timestamped
 }
     `;
 export const GetChatsDocument = gql`
@@ -4521,6 +4418,14 @@ export const GetIndexesDocument = gql`
     query GetIndexes($where: indexes_bool_exp = {}, $order_by: [indexes_order_by!] = {}, $limit: Int) {
   indexes(where: $where, order_by: $order_by, limit: $limit) {
     ...indexesFragment
+  }
+}
+    ${IndexesFragmentFragmentDoc}`;
+export const GetIndexesFullDocument = gql`
+    query GetIndexesFull($where: indexes_bool_exp = {}, $order_by: [indexes_order_by!] = {}, $limit: Int) {
+  indexes(where: $where, order_by: $order_by, limit: $limit) {
+    ...indexesFragment
+    transcript
   }
 }
     ${IndexesFragmentFragmentDoc}`;
@@ -4570,7 +4475,6 @@ export const GetMatchEmbeddingsByIndexDocument = gql`
     where: $where
     order_by: $order_by
   ) {
-    content
     id
     start_time
     end_time

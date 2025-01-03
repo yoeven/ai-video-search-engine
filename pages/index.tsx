@@ -1,10 +1,4 @@
-import { GetStaticProps, NextPage } from "next";
 import { Box, Flex, MenuButton, Text } from "@chakra-ui/react";
-import Layout from "components/BaseComponents/Layout";
-import Input from "components/BaseComponents/Input";
-import { useEffect, useRef, useState } from "react";
-import { embedJSS, embedText } from "src/helpers/embedding";
-import { gqlClient } from "src/helpers/graphqlClient";
 import {
   GetIndexAggregateDocument,
   GetIndexAggregateQuery,
@@ -13,22 +7,28 @@ import {
   GetMatchIndexesQuery,
   GetMatchIndexesQueryVariables,
 } from "@graphql/generated/graphql";
-import ResultList from "components/ResultList";
-import { pipeline } from "@xenova/transformers";
-import ReactSingleLoader from "components/ResultLoader/singleLoader";
-import Masonry from "react-masonry-css";
-import SummaryModal, { ISummaryModalRef } from "components/SummaryModal";
+import Icon from "components/BaseComponents/Icon";
+import Image from "components/BaseComponents/Image";
+import Input from "components/BaseComponents/Input";
+import Layout from "components/BaseComponents/Layout";
+import Menu from "components/BaseComponents/Menu";
 import ChatSection, { IChatSectionRef } from "components/ChatSection";
+import IndexVideoModal, { IIndexVideoModalRef } from "components/IndexVideoModal";
+import ResultList from "components/ResultList";
+import ReactSingleLoader from "components/ResultLoader/singleLoader";
+import SummaryModal, { ISummaryModalRef } from "components/SummaryModal";
+import { GetStaticProps, NextPage } from "next";
+import { useEffect, useRef, useState } from "react";
+import toast from "react-hot-toast";
+import { IoMdMenu } from "react-icons/io";
+import Masonry from "react-masonry-css";
+import { signOut } from "src/helpers/authClientService";
+import { embedJSS } from "src/helpers/embedding";
+import { gqlClient } from "src/helpers/graphqlClient";
+import { gqlServerClient } from "src/helpers/graphqlServerClient";
+import { jigsaw } from "src/helpers/jigsawstack";
 import { useAuth } from "src/providers/AuthContext";
 import { usePlatform } from "src/providers/PlatformContext";
-import Icon from "components/BaseComponents/Icon";
-import { IoMdMenu } from "react-icons/io";
-import Menu from "components/BaseComponents/Menu";
-import { signOut } from "src/helpers/authClientService";
-import toast from "react-hot-toast";
-import IndexVideoModal, { IIndexVideoModalRef } from "components/IndexVideoModal";
-import Image from "components/BaseComponents/Image";
-import { gqlServerClient } from "src/helpers/graphqlServerClient";
 
 interface IProps {
   sumDurationSeconds: number;
@@ -76,14 +76,8 @@ const Home: NextPage<IProps> = ({ sumDurationSeconds, sumVideos }) => {
   }, [inputValue]);
 
   const onInputChange = async (query: string) => {
-    const encodedQuery = encodeURIComponent(query);
-    let baseurl = process.env.NODE_ENV == "production" ? "/api/suggestions" : `https://avse.vercel.app/api/suggestions`;
-    baseurl += `?query=${encodedQuery}`;
-
-    console.log(baseurl);
-    const res = await fetch(baseurl);
-    const data = await res.json();
-    setSuggestions(data?.suggestions?.length ? data.suggestions : []);
+    const res = await jigsaw.web.search_suggestions(query);
+    setSuggestions(res?.suggestions?.length ? res.suggestions : []);
   };
 
   const onSearch = async (value: string) => {
@@ -95,7 +89,6 @@ const Home: NextPage<IProps> = ({ sumDurationSeconds, sumVideos }) => {
     const e = await embedJSS({
       text: value,
       type: "text",
-      query: true,
     });
 
     const searchEmbeddingQuery = e.embeddings[0];
@@ -110,6 +103,11 @@ const Home: NextPage<IProps> = ({ sumDurationSeconds, sumVideos }) => {
         limit: 100,
       },
     });
+
+    console.log(
+      "ids: ",
+      resp.data.match_indexes_gte.map((i) => i.id)
+    );
 
     if (resp.data.match_indexes_gte.length <= 0) {
       toast.error("No results found. Try indexing more related videos to your question", {

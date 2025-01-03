@@ -1,5 +1,5 @@
-import { loadEnvConfig } from "@next/env";
 import type { CodegenConfig } from "@graphql-codegen/cli";
+import { loadEnvConfig } from "@next/env";
 
 const projectDir = process.cwd();
 loadEnvConfig(projectDir);

@@ -1,5 +1,5 @@
-import { memo } from "react";
 import { Icon as CIcon, IconProps } from "@chakra-ui/react";
+import { memo } from "react";
 
 interface IProps extends IconProps {
   size?: string | number | string[] | number[];

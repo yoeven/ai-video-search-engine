@@ -67,3 +67,27 @@ export const splitTextTimestampedByChar = (textSets: TextTimeStamped[], charLeng
 
   return textSplitArray;
 };
+
+const formatsToTry = ["maxresdefault", "hqdefault", "0", "default"];
+
+export const getYTThumbnail = async (video_id: string) => {
+  const baseURL = `https://img.youtube.com/vi/${video_id}/`;
+
+  for (let index = 0; index < formatsToTry.length; index++) {
+    const endText = formatsToTry[index];
+
+    const fullURL = baseURL + `${endText}.jpg`;
+
+    const resp = await fetch(fullURL, {
+      method: "HEAD",
+    }).catch((err) => {
+      return null;
+    });
+
+    if (resp?.ok) {
+      return fullURL;
+    }
+  }
+
+  return null;
+};

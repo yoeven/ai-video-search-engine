@@ -1,9 +1,9 @@
+import { ApolloClient, HttpLink, InMemoryCache, from, split } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
 import { GraphQLWsLink } from "@apollo/client/link/subscriptions";
 import { getMainDefinition } from "@apollo/client/utilities";
-import { getAuthHeader } from "./authClientService";
-import { ApolloClient, from, HttpLink, InMemoryCache, split } from "@apollo/client";
 import { createClient } from "graphql-ws";
+import { getAuthHeader } from "./authClientService";
 
 const authLink = setContext(async (operation, { headers }) => {
   const authHeader = await getAuthHeader();

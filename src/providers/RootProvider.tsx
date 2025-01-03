@@ -1,15 +1,15 @@
+import { ChakraProvider, Flex, extendTheme, withDefaultColorScheme } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import localizedFormat from "dayjs/plugin/localizedFormat";
 import dayOfYear from "dayjs/plugin/dayOfYear";
+import isBetween from "dayjs/plugin/isBetween";
 import isSameOrAfter from "dayjs/plugin/isSameOrAfter";
 import isSameOrBefore from "dayjs/plugin/isSameOrBefore";
-import isBetween from "dayjs/plugin/isBetween";
+import localizedFormat from "dayjs/plugin/localizedFormat";
 import relativeTime from "dayjs/plugin/relativeTime";
 import utc from "dayjs/plugin/utc";
-import { ChakraProvider, extendTheme, Flex, withDefaultColorScheme } from "@chakra-ui/react";
-import FullScreenLoaderContext from "./FullScreenLoaderContext";
 import { Toaster } from "react-hot-toast";
 import AuthContext from "./AuthContext";
+import FullScreenLoaderContext from "./FullScreenLoaderContext";
 import PlatformProvider from "./PlatformContext";
 
 // import NavMenu from "components/NavMenu";

@@ -1,18 +1,18 @@
-import { Flex, useOutsideClick, Text, useDisclosure, Spinner } from "@chakra-ui/react";
+import { Flex, Spinner, Text, useDisclosure, useOutsideClick } from "@chakra-ui/react";
 import { GetMatchIndexesQuery } from "@graphql/generated/graphql";
 import Icon from "components/BaseComponents/Icon";
 import Input from "components/BaseComponents/Input";
-import Image from "components/BaseComponents/Image";
 import { useAnimate } from "framer-motion";
 import { forwardRef, memo, useEffect, useImperativeHandle, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { IoMdClose } from "react-icons/io";
+import { IoMdSend } from "react-icons/io";
 import { iFetch } from "src/helpers/ifetch";
 import { useAuth } from "src/providers/AuthContext";
-import { ChatMessage } from "src/types";
-import { IoMdSend } from "react-icons/io";
-import { v4 as uuidv4 } from "uuid";
 import { usePlatform } from "src/providers/PlatformContext";
+import { ChatMessage } from "src/types";
+import { v4 as uuidv4 } from "uuid";
+import Avatar from "boring-avatars";
 
 export interface IChatSectionRef {
   open: (index: GetMatchIndexesQuery["match_indexes_gte"][0]) => void;
@@ -50,8 +50,6 @@ const ChatSection = forwardRef<IChatSectionRef, any>((props, ref) => {
     setMessages([]);
     onClose();
   };
-
-  useEffect(() => {}, []);
 
   useEffect(() => {
     if (isMobile) return;
@@ -104,7 +102,6 @@ const ChatSection = forwardRef<IChatSectionRef, any>((props, ref) => {
   useEffect(() => {
     if (!index?.id) return;
     setMessages([]);
-    init();
   }, [index?.id]);
 
   useEffect(() => {
@@ -115,26 +112,6 @@ const ChatSection = forwardRef<IChatSectionRef, any>((props, ref) => {
       behavior: "smooth",
     });
   }, [messages?.[messages.length - 1], isOpen]);
-
-  const init = async () => {
-    setLoading(true);
-    try {
-      const resp = await iFetch("/chat/messages", "POST", {
-        index_id: index?.id,
-      });
-
-      console.log("get messages", resp);
-
-      if (resp.messages.length) {
-        setMessages(resp.messages);
-      }
-    } catch (error: any) {
-      console.log(error);
-      toast.error(error?.message || "Something went wrong");
-    }
-
-    setLoading(false);
-  };
 
   const sendMessage = async (message: string) => {
     if (!message || loading) return;
@@ -193,7 +170,7 @@ const ChatSection = forwardRef<IChatSectionRef, any>((props, ref) => {
       >
         <Flex justifyContent={"space-between"} mb={"1rem"}>
           <Text noOfLines={1} mr={"2rem"}>
-            Chat with {index.title}
+            Ask {index.title}
           </Text>
           <Icon as={IoMdClose} onClick={() => clearClose()} size={"1.4rem"} cursor={"pointer"} />
         </Flex>
@@ -202,13 +179,9 @@ const ChatSection = forwardRef<IChatSectionRef, any>((props, ref) => {
             {messages.map((message) => (
               <Flex gap={"0.5rem"} key={message.id}>
                 {message.role == "ai" ? (
-                  <Image
-                    w={"2rem"}
-                    h={"2rem"}
-                    borderRadius={"full"}
-                    src={"https://source.boringavatars.com/marble/120/505?circle=true"}
-                    alt={"profile pic"}
-                  />
+                  <Flex width={"2rem"} height={"2rem"} borderRadius={"full"}>
+                    <Avatar name={"505"} variant={"marble"} size={"2rem"} />
+                  </Flex>
                 ) : (
                   <Flex
                     fontWeight={"bold"}

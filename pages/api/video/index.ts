@@ -1,9 +1,4 @@
-import type { NextApiRequest, NextApiResponse } from "next";
 import ytdl from "@distube/ytdl-core";
-import { convertXML } from "simple-xml-to-json";
-import * as entities from "entities";
-import { embedText, embedTextTimeStamped } from "src/helpers/embedding";
-import { gqlServerClient } from "src/helpers/graphqlServerClient";
 import {
   GetIndexesDocument,
   GetIndexesQuery,
@@ -12,14 +7,21 @@ import {
   InsertIndexMutation,
   InsertIndexMutationVariables,
 } from "@graphql/generated/graphql";
-import { TextTimeStamped } from "src/types";
-import { pipeline } from "@xenova/transformers";
-import { HandledError } from "src/helpers/error";
+import * as entities from "entities";
 import { jwtVerify } from "jose";
+import type { NextApiRequest, NextApiResponse } from "next";
+import { convertXML } from "simple-xml-to-json";
+import { embedJSS } from "src/helpers/embedding";
+import { HandledError } from "src/helpers/error";
+import { gqlServerClient } from "src/helpers/graphqlServerClient";
+import { TextTimeStamped } from "src/types";
+import { getYTThumbnail } from "src/utils";
 
 interface Params {
   url: string;
 }
+
+const avgSecondsPerChar = 0.1578947368;
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
@@ -90,9 +92,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     console.log("clean", cleanURL);
 
-    const videoInfo = await ytdl.getInfo(cleanURL, {
-      lang: "en",
-    });
+    const [videoInfo, thumbnailURL] = await Promise.all([
+      ytdl.getInfo(cleanURL, {
+        lang: "en",
+      }),
+      getYTThumbnail(videoId),
+    ]);
+
+    console.log("thumbnailURL", thumbnailURL);
 
     let formatFilter = videoInfo.formats.filter((f) => f.hasVideo && f?.width && f?.height);
     formatFilter = formatFilter.filter((f) => f.qualityLabel);
@@ -168,14 +175,43 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     const textForEmbedding = `Title: ${titleClean}\nDescription: ${descriptionClean}\nTags: ${tagsClean}`;
 
-    const pipe = await pipeline("feature-extraction", "Supabase/gte-small");
+    console.log("Embedding: ", videoId);
 
     const [videoInfoEmbedding, captionEmbeddingSets] = await Promise.all([
-      embedText(textForEmbedding, pipe),
-      embedTextTimeStamped(captionTimeStamped, pipe),
+      thumbnailURL
+        ? embedJSS({
+            text: textForEmbedding,
+            url: thumbnailURL,
+            type: "image",
+          })
+        : {
+            embedding: [],
+          },
+      embedJSS({
+        file_content: captionTimeStamped.map((c) => ({
+          text: c.content,
+          timestamp: [c.start, c?.end ? c.end : c.start + c.content.length * avgSecondsPerChar],
+        })),
+        type: "audio",
+      }),
     ]);
 
-    const embeddingSets = [...videoInfoEmbedding, ...captionEmbeddingSets];
+    const embeddingSets = [
+      ...videoInfoEmbedding.embeddings.map((e: any) => ({
+        embedding: JSON.stringify(e),
+        content: textForEmbedding,
+        start_time: null,
+        end_time: null,
+        duration_time: null,
+      })),
+      ...captionEmbeddingSets.embeddings.map((e: any, i: number) => ({
+        embedding: JSON.stringify(e),
+        content: captionEmbeddingSets.chunks[i].text,
+        start_time: captionEmbeddingSets.chunks[i].timestamp[0],
+        end_time: captionEmbeddingSets.chunks[i].timestamp[1],
+        duration_time: captionEmbeddingSets.chunks[i].timestamp[1] - captionEmbeddingSets.chunks[i].timestamp[0],
+      })),
+    ];
 
     console.log("upload to db");
 
@@ -196,14 +232,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           nsfw: false,
           width,
           height,
-          embeddings: {
-            data: embeddingSets.map((e) => ({
-              embedding: JSON.stringify(e.embedding),
-              content: e.content,
-              start_time: e?.start ?? null,
-              end_time: e?.end ?? null,
-              duration_time: e?.dur ?? null,
-            })),
+          embeddings_gte: {
+            data: embeddingSets,
           },
         },
       });

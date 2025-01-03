@@ -4,6 +4,17 @@ query GetIndexes($where: indexes_bool_exp = {}, $order_by: [indexes_order_by!] =
   }
 }
 
+query GetIndexesFull($where: indexes_bool_exp = {}, $order_by: [indexes_order_by!] = {}, $limit: Int) {
+  indexes(where: $where, order_by: $order_by, limit: $limit) {
+    ...indexesFragment
+    # description
+    # tags
+    transcript
+    # transcript_timestamped
+    # nsfw
+  }
+}
+
 mutation InsertIndex($object: indexes_insert_input = {}) {
   insert_indexes_one(object: $object) {
     id
@@ -29,7 +40,12 @@ mutation InsertEmbeddingsGTE($objects: [index_embeddings_gte_insert_input!] = []
 }
 
 query GetMatchIndexes($query_embedding: vector, $match_threshold: float8 = "0.81", $limit: Int) {
-  match_indexes_gte(args: {match_threshold: $match_threshold, query_embedding: $query_embedding}, limit: $limit, distinct_on: id, order_by: [{id: desc}, {similarity: desc}]) {
+  match_indexes_gte(
+    args: { match_threshold: $match_threshold, query_embedding: $query_embedding }
+    limit: $limit
+    distinct_on: id
+    order_by: [{ id: desc }, { similarity: desc }]
+  ) {
     ...indexesFragment
   }
 }
@@ -46,7 +62,7 @@ query GetMatchEmbeddingsByIndex(
     where: $where
     order_by: $order_by
   ) {
-    content
+    # content
     id
     start_time
     end_time
@@ -86,10 +102,7 @@ query GetIndexAggregate {
 fragment indexesFragment on indexes {
   duration_seconds
   id
-  nsfw
   status
-  tags
-  transcript
   updated_at
   video_id
   video_source
@@ -97,7 +110,5 @@ fragment indexesFragment on indexes {
   active
   created_at
   title
-  description
   similarity
-  transcript_timestamped
 }

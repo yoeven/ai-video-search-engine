@@ -1,4 +1,4 @@
-import { useToken, Spinner } from "@chakra-ui/react";
+import { Spinner, useToken } from "@chakra-ui/react";
 import { memo } from "react";
 
 interface IProps {

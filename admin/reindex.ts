@@ -1,5 +1,6 @@
 import { loadEnvConfig } from "@next/env";
 loadEnvConfig(process.cwd());
+import fs from "node:fs";
 import {
   GetIndexesDocument,
   GetIndexesQuery,
@@ -10,7 +11,7 @@ import {
 } from "@graphql/generated/graphql";
 import { GraphQLClient } from "graphql-request";
 import ky, { HTTPError } from "ky";
-import fs from "node:fs";
+import { chunk, getYTThumbnail } from "src/utils";
 
 const hasuraEndPoint = process.env.NEXT_PUBLIC_HASURA_ENDPOINT_URL || "";
 const hasuraAdminSecret = process.env.HASURA_ADMIN_SECRET || "";
@@ -52,39 +53,7 @@ const embed = async (params: any) => {
   return resp;
 };
 
-const formatsToTry = ["maxresdefault", "hqdefault", "0", "default"];
-
-const getYTThumbnail = async (video_id: string) => {
-  const baseURL = `https://img.youtube.com/vi/${video_id}/`;
-
-  for (let index = 0; index < formatsToTry.length; index++) {
-    const endText = formatsToTry[index];
-
-    const fullURL = baseURL + `${endText}.jpg`;
-
-    const resp = await fetch(fullURL, {
-      method: "HEAD",
-    });
-
-    if (resp.ok) {
-      return fullURL;
-    }
-  }
-
-  return null;
-};
-
-const chunk = (arr: any[], size: number) => {
-  const chunked_arr = [];
-  let index = 0;
-  while (index < arr.length) {
-    chunked_arr.push(arr.slice(index, size + index));
-    index += size;
-  }
-  return chunked_arr;
-};
-
-const limit = 50;
+const limit = 200;
 const avgSecondsPerChar = 0.1578947368;
 
 const redo = async () => {
@@ -99,9 +68,6 @@ const redo = async () => {
             },
           },
         },
-        description: {
-          _like: "%Startup%",
-        },
       },
       limit: limit,
     });
@@ -109,9 +75,10 @@ const redo = async () => {
     console.log("Indexes to embed: ", indexes.indexes.length);
 
     const indexMap = indexes.indexes.map(async (index) => {
+      //@ts-ignore Add the fields back in the graphql file before running
       const { id, title, description, tags, video_id, transcript_timestamped } = index;
 
-      console.log("Processing: ", title, video_id, id);
+      // console.log("Processing: ", title, video_id, id);
 
       const transcriptMapped = transcript_timestamped
         .filter((t: any) => t?.content)
@@ -122,11 +89,8 @@ const redo = async () => {
 
       const transcriptMappedSets = chunk(transcriptMapped, 10000);
 
-      console.log("Transcript mapped: ", transcriptMapped.length);
-      console.log("Transcript sets: ", transcriptMappedSets.length);
-
       const thumbnail = await getYTThumbnail(video_id);
-      console.log("Video thumbnail: ", thumbnail);
+      // console.log("Video thumbnail: ", thumbnail);
 
       // const storyboardImage = videoInfo.videoDetails.storyboards?.[0]?.templateUrl;
 
@@ -238,12 +202,22 @@ const redo = async () => {
 
     console.log(`Completed ${indexMap.length} total indexes`);
 
-    if (indexes.indexes.length === limit) {
-      await redo();
-    }
+    await redo();
+
+    return indexes.indexes.length === limit || !(indexes.indexes.length == 0);
   } catch (error) {
     console.error("Error: ", error);
   }
+
+  return false;
 };
 
-redo();
+const run = async () => {
+  let loop = false;
+
+  do {
+    loop = await redo();
+  } while (loop);
+};
+
+run();

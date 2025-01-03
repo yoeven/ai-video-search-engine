@@ -2,7 +2,7 @@ import { ApolloProvider } from "@apollo/client";
 import { GetUsersDocument, GetUsersQuery, GetUsersQueryVariables } from "@graphql/generated/graphql";
 import AuthModal, { IAuthModalRef } from "components/AuthModal";
 import { createContext, useContext, useEffect, useRef, useState } from "react";
-import { isAuthenticatedAsync, onTokenChange, UserSessionData } from "src/helpers/authClientService";
+import { UserSessionData, isAuthenticatedAsync, onTokenChange } from "src/helpers/authClientService";
 import { gqlClient } from "src/helpers/graphqlClient";
 
 interface IAuthContext {
