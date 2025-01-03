@@ -1,9 +1,3 @@
-import type { NextApiRequest, NextApiResponse } from "next";
-import ytdl from "ytdl-core";
-import { convertXML } from "simple-xml-to-json";
-import * as entities from "entities";
-import { embedText, embedTextTimeStamped } from "src/helpers/embedding";
-import { gqlServerClient } from "src/helpers/graphqlServerClient";
 import {
   GetIndexesDocument,
   GetIndexesQuery,
@@ -12,10 +6,16 @@ import {
   InsertIndexMutation,
   InsertIndexMutationVariables,
 } from "@graphql/generated/graphql";
-import { TextTimeStamped } from "src/types";
 import { pipeline } from "@xenova/transformers";
-import { HandledError } from "src/helpers/error";
+import * as entities from "entities";
 import { jwtVerify } from "jose";
+import type { NextApiRequest, NextApiResponse } from "next";
+import { convertXML } from "simple-xml-to-json";
+import { embedText, embedTextTimeStamped } from "src/helpers/embedding";
+import { HandledError } from "src/helpers/error";
+import { gqlServerClient } from "src/helpers/graphqlServerClient";
+import { TextTimeStamped } from "src/types";
+import ytdl from "ytdl-core";
 
 interface Params {
   url: string;

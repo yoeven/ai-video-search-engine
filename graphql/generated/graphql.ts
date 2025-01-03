@@ -102,6 +102,7 @@ export type Auth_Users = {
   id: Scalars['uuid']['output'];
   instance_id?: Maybe<Scalars['uuid']['output']>;
   invited_at?: Maybe<Scalars['timestamptz']['output']>;
+  is_anonymous: Scalars['Boolean']['output'];
   /** Auth: Set this column to true when the account comes from SSO. These accounts can have duplicate emails. */
   is_sso_user: Scalars['Boolean']['output'];
   is_super_admin?: Maybe<Scalars['Boolean']['output']>;
@@ -198,6 +199,7 @@ export type Auth_Users_Bool_Exp = {
   id?: InputMaybe<Uuid_Comparison_Exp>;
   instance_id?: InputMaybe<Uuid_Comparison_Exp>;
   invited_at?: InputMaybe<Timestamptz_Comparison_Exp>;
+  is_anonymous?: InputMaybe<Boolean_Comparison_Exp>;
   is_sso_user?: InputMaybe<Boolean_Comparison_Exp>;
   is_super_admin?: InputMaybe<Boolean_Comparison_Exp>;
   last_sign_in_at?: InputMaybe<Timestamptz_Comparison_Exp>;
@@ -278,6 +280,7 @@ export type Auth_Users_Insert_Input = {
   id?: InputMaybe<Scalars['uuid']['input']>;
   instance_id?: InputMaybe<Scalars['uuid']['input']>;
   invited_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  is_anonymous?: InputMaybe<Scalars['Boolean']['input']>;
   /** Auth: Set this column to true when the account comes from SSO. These accounts can have duplicate emails. */
   is_sso_user?: InputMaybe<Scalars['Boolean']['input']>;
   is_super_admin?: InputMaybe<Scalars['Boolean']['input']>;
@@ -403,6 +406,7 @@ export type Auth_Users_Order_By = {
   id?: InputMaybe<Order_By>;
   instance_id?: InputMaybe<Order_By>;
   invited_at?: InputMaybe<Order_By>;
+  is_anonymous?: InputMaybe<Order_By>;
   is_sso_user?: InputMaybe<Order_By>;
   is_super_admin?: InputMaybe<Order_By>;
   last_sign_in_at?: InputMaybe<Order_By>;
@@ -471,6 +475,8 @@ export enum Auth_Users_Select_Column {
   /** column name */
   InvitedAt = 'invited_at',
   /** column name */
+  IsAnonymous = 'is_anonymous',
+  /** column name */
   IsSsoUser = 'is_sso_user',
   /** column name */
   IsSuperAdmin = 'is_super_admin',
@@ -523,6 +529,7 @@ export type Auth_Users_Set_Input = {
   id?: InputMaybe<Scalars['uuid']['input']>;
   instance_id?: InputMaybe<Scalars['uuid']['input']>;
   invited_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  is_anonymous?: InputMaybe<Scalars['Boolean']['input']>;
   /** Auth: Set this column to true when the account comes from SSO. These accounts can have duplicate emails. */
   is_sso_user?: InputMaybe<Scalars['Boolean']['input']>;
   is_super_admin?: InputMaybe<Scalars['Boolean']['input']>;
@@ -588,6 +595,7 @@ export type Auth_Users_Stream_Cursor_Value_Input = {
   id?: InputMaybe<Scalars['uuid']['input']>;
   instance_id?: InputMaybe<Scalars['uuid']['input']>;
   invited_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  is_anonymous?: InputMaybe<Scalars['Boolean']['input']>;
   /** Auth: Set this column to true when the account comes from SSO. These accounts can have duplicate emails. */
   is_sso_user?: InputMaybe<Scalars['Boolean']['input']>;
   is_super_admin?: InputMaybe<Scalars['Boolean']['input']>;
@@ -649,6 +657,8 @@ export enum Auth_Users_Update_Column {
   InstanceId = 'instance_id',
   /** column name */
   InvitedAt = 'invited_at',
+  /** column name */
+  IsAnonymous = 'is_anonymous',
   /** column name */
   IsSsoUser = 'is_sso_user',
   /** column name */
@@ -1041,6 +1051,452 @@ export enum Index_Embeddings_Constraint {
   IndexEmbeddingsPkey = 'index_embeddings_pkey'
 }
 
+/** columns and relationships of "index_embeddings_gte" */
+export type Index_Embeddings_Gte = {
+  __typename?: 'index_embeddings_gte';
+  content: Scalars['String']['output'];
+  created_at: Scalars['timestamptz']['output'];
+  duration_time?: Maybe<Scalars['numeric']['output']>;
+  embedding: Scalars['vector']['output'];
+  end_time?: Maybe<Scalars['numeric']['output']>;
+  id: Scalars['uuid']['output'];
+  /** An object relationship */
+  index: Indexes;
+  index_id: Scalars['uuid']['output'];
+  similarity?: Maybe<Scalars['numeric']['output']>;
+  start_time?: Maybe<Scalars['numeric']['output']>;
+  updated_at: Scalars['timestamptz']['output'];
+};
+
+/** aggregated selection of "index_embeddings_gte" */
+export type Index_Embeddings_Gte_Aggregate = {
+  __typename?: 'index_embeddings_gte_aggregate';
+  aggregate?: Maybe<Index_Embeddings_Gte_Aggregate_Fields>;
+  nodes: Array<Index_Embeddings_Gte>;
+};
+
+export type Index_Embeddings_Gte_Aggregate_Bool_Exp = {
+  count?: InputMaybe<Index_Embeddings_Gte_Aggregate_Bool_Exp_Count>;
+};
+
+export type Index_Embeddings_Gte_Aggregate_Bool_Exp_Count = {
+  arguments?: InputMaybe<Array<Index_Embeddings_Gte_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+  filter?: InputMaybe<Index_Embeddings_Gte_Bool_Exp>;
+  predicate: Int_Comparison_Exp;
+};
+
+/** aggregate fields of "index_embeddings_gte" */
+export type Index_Embeddings_Gte_Aggregate_Fields = {
+  __typename?: 'index_embeddings_gte_aggregate_fields';
+  avg?: Maybe<Index_Embeddings_Gte_Avg_Fields>;
+  count: Scalars['Int']['output'];
+  max?: Maybe<Index_Embeddings_Gte_Max_Fields>;
+  min?: Maybe<Index_Embeddings_Gte_Min_Fields>;
+  stddev?: Maybe<Index_Embeddings_Gte_Stddev_Fields>;
+  stddev_pop?: Maybe<Index_Embeddings_Gte_Stddev_Pop_Fields>;
+  stddev_samp?: Maybe<Index_Embeddings_Gte_Stddev_Samp_Fields>;
+  sum?: Maybe<Index_Embeddings_Gte_Sum_Fields>;
+  var_pop?: Maybe<Index_Embeddings_Gte_Var_Pop_Fields>;
+  var_samp?: Maybe<Index_Embeddings_Gte_Var_Samp_Fields>;
+  variance?: Maybe<Index_Embeddings_Gte_Variance_Fields>;
+};
+
+
+/** aggregate fields of "index_embeddings_gte" */
+export type Index_Embeddings_Gte_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<Index_Embeddings_Gte_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+/** order by aggregate values of table "index_embeddings_gte" */
+export type Index_Embeddings_Gte_Aggregate_Order_By = {
+  avg?: InputMaybe<Index_Embeddings_Gte_Avg_Order_By>;
+  count?: InputMaybe<Order_By>;
+  max?: InputMaybe<Index_Embeddings_Gte_Max_Order_By>;
+  min?: InputMaybe<Index_Embeddings_Gte_Min_Order_By>;
+  stddev?: InputMaybe<Index_Embeddings_Gte_Stddev_Order_By>;
+  stddev_pop?: InputMaybe<Index_Embeddings_Gte_Stddev_Pop_Order_By>;
+  stddev_samp?: InputMaybe<Index_Embeddings_Gte_Stddev_Samp_Order_By>;
+  sum?: InputMaybe<Index_Embeddings_Gte_Sum_Order_By>;
+  var_pop?: InputMaybe<Index_Embeddings_Gte_Var_Pop_Order_By>;
+  var_samp?: InputMaybe<Index_Embeddings_Gte_Var_Samp_Order_By>;
+  variance?: InputMaybe<Index_Embeddings_Gte_Variance_Order_By>;
+};
+
+/** input type for inserting array relation for remote table "index_embeddings_gte" */
+export type Index_Embeddings_Gte_Arr_Rel_Insert_Input = {
+  data: Array<Index_Embeddings_Gte_Insert_Input>;
+  /** upsert condition */
+  on_conflict?: InputMaybe<Index_Embeddings_Gte_On_Conflict>;
+};
+
+/** aggregate avg on columns */
+export type Index_Embeddings_Gte_Avg_Fields = {
+  __typename?: 'index_embeddings_gte_avg_fields';
+  duration_time?: Maybe<Scalars['Float']['output']>;
+  end_time?: Maybe<Scalars['Float']['output']>;
+  similarity?: Maybe<Scalars['Float']['output']>;
+  start_time?: Maybe<Scalars['Float']['output']>;
+};
+
+/** order by avg() on columns of table "index_embeddings_gte" */
+export type Index_Embeddings_Gte_Avg_Order_By = {
+  duration_time?: InputMaybe<Order_By>;
+  end_time?: InputMaybe<Order_By>;
+  similarity?: InputMaybe<Order_By>;
+  start_time?: InputMaybe<Order_By>;
+};
+
+/** Boolean expression to filter rows from the table "index_embeddings_gte". All fields are combined with a logical 'AND'. */
+export type Index_Embeddings_Gte_Bool_Exp = {
+  _and?: InputMaybe<Array<Index_Embeddings_Gte_Bool_Exp>>;
+  _not?: InputMaybe<Index_Embeddings_Gte_Bool_Exp>;
+  _or?: InputMaybe<Array<Index_Embeddings_Gte_Bool_Exp>>;
+  content?: InputMaybe<String_Comparison_Exp>;
+  created_at?: InputMaybe<Timestamptz_Comparison_Exp>;
+  duration_time?: InputMaybe<Numeric_Comparison_Exp>;
+  embedding?: InputMaybe<Vector_Comparison_Exp>;
+  end_time?: InputMaybe<Numeric_Comparison_Exp>;
+  id?: InputMaybe<Uuid_Comparison_Exp>;
+  index?: InputMaybe<Indexes_Bool_Exp>;
+  index_id?: InputMaybe<Uuid_Comparison_Exp>;
+  similarity?: InputMaybe<Numeric_Comparison_Exp>;
+  start_time?: InputMaybe<Numeric_Comparison_Exp>;
+  updated_at?: InputMaybe<Timestamptz_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "index_embeddings_gte" */
+export enum Index_Embeddings_Gte_Constraint {
+  /** unique or primary key constraint on columns "id" */
+  IndexEmbeddingsGtePkey = 'index_embeddings_gte_pkey'
+}
+
+/** input type for incrementing numeric columns in table "index_embeddings_gte" */
+export type Index_Embeddings_Gte_Inc_Input = {
+  duration_time?: InputMaybe<Scalars['numeric']['input']>;
+  end_time?: InputMaybe<Scalars['numeric']['input']>;
+  similarity?: InputMaybe<Scalars['numeric']['input']>;
+  start_time?: InputMaybe<Scalars['numeric']['input']>;
+};
+
+/** input type for inserting data into table "index_embeddings_gte" */
+export type Index_Embeddings_Gte_Insert_Input = {
+  content?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  duration_time?: InputMaybe<Scalars['numeric']['input']>;
+  embedding?: InputMaybe<Scalars['vector']['input']>;
+  end_time?: InputMaybe<Scalars['numeric']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  index?: InputMaybe<Indexes_Obj_Rel_Insert_Input>;
+  index_id?: InputMaybe<Scalars['uuid']['input']>;
+  similarity?: InputMaybe<Scalars['numeric']['input']>;
+  start_time?: InputMaybe<Scalars['numeric']['input']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
+};
+
+/** aggregate max on columns */
+export type Index_Embeddings_Gte_Max_Fields = {
+  __typename?: 'index_embeddings_gte_max_fields';
+  content?: Maybe<Scalars['String']['output']>;
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
+  duration_time?: Maybe<Scalars['numeric']['output']>;
+  end_time?: Maybe<Scalars['numeric']['output']>;
+  id?: Maybe<Scalars['uuid']['output']>;
+  index_id?: Maybe<Scalars['uuid']['output']>;
+  similarity?: Maybe<Scalars['numeric']['output']>;
+  start_time?: Maybe<Scalars['numeric']['output']>;
+  updated_at?: Maybe<Scalars['timestamptz']['output']>;
+};
+
+/** order by max() on columns of table "index_embeddings_gte" */
+export type Index_Embeddings_Gte_Max_Order_By = {
+  content?: InputMaybe<Order_By>;
+  created_at?: InputMaybe<Order_By>;
+  duration_time?: InputMaybe<Order_By>;
+  end_time?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  index_id?: InputMaybe<Order_By>;
+  similarity?: InputMaybe<Order_By>;
+  start_time?: InputMaybe<Order_By>;
+  updated_at?: InputMaybe<Order_By>;
+};
+
+/** aggregate min on columns */
+export type Index_Embeddings_Gte_Min_Fields = {
+  __typename?: 'index_embeddings_gte_min_fields';
+  content?: Maybe<Scalars['String']['output']>;
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
+  duration_time?: Maybe<Scalars['numeric']['output']>;
+  end_time?: Maybe<Scalars['numeric']['output']>;
+  id?: Maybe<Scalars['uuid']['output']>;
+  index_id?: Maybe<Scalars['uuid']['output']>;
+  similarity?: Maybe<Scalars['numeric']['output']>;
+  start_time?: Maybe<Scalars['numeric']['output']>;
+  updated_at?: Maybe<Scalars['timestamptz']['output']>;
+};
+
+/** order by min() on columns of table "index_embeddings_gte" */
+export type Index_Embeddings_Gte_Min_Order_By = {
+  content?: InputMaybe<Order_By>;
+  created_at?: InputMaybe<Order_By>;
+  duration_time?: InputMaybe<Order_By>;
+  end_time?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  index_id?: InputMaybe<Order_By>;
+  similarity?: InputMaybe<Order_By>;
+  start_time?: InputMaybe<Order_By>;
+  updated_at?: InputMaybe<Order_By>;
+};
+
+/** response of any mutation on the table "index_embeddings_gte" */
+export type Index_Embeddings_Gte_Mutation_Response = {
+  __typename?: 'index_embeddings_gte_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int']['output'];
+  /** data from the rows affected by the mutation */
+  returning: Array<Index_Embeddings_Gte>;
+};
+
+/** on_conflict condition type for table "index_embeddings_gte" */
+export type Index_Embeddings_Gte_On_Conflict = {
+  constraint: Index_Embeddings_Gte_Constraint;
+  update_columns?: Array<Index_Embeddings_Gte_Update_Column>;
+  where?: InputMaybe<Index_Embeddings_Gte_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "index_embeddings_gte". */
+export type Index_Embeddings_Gte_Order_By = {
+  content?: InputMaybe<Order_By>;
+  created_at?: InputMaybe<Order_By>;
+  duration_time?: InputMaybe<Order_By>;
+  embedding?: InputMaybe<Order_By>;
+  end_time?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  index?: InputMaybe<Indexes_Order_By>;
+  index_id?: InputMaybe<Order_By>;
+  similarity?: InputMaybe<Order_By>;
+  start_time?: InputMaybe<Order_By>;
+  updated_at?: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: index_embeddings_gte */
+export type Index_Embeddings_Gte_Pk_Columns_Input = {
+  id: Scalars['uuid']['input'];
+};
+
+/** select columns of table "index_embeddings_gte" */
+export enum Index_Embeddings_Gte_Select_Column {
+  /** column name */
+  Content = 'content',
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  DurationTime = 'duration_time',
+  /** column name */
+  Embedding = 'embedding',
+  /** column name */
+  EndTime = 'end_time',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  IndexId = 'index_id',
+  /** column name */
+  Similarity = 'similarity',
+  /** column name */
+  StartTime = 'start_time',
+  /** column name */
+  UpdatedAt = 'updated_at'
+}
+
+/** input type for updating data in table "index_embeddings_gte" */
+export type Index_Embeddings_Gte_Set_Input = {
+  content?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  duration_time?: InputMaybe<Scalars['numeric']['input']>;
+  embedding?: InputMaybe<Scalars['vector']['input']>;
+  end_time?: InputMaybe<Scalars['numeric']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  index_id?: InputMaybe<Scalars['uuid']['input']>;
+  similarity?: InputMaybe<Scalars['numeric']['input']>;
+  start_time?: InputMaybe<Scalars['numeric']['input']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
+};
+
+/** aggregate stddev on columns */
+export type Index_Embeddings_Gte_Stddev_Fields = {
+  __typename?: 'index_embeddings_gte_stddev_fields';
+  duration_time?: Maybe<Scalars['Float']['output']>;
+  end_time?: Maybe<Scalars['Float']['output']>;
+  similarity?: Maybe<Scalars['Float']['output']>;
+  start_time?: Maybe<Scalars['Float']['output']>;
+};
+
+/** order by stddev() on columns of table "index_embeddings_gte" */
+export type Index_Embeddings_Gte_Stddev_Order_By = {
+  duration_time?: InputMaybe<Order_By>;
+  end_time?: InputMaybe<Order_By>;
+  similarity?: InputMaybe<Order_By>;
+  start_time?: InputMaybe<Order_By>;
+};
+
+/** aggregate stddev_pop on columns */
+export type Index_Embeddings_Gte_Stddev_Pop_Fields = {
+  __typename?: 'index_embeddings_gte_stddev_pop_fields';
+  duration_time?: Maybe<Scalars['Float']['output']>;
+  end_time?: Maybe<Scalars['Float']['output']>;
+  similarity?: Maybe<Scalars['Float']['output']>;
+  start_time?: Maybe<Scalars['Float']['output']>;
+};
+
+/** order by stddev_pop() on columns of table "index_embeddings_gte" */
+export type Index_Embeddings_Gte_Stddev_Pop_Order_By = {
+  duration_time?: InputMaybe<Order_By>;
+  end_time?: InputMaybe<Order_By>;
+  similarity?: InputMaybe<Order_By>;
+  start_time?: InputMaybe<Order_By>;
+};
+
+/** aggregate stddev_samp on columns */
+export type Index_Embeddings_Gte_Stddev_Samp_Fields = {
+  __typename?: 'index_embeddings_gte_stddev_samp_fields';
+  duration_time?: Maybe<Scalars['Float']['output']>;
+  end_time?: Maybe<Scalars['Float']['output']>;
+  similarity?: Maybe<Scalars['Float']['output']>;
+  start_time?: Maybe<Scalars['Float']['output']>;
+};
+
+/** order by stddev_samp() on columns of table "index_embeddings_gte" */
+export type Index_Embeddings_Gte_Stddev_Samp_Order_By = {
+  duration_time?: InputMaybe<Order_By>;
+  end_time?: InputMaybe<Order_By>;
+  similarity?: InputMaybe<Order_By>;
+  start_time?: InputMaybe<Order_By>;
+};
+
+/** Streaming cursor of the table "index_embeddings_gte" */
+export type Index_Embeddings_Gte_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Index_Embeddings_Gte_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Index_Embeddings_Gte_Stream_Cursor_Value_Input = {
+  content?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  duration_time?: InputMaybe<Scalars['numeric']['input']>;
+  embedding?: InputMaybe<Scalars['vector']['input']>;
+  end_time?: InputMaybe<Scalars['numeric']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  index_id?: InputMaybe<Scalars['uuid']['input']>;
+  similarity?: InputMaybe<Scalars['numeric']['input']>;
+  start_time?: InputMaybe<Scalars['numeric']['input']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
+};
+
+/** aggregate sum on columns */
+export type Index_Embeddings_Gte_Sum_Fields = {
+  __typename?: 'index_embeddings_gte_sum_fields';
+  duration_time?: Maybe<Scalars['numeric']['output']>;
+  end_time?: Maybe<Scalars['numeric']['output']>;
+  similarity?: Maybe<Scalars['numeric']['output']>;
+  start_time?: Maybe<Scalars['numeric']['output']>;
+};
+
+/** order by sum() on columns of table "index_embeddings_gte" */
+export type Index_Embeddings_Gte_Sum_Order_By = {
+  duration_time?: InputMaybe<Order_By>;
+  end_time?: InputMaybe<Order_By>;
+  similarity?: InputMaybe<Order_By>;
+  start_time?: InputMaybe<Order_By>;
+};
+
+/** update columns of table "index_embeddings_gte" */
+export enum Index_Embeddings_Gte_Update_Column {
+  /** column name */
+  Content = 'content',
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  DurationTime = 'duration_time',
+  /** column name */
+  Embedding = 'embedding',
+  /** column name */
+  EndTime = 'end_time',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  IndexId = 'index_id',
+  /** column name */
+  Similarity = 'similarity',
+  /** column name */
+  StartTime = 'start_time',
+  /** column name */
+  UpdatedAt = 'updated_at'
+}
+
+export type Index_Embeddings_Gte_Updates = {
+  /** increments the numeric columns with given value of the filtered values */
+  _inc?: InputMaybe<Index_Embeddings_Gte_Inc_Input>;
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<Index_Embeddings_Gte_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: Index_Embeddings_Gte_Bool_Exp;
+};
+
+/** aggregate var_pop on columns */
+export type Index_Embeddings_Gte_Var_Pop_Fields = {
+  __typename?: 'index_embeddings_gte_var_pop_fields';
+  duration_time?: Maybe<Scalars['Float']['output']>;
+  end_time?: Maybe<Scalars['Float']['output']>;
+  similarity?: Maybe<Scalars['Float']['output']>;
+  start_time?: Maybe<Scalars['Float']['output']>;
+};
+
+/** order by var_pop() on columns of table "index_embeddings_gte" */
+export type Index_Embeddings_Gte_Var_Pop_Order_By = {
+  duration_time?: InputMaybe<Order_By>;
+  end_time?: InputMaybe<Order_By>;
+  similarity?: InputMaybe<Order_By>;
+  start_time?: InputMaybe<Order_By>;
+};
+
+/** aggregate var_samp on columns */
+export type Index_Embeddings_Gte_Var_Samp_Fields = {
+  __typename?: 'index_embeddings_gte_var_samp_fields';
+  duration_time?: Maybe<Scalars['Float']['output']>;
+  end_time?: Maybe<Scalars['Float']['output']>;
+  similarity?: Maybe<Scalars['Float']['output']>;
+  start_time?: Maybe<Scalars['Float']['output']>;
+};
+
+/** order by var_samp() on columns of table "index_embeddings_gte" */
+export type Index_Embeddings_Gte_Var_Samp_Order_By = {
+  duration_time?: InputMaybe<Order_By>;
+  end_time?: InputMaybe<Order_By>;
+  similarity?: InputMaybe<Order_By>;
+  start_time?: InputMaybe<Order_By>;
+};
+
+/** aggregate variance on columns */
+export type Index_Embeddings_Gte_Variance_Fields = {
+  __typename?: 'index_embeddings_gte_variance_fields';
+  duration_time?: Maybe<Scalars['Float']['output']>;
+  end_time?: Maybe<Scalars['Float']['output']>;
+  similarity?: Maybe<Scalars['Float']['output']>;
+  start_time?: Maybe<Scalars['Float']['output']>;
+};
+
+/** order by variance() on columns of table "index_embeddings_gte" */
+export type Index_Embeddings_Gte_Variance_Order_By = {
+  duration_time?: InputMaybe<Order_By>;
+  end_time?: InputMaybe<Order_By>;
+  similarity?: InputMaybe<Order_By>;
+  start_time?: InputMaybe<Order_By>;
+};
+
 /** input type for incrementing numeric columns in table "index_embeddings" */
 export type Index_Embeddings_Inc_Input = {
   duration_time?: InputMaybe<Scalars['numeric']['input']>;
@@ -1062,6 +1518,452 @@ export type Index_Embeddings_Insert_Input = {
   similarity?: InputMaybe<Scalars['numeric']['input']>;
   start_time?: InputMaybe<Scalars['numeric']['input']>;
   updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
+};
+
+/** columns and relationships of "index_embeddings_jss" */
+export type Index_Embeddings_Jss = {
+  __typename?: 'index_embeddings_jss';
+  content: Scalars['String']['output'];
+  created_at: Scalars['timestamptz']['output'];
+  duration_time?: Maybe<Scalars['numeric']['output']>;
+  embedding: Scalars['vector']['output'];
+  end_time?: Maybe<Scalars['numeric']['output']>;
+  id: Scalars['uuid']['output'];
+  /** An object relationship */
+  index: Indexes;
+  index_id: Scalars['uuid']['output'];
+  similarity?: Maybe<Scalars['numeric']['output']>;
+  start_time?: Maybe<Scalars['numeric']['output']>;
+  updated_at: Scalars['timestamptz']['output'];
+};
+
+/** aggregated selection of "index_embeddings_jss" */
+export type Index_Embeddings_Jss_Aggregate = {
+  __typename?: 'index_embeddings_jss_aggregate';
+  aggregate?: Maybe<Index_Embeddings_Jss_Aggregate_Fields>;
+  nodes: Array<Index_Embeddings_Jss>;
+};
+
+export type Index_Embeddings_Jss_Aggregate_Bool_Exp = {
+  count?: InputMaybe<Index_Embeddings_Jss_Aggregate_Bool_Exp_Count>;
+};
+
+export type Index_Embeddings_Jss_Aggregate_Bool_Exp_Count = {
+  arguments?: InputMaybe<Array<Index_Embeddings_Jss_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+  filter?: InputMaybe<Index_Embeddings_Jss_Bool_Exp>;
+  predicate: Int_Comparison_Exp;
+};
+
+/** aggregate fields of "index_embeddings_jss" */
+export type Index_Embeddings_Jss_Aggregate_Fields = {
+  __typename?: 'index_embeddings_jss_aggregate_fields';
+  avg?: Maybe<Index_Embeddings_Jss_Avg_Fields>;
+  count: Scalars['Int']['output'];
+  max?: Maybe<Index_Embeddings_Jss_Max_Fields>;
+  min?: Maybe<Index_Embeddings_Jss_Min_Fields>;
+  stddev?: Maybe<Index_Embeddings_Jss_Stddev_Fields>;
+  stddev_pop?: Maybe<Index_Embeddings_Jss_Stddev_Pop_Fields>;
+  stddev_samp?: Maybe<Index_Embeddings_Jss_Stddev_Samp_Fields>;
+  sum?: Maybe<Index_Embeddings_Jss_Sum_Fields>;
+  var_pop?: Maybe<Index_Embeddings_Jss_Var_Pop_Fields>;
+  var_samp?: Maybe<Index_Embeddings_Jss_Var_Samp_Fields>;
+  variance?: Maybe<Index_Embeddings_Jss_Variance_Fields>;
+};
+
+
+/** aggregate fields of "index_embeddings_jss" */
+export type Index_Embeddings_Jss_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<Index_Embeddings_Jss_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+/** order by aggregate values of table "index_embeddings_jss" */
+export type Index_Embeddings_Jss_Aggregate_Order_By = {
+  avg?: InputMaybe<Index_Embeddings_Jss_Avg_Order_By>;
+  count?: InputMaybe<Order_By>;
+  max?: InputMaybe<Index_Embeddings_Jss_Max_Order_By>;
+  min?: InputMaybe<Index_Embeddings_Jss_Min_Order_By>;
+  stddev?: InputMaybe<Index_Embeddings_Jss_Stddev_Order_By>;
+  stddev_pop?: InputMaybe<Index_Embeddings_Jss_Stddev_Pop_Order_By>;
+  stddev_samp?: InputMaybe<Index_Embeddings_Jss_Stddev_Samp_Order_By>;
+  sum?: InputMaybe<Index_Embeddings_Jss_Sum_Order_By>;
+  var_pop?: InputMaybe<Index_Embeddings_Jss_Var_Pop_Order_By>;
+  var_samp?: InputMaybe<Index_Embeddings_Jss_Var_Samp_Order_By>;
+  variance?: InputMaybe<Index_Embeddings_Jss_Variance_Order_By>;
+};
+
+/** input type for inserting array relation for remote table "index_embeddings_jss" */
+export type Index_Embeddings_Jss_Arr_Rel_Insert_Input = {
+  data: Array<Index_Embeddings_Jss_Insert_Input>;
+  /** upsert condition */
+  on_conflict?: InputMaybe<Index_Embeddings_Jss_On_Conflict>;
+};
+
+/** aggregate avg on columns */
+export type Index_Embeddings_Jss_Avg_Fields = {
+  __typename?: 'index_embeddings_jss_avg_fields';
+  duration_time?: Maybe<Scalars['Float']['output']>;
+  end_time?: Maybe<Scalars['Float']['output']>;
+  similarity?: Maybe<Scalars['Float']['output']>;
+  start_time?: Maybe<Scalars['Float']['output']>;
+};
+
+/** order by avg() on columns of table "index_embeddings_jss" */
+export type Index_Embeddings_Jss_Avg_Order_By = {
+  duration_time?: InputMaybe<Order_By>;
+  end_time?: InputMaybe<Order_By>;
+  similarity?: InputMaybe<Order_By>;
+  start_time?: InputMaybe<Order_By>;
+};
+
+/** Boolean expression to filter rows from the table "index_embeddings_jss". All fields are combined with a logical 'AND'. */
+export type Index_Embeddings_Jss_Bool_Exp = {
+  _and?: InputMaybe<Array<Index_Embeddings_Jss_Bool_Exp>>;
+  _not?: InputMaybe<Index_Embeddings_Jss_Bool_Exp>;
+  _or?: InputMaybe<Array<Index_Embeddings_Jss_Bool_Exp>>;
+  content?: InputMaybe<String_Comparison_Exp>;
+  created_at?: InputMaybe<Timestamptz_Comparison_Exp>;
+  duration_time?: InputMaybe<Numeric_Comparison_Exp>;
+  embedding?: InputMaybe<Vector_Comparison_Exp>;
+  end_time?: InputMaybe<Numeric_Comparison_Exp>;
+  id?: InputMaybe<Uuid_Comparison_Exp>;
+  index?: InputMaybe<Indexes_Bool_Exp>;
+  index_id?: InputMaybe<Uuid_Comparison_Exp>;
+  similarity?: InputMaybe<Numeric_Comparison_Exp>;
+  start_time?: InputMaybe<Numeric_Comparison_Exp>;
+  updated_at?: InputMaybe<Timestamptz_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "index_embeddings_jss" */
+export enum Index_Embeddings_Jss_Constraint {
+  /** unique or primary key constraint on columns "id" */
+  IndexEmbeddingsTwoPkey = 'index_embeddings_two_pkey'
+}
+
+/** input type for incrementing numeric columns in table "index_embeddings_jss" */
+export type Index_Embeddings_Jss_Inc_Input = {
+  duration_time?: InputMaybe<Scalars['numeric']['input']>;
+  end_time?: InputMaybe<Scalars['numeric']['input']>;
+  similarity?: InputMaybe<Scalars['numeric']['input']>;
+  start_time?: InputMaybe<Scalars['numeric']['input']>;
+};
+
+/** input type for inserting data into table "index_embeddings_jss" */
+export type Index_Embeddings_Jss_Insert_Input = {
+  content?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  duration_time?: InputMaybe<Scalars['numeric']['input']>;
+  embedding?: InputMaybe<Scalars['vector']['input']>;
+  end_time?: InputMaybe<Scalars['numeric']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  index?: InputMaybe<Indexes_Obj_Rel_Insert_Input>;
+  index_id?: InputMaybe<Scalars['uuid']['input']>;
+  similarity?: InputMaybe<Scalars['numeric']['input']>;
+  start_time?: InputMaybe<Scalars['numeric']['input']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
+};
+
+/** aggregate max on columns */
+export type Index_Embeddings_Jss_Max_Fields = {
+  __typename?: 'index_embeddings_jss_max_fields';
+  content?: Maybe<Scalars['String']['output']>;
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
+  duration_time?: Maybe<Scalars['numeric']['output']>;
+  end_time?: Maybe<Scalars['numeric']['output']>;
+  id?: Maybe<Scalars['uuid']['output']>;
+  index_id?: Maybe<Scalars['uuid']['output']>;
+  similarity?: Maybe<Scalars['numeric']['output']>;
+  start_time?: Maybe<Scalars['numeric']['output']>;
+  updated_at?: Maybe<Scalars['timestamptz']['output']>;
+};
+
+/** order by max() on columns of table "index_embeddings_jss" */
+export type Index_Embeddings_Jss_Max_Order_By = {
+  content?: InputMaybe<Order_By>;
+  created_at?: InputMaybe<Order_By>;
+  duration_time?: InputMaybe<Order_By>;
+  end_time?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  index_id?: InputMaybe<Order_By>;
+  similarity?: InputMaybe<Order_By>;
+  start_time?: InputMaybe<Order_By>;
+  updated_at?: InputMaybe<Order_By>;
+};
+
+/** aggregate min on columns */
+export type Index_Embeddings_Jss_Min_Fields = {
+  __typename?: 'index_embeddings_jss_min_fields';
+  content?: Maybe<Scalars['String']['output']>;
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
+  duration_time?: Maybe<Scalars['numeric']['output']>;
+  end_time?: Maybe<Scalars['numeric']['output']>;
+  id?: Maybe<Scalars['uuid']['output']>;
+  index_id?: Maybe<Scalars['uuid']['output']>;
+  similarity?: Maybe<Scalars['numeric']['output']>;
+  start_time?: Maybe<Scalars['numeric']['output']>;
+  updated_at?: Maybe<Scalars['timestamptz']['output']>;
+};
+
+/** order by min() on columns of table "index_embeddings_jss" */
+export type Index_Embeddings_Jss_Min_Order_By = {
+  content?: InputMaybe<Order_By>;
+  created_at?: InputMaybe<Order_By>;
+  duration_time?: InputMaybe<Order_By>;
+  end_time?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  index_id?: InputMaybe<Order_By>;
+  similarity?: InputMaybe<Order_By>;
+  start_time?: InputMaybe<Order_By>;
+  updated_at?: InputMaybe<Order_By>;
+};
+
+/** response of any mutation on the table "index_embeddings_jss" */
+export type Index_Embeddings_Jss_Mutation_Response = {
+  __typename?: 'index_embeddings_jss_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int']['output'];
+  /** data from the rows affected by the mutation */
+  returning: Array<Index_Embeddings_Jss>;
+};
+
+/** on_conflict condition type for table "index_embeddings_jss" */
+export type Index_Embeddings_Jss_On_Conflict = {
+  constraint: Index_Embeddings_Jss_Constraint;
+  update_columns?: Array<Index_Embeddings_Jss_Update_Column>;
+  where?: InputMaybe<Index_Embeddings_Jss_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "index_embeddings_jss". */
+export type Index_Embeddings_Jss_Order_By = {
+  content?: InputMaybe<Order_By>;
+  created_at?: InputMaybe<Order_By>;
+  duration_time?: InputMaybe<Order_By>;
+  embedding?: InputMaybe<Order_By>;
+  end_time?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  index?: InputMaybe<Indexes_Order_By>;
+  index_id?: InputMaybe<Order_By>;
+  similarity?: InputMaybe<Order_By>;
+  start_time?: InputMaybe<Order_By>;
+  updated_at?: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: index_embeddings_jss */
+export type Index_Embeddings_Jss_Pk_Columns_Input = {
+  id: Scalars['uuid']['input'];
+};
+
+/** select columns of table "index_embeddings_jss" */
+export enum Index_Embeddings_Jss_Select_Column {
+  /** column name */
+  Content = 'content',
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  DurationTime = 'duration_time',
+  /** column name */
+  Embedding = 'embedding',
+  /** column name */
+  EndTime = 'end_time',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  IndexId = 'index_id',
+  /** column name */
+  Similarity = 'similarity',
+  /** column name */
+  StartTime = 'start_time',
+  /** column name */
+  UpdatedAt = 'updated_at'
+}
+
+/** input type for updating data in table "index_embeddings_jss" */
+export type Index_Embeddings_Jss_Set_Input = {
+  content?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  duration_time?: InputMaybe<Scalars['numeric']['input']>;
+  embedding?: InputMaybe<Scalars['vector']['input']>;
+  end_time?: InputMaybe<Scalars['numeric']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  index_id?: InputMaybe<Scalars['uuid']['input']>;
+  similarity?: InputMaybe<Scalars['numeric']['input']>;
+  start_time?: InputMaybe<Scalars['numeric']['input']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
+};
+
+/** aggregate stddev on columns */
+export type Index_Embeddings_Jss_Stddev_Fields = {
+  __typename?: 'index_embeddings_jss_stddev_fields';
+  duration_time?: Maybe<Scalars['Float']['output']>;
+  end_time?: Maybe<Scalars['Float']['output']>;
+  similarity?: Maybe<Scalars['Float']['output']>;
+  start_time?: Maybe<Scalars['Float']['output']>;
+};
+
+/** order by stddev() on columns of table "index_embeddings_jss" */
+export type Index_Embeddings_Jss_Stddev_Order_By = {
+  duration_time?: InputMaybe<Order_By>;
+  end_time?: InputMaybe<Order_By>;
+  similarity?: InputMaybe<Order_By>;
+  start_time?: InputMaybe<Order_By>;
+};
+
+/** aggregate stddev_pop on columns */
+export type Index_Embeddings_Jss_Stddev_Pop_Fields = {
+  __typename?: 'index_embeddings_jss_stddev_pop_fields';
+  duration_time?: Maybe<Scalars['Float']['output']>;
+  end_time?: Maybe<Scalars['Float']['output']>;
+  similarity?: Maybe<Scalars['Float']['output']>;
+  start_time?: Maybe<Scalars['Float']['output']>;
+};
+
+/** order by stddev_pop() on columns of table "index_embeddings_jss" */
+export type Index_Embeddings_Jss_Stddev_Pop_Order_By = {
+  duration_time?: InputMaybe<Order_By>;
+  end_time?: InputMaybe<Order_By>;
+  similarity?: InputMaybe<Order_By>;
+  start_time?: InputMaybe<Order_By>;
+};
+
+/** aggregate stddev_samp on columns */
+export type Index_Embeddings_Jss_Stddev_Samp_Fields = {
+  __typename?: 'index_embeddings_jss_stddev_samp_fields';
+  duration_time?: Maybe<Scalars['Float']['output']>;
+  end_time?: Maybe<Scalars['Float']['output']>;
+  similarity?: Maybe<Scalars['Float']['output']>;
+  start_time?: Maybe<Scalars['Float']['output']>;
+};
+
+/** order by stddev_samp() on columns of table "index_embeddings_jss" */
+export type Index_Embeddings_Jss_Stddev_Samp_Order_By = {
+  duration_time?: InputMaybe<Order_By>;
+  end_time?: InputMaybe<Order_By>;
+  similarity?: InputMaybe<Order_By>;
+  start_time?: InputMaybe<Order_By>;
+};
+
+/** Streaming cursor of the table "index_embeddings_jss" */
+export type Index_Embeddings_Jss_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Index_Embeddings_Jss_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Index_Embeddings_Jss_Stream_Cursor_Value_Input = {
+  content?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  duration_time?: InputMaybe<Scalars['numeric']['input']>;
+  embedding?: InputMaybe<Scalars['vector']['input']>;
+  end_time?: InputMaybe<Scalars['numeric']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  index_id?: InputMaybe<Scalars['uuid']['input']>;
+  similarity?: InputMaybe<Scalars['numeric']['input']>;
+  start_time?: InputMaybe<Scalars['numeric']['input']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
+};
+
+/** aggregate sum on columns */
+export type Index_Embeddings_Jss_Sum_Fields = {
+  __typename?: 'index_embeddings_jss_sum_fields';
+  duration_time?: Maybe<Scalars['numeric']['output']>;
+  end_time?: Maybe<Scalars['numeric']['output']>;
+  similarity?: Maybe<Scalars['numeric']['output']>;
+  start_time?: Maybe<Scalars['numeric']['output']>;
+};
+
+/** order by sum() on columns of table "index_embeddings_jss" */
+export type Index_Embeddings_Jss_Sum_Order_By = {
+  duration_time?: InputMaybe<Order_By>;
+  end_time?: InputMaybe<Order_By>;
+  similarity?: InputMaybe<Order_By>;
+  start_time?: InputMaybe<Order_By>;
+};
+
+/** update columns of table "index_embeddings_jss" */
+export enum Index_Embeddings_Jss_Update_Column {
+  /** column name */
+  Content = 'content',
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  DurationTime = 'duration_time',
+  /** column name */
+  Embedding = 'embedding',
+  /** column name */
+  EndTime = 'end_time',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  IndexId = 'index_id',
+  /** column name */
+  Similarity = 'similarity',
+  /** column name */
+  StartTime = 'start_time',
+  /** column name */
+  UpdatedAt = 'updated_at'
+}
+
+export type Index_Embeddings_Jss_Updates = {
+  /** increments the numeric columns with given value of the filtered values */
+  _inc?: InputMaybe<Index_Embeddings_Jss_Inc_Input>;
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<Index_Embeddings_Jss_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: Index_Embeddings_Jss_Bool_Exp;
+};
+
+/** aggregate var_pop on columns */
+export type Index_Embeddings_Jss_Var_Pop_Fields = {
+  __typename?: 'index_embeddings_jss_var_pop_fields';
+  duration_time?: Maybe<Scalars['Float']['output']>;
+  end_time?: Maybe<Scalars['Float']['output']>;
+  similarity?: Maybe<Scalars['Float']['output']>;
+  start_time?: Maybe<Scalars['Float']['output']>;
+};
+
+/** order by var_pop() on columns of table "index_embeddings_jss" */
+export type Index_Embeddings_Jss_Var_Pop_Order_By = {
+  duration_time?: InputMaybe<Order_By>;
+  end_time?: InputMaybe<Order_By>;
+  similarity?: InputMaybe<Order_By>;
+  start_time?: InputMaybe<Order_By>;
+};
+
+/** aggregate var_samp on columns */
+export type Index_Embeddings_Jss_Var_Samp_Fields = {
+  __typename?: 'index_embeddings_jss_var_samp_fields';
+  duration_time?: Maybe<Scalars['Float']['output']>;
+  end_time?: Maybe<Scalars['Float']['output']>;
+  similarity?: Maybe<Scalars['Float']['output']>;
+  start_time?: Maybe<Scalars['Float']['output']>;
+};
+
+/** order by var_samp() on columns of table "index_embeddings_jss" */
+export type Index_Embeddings_Jss_Var_Samp_Order_By = {
+  duration_time?: InputMaybe<Order_By>;
+  end_time?: InputMaybe<Order_By>;
+  similarity?: InputMaybe<Order_By>;
+  start_time?: InputMaybe<Order_By>;
+};
+
+/** aggregate variance on columns */
+export type Index_Embeddings_Jss_Variance_Fields = {
+  __typename?: 'index_embeddings_jss_variance_fields';
+  duration_time?: Maybe<Scalars['Float']['output']>;
+  end_time?: Maybe<Scalars['Float']['output']>;
+  similarity?: Maybe<Scalars['Float']['output']>;
+  start_time?: Maybe<Scalars['Float']['output']>;
+};
+
+/** order by variance() on columns of table "index_embeddings_jss" */
+export type Index_Embeddings_Jss_Variance_Order_By = {
+  duration_time?: InputMaybe<Order_By>;
+  end_time?: InputMaybe<Order_By>;
+  similarity?: InputMaybe<Order_By>;
+  start_time?: InputMaybe<Order_By>;
 };
 
 /** aggregate max on columns */
@@ -1377,6 +2279,14 @@ export type Indexes = {
   embeddings: Array<Index_Embeddings>;
   /** An aggregate relationship */
   embeddings_aggregate: Index_Embeddings_Aggregate;
+  /** An array relationship */
+  embeddings_gte: Array<Index_Embeddings_Gte>;
+  /** An aggregate relationship */
+  embeddings_gte_aggregate: Index_Embeddings_Gte_Aggregate;
+  /** An array relationship */
+  embeddings_jss: Array<Index_Embeddings_Jss>;
+  /** An aggregate relationship */
+  embeddings_jss_aggregate: Index_Embeddings_Jss_Aggregate;
   height?: Maybe<Scalars['Int']['output']>;
   id: Scalars['uuid']['output'];
   nsfw: Scalars['Boolean']['output'];
@@ -1413,6 +2323,46 @@ export type IndexesEmbeddings_AggregateArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<Index_Embeddings_Order_By>>;
   where?: InputMaybe<Index_Embeddings_Bool_Exp>;
+};
+
+
+/** columns and relationships of "indexes" */
+export type IndexesEmbeddings_GteArgs = {
+  distinct_on?: InputMaybe<Array<Index_Embeddings_Gte_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Index_Embeddings_Gte_Order_By>>;
+  where?: InputMaybe<Index_Embeddings_Gte_Bool_Exp>;
+};
+
+
+/** columns and relationships of "indexes" */
+export type IndexesEmbeddings_Gte_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Index_Embeddings_Gte_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Index_Embeddings_Gte_Order_By>>;
+  where?: InputMaybe<Index_Embeddings_Gte_Bool_Exp>;
+};
+
+
+/** columns and relationships of "indexes" */
+export type IndexesEmbeddings_JssArgs = {
+  distinct_on?: InputMaybe<Array<Index_Embeddings_Jss_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Index_Embeddings_Jss_Order_By>>;
+  where?: InputMaybe<Index_Embeddings_Jss_Bool_Exp>;
+};
+
+
+/** columns and relationships of "indexes" */
+export type IndexesEmbeddings_Jss_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Index_Embeddings_Jss_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Index_Embeddings_Jss_Order_By>>;
+  where?: InputMaybe<Index_Embeddings_Jss_Bool_Exp>;
 };
 
 
@@ -1490,6 +2440,10 @@ export type Indexes_Bool_Exp = {
   duration_seconds?: InputMaybe<Numeric_Comparison_Exp>;
   embeddings?: InputMaybe<Index_Embeddings_Bool_Exp>;
   embeddings_aggregate?: InputMaybe<Index_Embeddings_Aggregate_Bool_Exp>;
+  embeddings_gte?: InputMaybe<Index_Embeddings_Gte_Bool_Exp>;
+  embeddings_gte_aggregate?: InputMaybe<Index_Embeddings_Gte_Aggregate_Bool_Exp>;
+  embeddings_jss?: InputMaybe<Index_Embeddings_Jss_Bool_Exp>;
+  embeddings_jss_aggregate?: InputMaybe<Index_Embeddings_Jss_Aggregate_Bool_Exp>;
   height?: InputMaybe<Int_Comparison_Exp>;
   id?: InputMaybe<Uuid_Comparison_Exp>;
   nsfw?: InputMaybe<Boolean_Comparison_Exp>;
@@ -1552,6 +2506,8 @@ export type Indexes_Insert_Input = {
   description?: InputMaybe<Scalars['String']['input']>;
   duration_seconds?: InputMaybe<Scalars['numeric']['input']>;
   embeddings?: InputMaybe<Index_Embeddings_Arr_Rel_Insert_Input>;
+  embeddings_gte?: InputMaybe<Index_Embeddings_Gte_Arr_Rel_Insert_Input>;
+  embeddings_jss?: InputMaybe<Index_Embeddings_Jss_Arr_Rel_Insert_Input>;
   height?: InputMaybe<Scalars['Int']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
   nsfw?: InputMaybe<Scalars['Boolean']['input']>;
@@ -1640,6 +2596,8 @@ export type Indexes_Order_By = {
   description?: InputMaybe<Order_By>;
   duration_seconds?: InputMaybe<Order_By>;
   embeddings_aggregate?: InputMaybe<Index_Embeddings_Aggregate_Order_By>;
+  embeddings_gte_aggregate?: InputMaybe<Index_Embeddings_Gte_Aggregate_Order_By>;
+  embeddings_jss_aggregate?: InputMaybe<Index_Embeddings_Jss_Aggregate_Order_By>;
   height?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   nsfw?: InputMaybe<Order_By>;
@@ -1930,7 +2888,18 @@ export type Match_Embeddings_Args = {
   query_embedding?: InputMaybe<Scalars['vector']['input']>;
 };
 
+export type Match_Embeddings_Gte_Args = {
+  _index_id?: InputMaybe<Scalars['uuid']['input']>;
+  match_threshold?: InputMaybe<Scalars['float8']['input']>;
+  query_embedding?: InputMaybe<Scalars['vector']['input']>;
+};
+
 export type Match_Indexes_Args = {
+  match_threshold?: InputMaybe<Scalars['float8']['input']>;
+  query_embedding?: InputMaybe<Scalars['vector']['input']>;
+};
+
+export type Match_Indexes_Gte_Args = {
   match_threshold?: InputMaybe<Scalars['float8']['input']>;
   query_embedding?: InputMaybe<Scalars['vector']['input']>;
 };
@@ -1950,6 +2919,14 @@ export type Mutation_Root = {
   delete_index_embeddings?: Maybe<Index_Embeddings_Mutation_Response>;
   /** delete single row from the table: "index_embeddings" */
   delete_index_embeddings_by_pk?: Maybe<Index_Embeddings>;
+  /** delete data from the table: "index_embeddings_gte" */
+  delete_index_embeddings_gte?: Maybe<Index_Embeddings_Gte_Mutation_Response>;
+  /** delete single row from the table: "index_embeddings_gte" */
+  delete_index_embeddings_gte_by_pk?: Maybe<Index_Embeddings_Gte>;
+  /** delete data from the table: "index_embeddings_jss" */
+  delete_index_embeddings_jss?: Maybe<Index_Embeddings_Jss_Mutation_Response>;
+  /** delete single row from the table: "index_embeddings_jss" */
+  delete_index_embeddings_jss_by_pk?: Maybe<Index_Embeddings_Jss>;
   /** delete data from the table: "indexes" */
   delete_indexes?: Maybe<Indexes_Mutation_Response>;
   /** delete single row from the table: "indexes" */
@@ -1968,6 +2945,14 @@ export type Mutation_Root = {
   insert_chats_one?: Maybe<Chats>;
   /** insert data into the table: "index_embeddings" */
   insert_index_embeddings?: Maybe<Index_Embeddings_Mutation_Response>;
+  /** insert data into the table: "index_embeddings_gte" */
+  insert_index_embeddings_gte?: Maybe<Index_Embeddings_Gte_Mutation_Response>;
+  /** insert a single row into the table: "index_embeddings_gte" */
+  insert_index_embeddings_gte_one?: Maybe<Index_Embeddings_Gte>;
+  /** insert data into the table: "index_embeddings_jss" */
+  insert_index_embeddings_jss?: Maybe<Index_Embeddings_Jss_Mutation_Response>;
+  /** insert a single row into the table: "index_embeddings_jss" */
+  insert_index_embeddings_jss_one?: Maybe<Index_Embeddings_Jss>;
   /** insert a single row into the table: "index_embeddings" */
   insert_index_embeddings_one?: Maybe<Index_Embeddings>;
   /** insert data into the table: "indexes" */
@@ -1994,6 +2979,18 @@ export type Mutation_Root = {
   update_index_embeddings?: Maybe<Index_Embeddings_Mutation_Response>;
   /** update single row of the table: "index_embeddings" */
   update_index_embeddings_by_pk?: Maybe<Index_Embeddings>;
+  /** update data of the table: "index_embeddings_gte" */
+  update_index_embeddings_gte?: Maybe<Index_Embeddings_Gte_Mutation_Response>;
+  /** update single row of the table: "index_embeddings_gte" */
+  update_index_embeddings_gte_by_pk?: Maybe<Index_Embeddings_Gte>;
+  /** update multiples rows of table: "index_embeddings_gte" */
+  update_index_embeddings_gte_many?: Maybe<Array<Maybe<Index_Embeddings_Gte_Mutation_Response>>>;
+  /** update data of the table: "index_embeddings_jss" */
+  update_index_embeddings_jss?: Maybe<Index_Embeddings_Jss_Mutation_Response>;
+  /** update single row of the table: "index_embeddings_jss" */
+  update_index_embeddings_jss_by_pk?: Maybe<Index_Embeddings_Jss>;
+  /** update multiples rows of table: "index_embeddings_jss" */
+  update_index_embeddings_jss_many?: Maybe<Array<Maybe<Index_Embeddings_Jss_Mutation_Response>>>;
   /** update multiples rows of table: "index_embeddings" */
   update_index_embeddings_many?: Maybe<Array<Maybe<Index_Embeddings_Mutation_Response>>>;
   /** update data of the table: "indexes" */
@@ -2043,6 +3040,30 @@ export type Mutation_RootDelete_Index_EmbeddingsArgs = {
 
 /** mutation root */
 export type Mutation_RootDelete_Index_Embeddings_By_PkArgs = {
+  id: Scalars['uuid']['input'];
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Index_Embeddings_GteArgs = {
+  where: Index_Embeddings_Gte_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Index_Embeddings_Gte_By_PkArgs = {
+  id: Scalars['uuid']['input'];
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Index_Embeddings_JssArgs = {
+  where: Index_Embeddings_Jss_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Index_Embeddings_Jss_By_PkArgs = {
   id: Scalars['uuid']['input'];
 };
 
@@ -2103,6 +3124,34 @@ export type Mutation_RootInsert_Chats_OneArgs = {
 export type Mutation_RootInsert_Index_EmbeddingsArgs = {
   objects: Array<Index_Embeddings_Insert_Input>;
   on_conflict?: InputMaybe<Index_Embeddings_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Index_Embeddings_GteArgs = {
+  objects: Array<Index_Embeddings_Gte_Insert_Input>;
+  on_conflict?: InputMaybe<Index_Embeddings_Gte_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Index_Embeddings_Gte_OneArgs = {
+  object: Index_Embeddings_Gte_Insert_Input;
+  on_conflict?: InputMaybe<Index_Embeddings_Gte_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Index_Embeddings_JssArgs = {
+  objects: Array<Index_Embeddings_Jss_Insert_Input>;
+  on_conflict?: InputMaybe<Index_Embeddings_Jss_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Index_Embeddings_Jss_OneArgs = {
+  object: Index_Embeddings_Jss_Insert_Input;
+  on_conflict?: InputMaybe<Index_Embeddings_Jss_On_Conflict>;
 };
 
 
@@ -2206,6 +3255,50 @@ export type Mutation_RootUpdate_Index_Embeddings_By_PkArgs = {
   _inc?: InputMaybe<Index_Embeddings_Inc_Input>;
   _set?: InputMaybe<Index_Embeddings_Set_Input>;
   pk_columns: Index_Embeddings_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Index_Embeddings_GteArgs = {
+  _inc?: InputMaybe<Index_Embeddings_Gte_Inc_Input>;
+  _set?: InputMaybe<Index_Embeddings_Gte_Set_Input>;
+  where: Index_Embeddings_Gte_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Index_Embeddings_Gte_By_PkArgs = {
+  _inc?: InputMaybe<Index_Embeddings_Gte_Inc_Input>;
+  _set?: InputMaybe<Index_Embeddings_Gte_Set_Input>;
+  pk_columns: Index_Embeddings_Gte_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Index_Embeddings_Gte_ManyArgs = {
+  updates: Array<Index_Embeddings_Gte_Updates>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Index_Embeddings_JssArgs = {
+  _inc?: InputMaybe<Index_Embeddings_Jss_Inc_Input>;
+  _set?: InputMaybe<Index_Embeddings_Jss_Set_Input>;
+  where: Index_Embeddings_Jss_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Index_Embeddings_Jss_By_PkArgs = {
+  _inc?: InputMaybe<Index_Embeddings_Jss_Inc_Input>;
+  _set?: InputMaybe<Index_Embeddings_Jss_Set_Input>;
+  pk_columns: Index_Embeddings_Jss_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Index_Embeddings_Jss_ManyArgs = {
+  updates: Array<Index_Embeddings_Jss_Updates>;
 };
 
 
@@ -2315,6 +3408,18 @@ export type Query_Root = {
   index_embeddings_aggregate: Index_Embeddings_Aggregate;
   /** fetch data from the table: "index_embeddings" using primary key columns */
   index_embeddings_by_pk?: Maybe<Index_Embeddings>;
+  /** fetch data from the table: "index_embeddings_gte" */
+  index_embeddings_gte: Array<Index_Embeddings_Gte>;
+  /** fetch aggregated fields from the table: "index_embeddings_gte" */
+  index_embeddings_gte_aggregate: Index_Embeddings_Gte_Aggregate;
+  /** fetch data from the table: "index_embeddings_gte" using primary key columns */
+  index_embeddings_gte_by_pk?: Maybe<Index_Embeddings_Gte>;
+  /** fetch data from the table: "index_embeddings_jss" */
+  index_embeddings_jss: Array<Index_Embeddings_Jss>;
+  /** fetch aggregated fields from the table: "index_embeddings_jss" */
+  index_embeddings_jss_aggregate: Index_Embeddings_Jss_Aggregate;
+  /** fetch data from the table: "index_embeddings_jss" using primary key columns */
+  index_embeddings_jss_by_pk?: Maybe<Index_Embeddings_Jss>;
   /** fetch data from the table: "indexes" */
   indexes: Array<Indexes>;
   /** fetch aggregated fields from the table: "indexes" */
@@ -2325,10 +3430,18 @@ export type Query_Root = {
   match_embeddings: Array<Index_Embeddings>;
   /** execute function "match_embeddings" and query aggregates on result of table type "index_embeddings" */
   match_embeddings_aggregate: Index_Embeddings_Aggregate;
+  /** execute function "match_embeddings_gte" which returns "index_embeddings_gte" */
+  match_embeddings_gte: Array<Index_Embeddings_Gte>;
+  /** execute function "match_embeddings_gte" and query aggregates on result of table type "index_embeddings_gte" */
+  match_embeddings_gte_aggregate: Index_Embeddings_Gte_Aggregate;
   /** execute function "match_indexes" which returns "indexes" */
   match_indexes: Array<Indexes>;
   /** execute function "match_indexes" and query aggregates on result of table type "indexes" */
   match_indexes_aggregate: Indexes_Aggregate;
+  /** execute function "match_indexes_gte" which returns "indexes" */
+  match_indexes_gte: Array<Indexes>;
+  /** execute function "match_indexes_gte" and query aggregates on result of table type "indexes" */
+  match_indexes_gte_aggregate: Indexes_Aggregate;
   /** fetch data from the table: "users" */
   users: Array<Users>;
   /** fetch aggregated fields from the table: "users" */
@@ -2407,6 +3520,52 @@ export type Query_RootIndex_Embeddings_By_PkArgs = {
 };
 
 
+export type Query_RootIndex_Embeddings_GteArgs = {
+  distinct_on?: InputMaybe<Array<Index_Embeddings_Gte_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Index_Embeddings_Gte_Order_By>>;
+  where?: InputMaybe<Index_Embeddings_Gte_Bool_Exp>;
+};
+
+
+export type Query_RootIndex_Embeddings_Gte_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Index_Embeddings_Gte_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Index_Embeddings_Gte_Order_By>>;
+  where?: InputMaybe<Index_Embeddings_Gte_Bool_Exp>;
+};
+
+
+export type Query_RootIndex_Embeddings_Gte_By_PkArgs = {
+  id: Scalars['uuid']['input'];
+};
+
+
+export type Query_RootIndex_Embeddings_JssArgs = {
+  distinct_on?: InputMaybe<Array<Index_Embeddings_Jss_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Index_Embeddings_Jss_Order_By>>;
+  where?: InputMaybe<Index_Embeddings_Jss_Bool_Exp>;
+};
+
+
+export type Query_RootIndex_Embeddings_Jss_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Index_Embeddings_Jss_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Index_Embeddings_Jss_Order_By>>;
+  where?: InputMaybe<Index_Embeddings_Jss_Bool_Exp>;
+};
+
+
+export type Query_RootIndex_Embeddings_Jss_By_PkArgs = {
+  id: Scalars['uuid']['input'];
+};
+
+
 export type Query_RootIndexesArgs = {
   distinct_on?: InputMaybe<Array<Indexes_Select_Column>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -2450,6 +3609,26 @@ export type Query_RootMatch_Embeddings_AggregateArgs = {
 };
 
 
+export type Query_RootMatch_Embeddings_GteArgs = {
+  args: Match_Embeddings_Gte_Args;
+  distinct_on?: InputMaybe<Array<Index_Embeddings_Gte_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Index_Embeddings_Gte_Order_By>>;
+  where?: InputMaybe<Index_Embeddings_Gte_Bool_Exp>;
+};
+
+
+export type Query_RootMatch_Embeddings_Gte_AggregateArgs = {
+  args: Match_Embeddings_Gte_Args;
+  distinct_on?: InputMaybe<Array<Index_Embeddings_Gte_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Index_Embeddings_Gte_Order_By>>;
+  where?: InputMaybe<Index_Embeddings_Gte_Bool_Exp>;
+};
+
+
 export type Query_RootMatch_IndexesArgs = {
   args: Match_Indexes_Args;
   distinct_on?: InputMaybe<Array<Indexes_Select_Column>>;
@@ -2462,6 +3641,26 @@ export type Query_RootMatch_IndexesArgs = {
 
 export type Query_RootMatch_Indexes_AggregateArgs = {
   args: Match_Indexes_Args;
+  distinct_on?: InputMaybe<Array<Indexes_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Indexes_Order_By>>;
+  where?: InputMaybe<Indexes_Bool_Exp>;
+};
+
+
+export type Query_RootMatch_Indexes_GteArgs = {
+  args: Match_Indexes_Gte_Args;
+  distinct_on?: InputMaybe<Array<Indexes_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Indexes_Order_By>>;
+  where?: InputMaybe<Indexes_Bool_Exp>;
+};
+
+
+export type Query_RootMatch_Indexes_Gte_AggregateArgs = {
+  args: Match_Indexes_Gte_Args;
   distinct_on?: InputMaybe<Array<Indexes_Select_Column>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
@@ -2529,6 +3728,22 @@ export type Subscription_Root = {
   index_embeddings_aggregate: Index_Embeddings_Aggregate;
   /** fetch data from the table: "index_embeddings" using primary key columns */
   index_embeddings_by_pk?: Maybe<Index_Embeddings>;
+  /** fetch data from the table: "index_embeddings_gte" */
+  index_embeddings_gte: Array<Index_Embeddings_Gte>;
+  /** fetch aggregated fields from the table: "index_embeddings_gte" */
+  index_embeddings_gte_aggregate: Index_Embeddings_Gte_Aggregate;
+  /** fetch data from the table: "index_embeddings_gte" using primary key columns */
+  index_embeddings_gte_by_pk?: Maybe<Index_Embeddings_Gte>;
+  /** fetch data from the table in a streaming manner: "index_embeddings_gte" */
+  index_embeddings_gte_stream: Array<Index_Embeddings_Gte>;
+  /** fetch data from the table: "index_embeddings_jss" */
+  index_embeddings_jss: Array<Index_Embeddings_Jss>;
+  /** fetch aggregated fields from the table: "index_embeddings_jss" */
+  index_embeddings_jss_aggregate: Index_Embeddings_Jss_Aggregate;
+  /** fetch data from the table: "index_embeddings_jss" using primary key columns */
+  index_embeddings_jss_by_pk?: Maybe<Index_Embeddings_Jss>;
+  /** fetch data from the table in a streaming manner: "index_embeddings_jss" */
+  index_embeddings_jss_stream: Array<Index_Embeddings_Jss>;
   /** fetch data from the table in a streaming manner: "index_embeddings" */
   index_embeddings_stream: Array<Index_Embeddings>;
   /** fetch data from the table: "indexes" */
@@ -2543,10 +3758,18 @@ export type Subscription_Root = {
   match_embeddings: Array<Index_Embeddings>;
   /** execute function "match_embeddings" and query aggregates on result of table type "index_embeddings" */
   match_embeddings_aggregate: Index_Embeddings_Aggregate;
+  /** execute function "match_embeddings_gte" which returns "index_embeddings_gte" */
+  match_embeddings_gte: Array<Index_Embeddings_Gte>;
+  /** execute function "match_embeddings_gte" and query aggregates on result of table type "index_embeddings_gte" */
+  match_embeddings_gte_aggregate: Index_Embeddings_Gte_Aggregate;
   /** execute function "match_indexes" which returns "indexes" */
   match_indexes: Array<Indexes>;
   /** execute function "match_indexes" and query aggregates on result of table type "indexes" */
   match_indexes_aggregate: Indexes_Aggregate;
+  /** execute function "match_indexes_gte" which returns "indexes" */
+  match_indexes_gte: Array<Indexes>;
+  /** execute function "match_indexes_gte" and query aggregates on result of table type "indexes" */
+  match_indexes_gte_aggregate: Indexes_Aggregate;
   /** fetch data from the table: "users" */
   users: Array<Users>;
   /** fetch aggregated fields from the table: "users" */
@@ -2641,6 +3864,66 @@ export type Subscription_RootIndex_Embeddings_By_PkArgs = {
 };
 
 
+export type Subscription_RootIndex_Embeddings_GteArgs = {
+  distinct_on?: InputMaybe<Array<Index_Embeddings_Gte_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Index_Embeddings_Gte_Order_By>>;
+  where?: InputMaybe<Index_Embeddings_Gte_Bool_Exp>;
+};
+
+
+export type Subscription_RootIndex_Embeddings_Gte_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Index_Embeddings_Gte_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Index_Embeddings_Gte_Order_By>>;
+  where?: InputMaybe<Index_Embeddings_Gte_Bool_Exp>;
+};
+
+
+export type Subscription_RootIndex_Embeddings_Gte_By_PkArgs = {
+  id: Scalars['uuid']['input'];
+};
+
+
+export type Subscription_RootIndex_Embeddings_Gte_StreamArgs = {
+  batch_size: Scalars['Int']['input'];
+  cursor: Array<InputMaybe<Index_Embeddings_Gte_Stream_Cursor_Input>>;
+  where?: InputMaybe<Index_Embeddings_Gte_Bool_Exp>;
+};
+
+
+export type Subscription_RootIndex_Embeddings_JssArgs = {
+  distinct_on?: InputMaybe<Array<Index_Embeddings_Jss_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Index_Embeddings_Jss_Order_By>>;
+  where?: InputMaybe<Index_Embeddings_Jss_Bool_Exp>;
+};
+
+
+export type Subscription_RootIndex_Embeddings_Jss_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Index_Embeddings_Jss_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Index_Embeddings_Jss_Order_By>>;
+  where?: InputMaybe<Index_Embeddings_Jss_Bool_Exp>;
+};
+
+
+export type Subscription_RootIndex_Embeddings_Jss_By_PkArgs = {
+  id: Scalars['uuid']['input'];
+};
+
+
+export type Subscription_RootIndex_Embeddings_Jss_StreamArgs = {
+  batch_size: Scalars['Int']['input'];
+  cursor: Array<InputMaybe<Index_Embeddings_Jss_Stream_Cursor_Input>>;
+  where?: InputMaybe<Index_Embeddings_Jss_Bool_Exp>;
+};
+
+
 export type Subscription_RootIndex_Embeddings_StreamArgs = {
   batch_size: Scalars['Int']['input'];
   cursor: Array<InputMaybe<Index_Embeddings_Stream_Cursor_Input>>;
@@ -2698,6 +3981,26 @@ export type Subscription_RootMatch_Embeddings_AggregateArgs = {
 };
 
 
+export type Subscription_RootMatch_Embeddings_GteArgs = {
+  args: Match_Embeddings_Gte_Args;
+  distinct_on?: InputMaybe<Array<Index_Embeddings_Gte_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Index_Embeddings_Gte_Order_By>>;
+  where?: InputMaybe<Index_Embeddings_Gte_Bool_Exp>;
+};
+
+
+export type Subscription_RootMatch_Embeddings_Gte_AggregateArgs = {
+  args: Match_Embeddings_Gte_Args;
+  distinct_on?: InputMaybe<Array<Index_Embeddings_Gte_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Index_Embeddings_Gte_Order_By>>;
+  where?: InputMaybe<Index_Embeddings_Gte_Bool_Exp>;
+};
+
+
 export type Subscription_RootMatch_IndexesArgs = {
   args: Match_Indexes_Args;
   distinct_on?: InputMaybe<Array<Indexes_Select_Column>>;
@@ -2710,6 +4013,26 @@ export type Subscription_RootMatch_IndexesArgs = {
 
 export type Subscription_RootMatch_Indexes_AggregateArgs = {
   args: Match_Indexes_Args;
+  distinct_on?: InputMaybe<Array<Indexes_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Indexes_Order_By>>;
+  where?: InputMaybe<Indexes_Bool_Exp>;
+};
+
+
+export type Subscription_RootMatch_Indexes_GteArgs = {
+  args: Match_Indexes_Gte_Args;
+  distinct_on?: InputMaybe<Array<Indexes_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Indexes_Order_By>>;
+  where?: InputMaybe<Indexes_Bool_Exp>;
+};
+
+
+export type Subscription_RootMatch_Indexes_Gte_AggregateArgs = {
+  args: Match_Indexes_Gte_Args;
   distinct_on?: InputMaybe<Array<Indexes_Select_Column>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;

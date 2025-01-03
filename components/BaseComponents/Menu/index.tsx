@@ -1,5 +1,5 @@
+import { Box, Menu as CMenu, Flex, MenuButton, MenuItem, MenuList, MenuProps, useDisclosure } from "@chakra-ui/react";
 import React, { memo } from "react";
-import { Menu as CMenu, MenuButton, MenuList, MenuItem, MenuProps, Box, useDisclosure, Flex } from "@chakra-ui/react";
 
 export interface IMenuOptionProps {
   label: string;

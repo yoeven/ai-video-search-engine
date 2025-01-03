@@ -1,5 +1,5 @@
-import { GraphQLClient } from "graphql-request";
 import fetch from "cross-fetch";
+import { GraphQLClient } from "graphql-request";
 
 const hasuraEndPoint = process.env.NEXT_PUBLIC_HASURA_ENDPOINT_URL || "";
 

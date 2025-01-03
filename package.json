@@ -45,6 +45,7 @@
     "zod": "^3.22.4"
   },
   "devDependencies": {
+    "@biomejs/biome": "^1.9.4",
     "@graphql-codegen/cli": "^5.0.0",
     "@graphql-codegen/typescript": "^4.0.1",
     "@graphql-codegen/typescript-operations": "^4.0.1",
@@ -54,7 +55,6 @@
     "@types/react": "^18.2.45",
     "@types/react-dom": "^18.2.17",
     "@types/uuid": "^9.0.7",
-    "biome": "^0.3.3",
     "concurrently": "^8.2.2",
     "eslint": "^8",
     "eslint-config-next": "14.0.3",

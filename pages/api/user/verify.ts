@@ -1,9 +1,9 @@
-import { NextFetchEvent, NextResponse } from "next/server";
-import { HandledError, handleError } from "src/helpers/error";
-import baseEdgeHandlerWrapper, { NextRequestCustom } from "src/helpers/baseEdgeHandlerWrapper";
-import { gqlServerClient } from "src/helpers/graphqlServerClient";
 import { InsertUserDocument, InsertUserMutation, InsertUserMutationVariables } from "@graphql/generated/graphql";
 import { jwtVerify } from "jose";
+import { NextFetchEvent, NextResponse } from "next/server";
+import baseEdgeHandlerWrapper, { NextRequestCustom } from "src/helpers/baseEdgeHandlerWrapper";
+import { HandledError, handleError } from "src/helpers/error";
+import { gqlServerClient } from "src/helpers/graphqlServerClient";
 import { supabaseAdmin } from "src/helpers/supabase";
 
 export const config = {

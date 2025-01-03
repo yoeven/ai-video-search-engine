@@ -1,7 +1,7 @@
+import { chunk, uniq } from "src/utils";
+import { retry } from "ts-retry-promise";
 import ytdl from "ytdl-core";
 import ytpl from "ytpl";
-import { retry } from "ts-retry-promise";
-import { chunk, uniq } from "src/utils";
 
 const indexVideoBaseUrl = "http://localhost:3000/api/video";
 // const indexVideoBaseUrl = "https://avse.vercel.app/api/video";

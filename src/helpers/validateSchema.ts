@@ -1,5 +1,5 @@
-import { HandledError } from "./error";
 import { ValidationSchemaType } from "src/types";
+import { HandledError } from "./error";
 
 export const validateSchema = async <T>(schema: ValidationSchemaType, params: any) => {
   try {

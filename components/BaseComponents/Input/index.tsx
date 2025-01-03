@@ -1,15 +1,15 @@
-import { forwardRef, memo, ReactNode } from "react";
 import {
   Input as CInput,
-  InputGroup,
   InputProps as CInputProps,
+  InputGroup,
+  InputGroupProps,
   InputLeftElement,
+  InputLeftElementProps,
   InputRightElement,
   InputRightElementProps,
-  InputLeftElementProps,
   Text,
-  InputGroupProps,
 } from "@chakra-ui/react";
+import { ReactNode, forwardRef, memo } from "react";
 
 export interface InputProps extends CInputProps {
   renderLeftElement?: ReactNode;

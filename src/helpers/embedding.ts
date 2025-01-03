@@ -1,5 +1,5 @@
-import { TokenTextSplitter } from "langchain/text_splitter";
 import { Pipeline } from "@xenova/transformers";
+import { TokenTextSplitter } from "langchain/text_splitter";
 import { TextTimeStamped } from "src/types";
 import { splitTextTimestampedByChar } from "src/utils";
 

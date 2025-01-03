@@ -1,10 +1,10 @@
-import { NextFetchEvent, NextResponse } from "next/server";
-import { handleError } from "src/helpers/error";
-import baseEdgeHandlerWrapper, { NextRequestCustom } from "src/helpers/baseEdgeHandlerWrapper";
-import { AuthMethods, ChatMessage, HandlerConfig } from "src/types";
-import { gqlServerClient } from "src/helpers/graphqlServerClient";
 import { GetChatsDocument, GetChatsQuery, GetChatsQueryVariables } from "@graphql/generated/graphql";
+import { NextFetchEvent, NextResponse } from "next/server";
+import baseEdgeHandlerWrapper, { NextRequestCustom } from "src/helpers/baseEdgeHandlerWrapper";
+import { handleError } from "src/helpers/error";
+import { gqlServerClient } from "src/helpers/graphqlServerClient";
 import { getAIChatMessages } from "src/helpers/jigsawstack";
+import { AuthMethods, ChatMessage, HandlerConfig } from "src/types";
 
 export const config = {
   runtime: "edge",

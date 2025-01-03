@@ -1,5 +1,5 @@
 import { chakra, shouldForwardProp } from "@chakra-ui/react";
-import { motion, isValidMotionProp } from "framer-motion";
+import { isValidMotionProp, motion } from "framer-motion";
 
 export const MFlex = chakra(motion.div, {
   shouldForwardProp: (prop) => isValidMotionProp(prop) || shouldForwardProp(prop),

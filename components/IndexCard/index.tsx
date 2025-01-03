@@ -8,8 +8,8 @@ import {
 import Icon from "components/BaseComponents/Icon";
 import Image from "components/BaseComponents/Image";
 import { memo, useEffect, useState } from "react";
-import { gqlClient } from "src/helpers/graphqlClient";
 import { FaPlay } from "react-icons/fa";
+import { gqlClient } from "src/helpers/graphqlClient";
 
 interface IProps {
   index: GetMatchIndexesQuery["match_indexes"][0];

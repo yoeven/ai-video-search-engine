@@ -1,8 +1,3 @@
-import { NextFetchEvent, NextResponse } from "next/server";
-import { handleError } from "src/helpers/error";
-import baseEdgeHandlerWrapper, { NextRequestCustom } from "src/helpers/baseEdgeHandlerWrapper";
-import { HandlerConfig } from "src/types";
-import { gqlServerClient } from "src/helpers/graphqlServerClient";
 import {
   GetIndexSummaryDocument,
   GetIndexSummaryQuery,
@@ -11,8 +6,13 @@ import {
   UpdateIndexesMutation,
   UpdateIndexesMutationVariables,
 } from "@graphql/generated/graphql";
-import { summary } from "src/helpers/jigsawstack";
 import { TokenTextSplitter } from "langchain/text_splitter";
+import { NextFetchEvent, NextResponse } from "next/server";
+import baseEdgeHandlerWrapper, { NextRequestCustom } from "src/helpers/baseEdgeHandlerWrapper";
+import { handleError } from "src/helpers/error";
+import { gqlServerClient } from "src/helpers/graphqlServerClient";
+import { summary } from "src/helpers/jigsawstack";
+import { HandlerConfig } from "src/types";
 
 export const config = {
   runtime: "edge",

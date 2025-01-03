@@ -1,10 +1,10 @@
+import { GetUsersDocument, GetUsersQuery, GetUsersQueryVariables } from "@graphql/generated/graphql";
+import { jwtVerify } from "jose";
 import { NextFetchEvent, NextRequest, NextResponse } from "next/server";
 import { AuthMethods, HandlerConfig } from "src/types";
 import { HandledError, handleError } from "./error";
-import { validateSchema } from "./validateSchema";
-import { jwtVerify } from "jose";
 import { gqlServerClient } from "./graphqlServerClient";
-import { GetUsersDocument, GetUsersQuery, GetUsersQueryVariables } from "@graphql/generated/graphql";
+import { validateSchema } from "./validateSchema";
 
 export interface NextRequestCustom<T = any> extends NextRequest {
   params: T;

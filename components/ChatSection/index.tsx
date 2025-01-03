@@ -1,18 +1,18 @@
-import { Flex, useOutsideClick, Text, useDisclosure, Spinner } from "@chakra-ui/react";
+import { Flex, Spinner, Text, useDisclosure, useOutsideClick } from "@chakra-ui/react";
 import { GetMatchIndexesQuery } from "@graphql/generated/graphql";
 import Icon from "components/BaseComponents/Icon";
-import Input from "components/BaseComponents/Input";
 import Image from "components/BaseComponents/Image";
+import Input from "components/BaseComponents/Input";
 import { useAnimate } from "framer-motion";
 import { forwardRef, memo, useEffect, useImperativeHandle, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { IoMdClose } from "react-icons/io";
+import { IoMdSend } from "react-icons/io";
 import { iFetch } from "src/helpers/ifetch";
 import { useAuth } from "src/providers/AuthContext";
-import { ChatMessage } from "src/types";
-import { IoMdSend } from "react-icons/io";
-import { v4 as uuidv4 } from "uuid";
 import { usePlatform } from "src/providers/PlatformContext";
+import { ChatMessage } from "src/types";
+import { v4 as uuidv4 } from "uuid";
 
 export interface IChatSectionRef {
   open: (index: GetMatchIndexesQuery["match_indexes"][0]) => void;

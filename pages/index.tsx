@@ -1,10 +1,4 @@
-import { GetStaticProps, NextPage } from "next";
 import { Box, Flex, MenuButton, Text } from "@chakra-ui/react";
-import Layout from "components/BaseComponents/Layout";
-import Input from "components/BaseComponents/Input";
-import { useEffect, useRef, useState } from "react";
-import { embedText } from "src/helpers/embedding";
-import { gqlClient } from "src/helpers/graphqlClient";
 import {
   GetIndexAggregateDocument,
   GetIndexAggregateQuery,
@@ -13,22 +7,28 @@ import {
   GetMatchIndexesQuery,
   GetMatchIndexesQueryVariables,
 } from "@graphql/generated/graphql";
-import ResultList from "components/ResultList";
 import { pipeline } from "@xenova/transformers";
-import ReactSingleLoader from "components/ResultLoader/singleLoader";
-import Masonry from "react-masonry-css";
-import SummaryModal, { ISummaryModalRef } from "components/SummaryModal";
+import Icon from "components/BaseComponents/Icon";
+import Image from "components/BaseComponents/Image";
+import Input from "components/BaseComponents/Input";
+import Layout from "components/BaseComponents/Layout";
+import Menu from "components/BaseComponents/Menu";
 import ChatSection, { IChatSectionRef } from "components/ChatSection";
+import IndexVideoModal, { IIndexVideoModalRef } from "components/IndexVideoModal";
+import ResultList from "components/ResultList";
+import ReactSingleLoader from "components/ResultLoader/singleLoader";
+import SummaryModal, { ISummaryModalRef } from "components/SummaryModal";
+import { GetStaticProps, NextPage } from "next";
+import { useEffect, useRef, useState } from "react";
+import toast from "react-hot-toast";
+import { IoMdMenu } from "react-icons/io";
+import Masonry from "react-masonry-css";
+import { signOut } from "src/helpers/authClientService";
+import { embedText } from "src/helpers/embedding";
+import { gqlClient } from "src/helpers/graphqlClient";
+import { gqlServerClient } from "src/helpers/graphqlServerClient";
 import { useAuth } from "src/providers/AuthContext";
 import { usePlatform } from "src/providers/PlatformContext";
-import Icon from "components/BaseComponents/Icon";
-import { IoMdMenu } from "react-icons/io";
-import Menu from "components/BaseComponents/Menu";
-import { signOut } from "src/helpers/authClientService";
-import toast from "react-hot-toast";
-import IndexVideoModal, { IIndexVideoModalRef } from "components/IndexVideoModal";
-import Image from "components/BaseComponents/Image";
-import { gqlServerClient } from "src/helpers/graphqlServerClient";
 
 interface IProps {
   sumDurationSeconds: number;

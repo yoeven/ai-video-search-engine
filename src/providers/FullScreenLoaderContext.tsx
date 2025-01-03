@@ -1,7 +1,7 @@
 import { useBoolean } from "@chakra-ui/react";
 import FullScreenLoader from "components/FullScreenLoader";
-import { createContext, memo, useState, useContext, useEffect, useCallback } from "react";
 import router from "next/router";
+import { createContext, memo, useCallback, useContext, useEffect, useState } from "react";
 interface IFullScreenLoaderContext {
   showLoader: (loadingText?: string) => void;
   closeLoader: () => void;

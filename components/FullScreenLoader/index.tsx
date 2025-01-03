@@ -1,6 +1,6 @@
 import { Flex, Text, useToken } from "@chakra-ui/react";
 import Loader from "components/BaseComponents/Loader";
-import { memo, ReactNode } from "react";
+import { ReactNode, memo } from "react";
 
 interface IProps {
   loadingText?: string;

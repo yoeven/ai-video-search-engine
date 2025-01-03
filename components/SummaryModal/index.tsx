@@ -1,17 +1,17 @@
 import {
+  Button,
   Flex,
+  ListItem,
   Modal,
   ModalBody,
   ModalCloseButton,
   ModalContent,
   ModalOverlay,
-  Text,
-  useDisclosure,
-  UnorderedList,
-  ListItem,
-  Spinner,
-  Button,
   Select,
+  Spinner,
+  Text,
+  UnorderedList,
+  useDisclosure,
 } from "@chakra-ui/react";
 import { GetMatchIndexesQuery } from "@graphql/generated/graphql";
 import { forwardRef, memo, useEffect, useImperativeHandle, useRef, useState } from "react";
