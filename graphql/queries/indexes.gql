@@ -4,6 +4,17 @@ query GetIndexes($where: indexes_bool_exp = {}, $order_by: [indexes_order_by!] =
   }
 }
 
+query GetIndexesFull($where: indexes_bool_exp = {}, $order_by: [indexes_order_by!] = {}, $limit: Int) {
+  indexes(where: $where, order_by: $order_by, limit: $limit) {
+    ...indexesFragment
+    # description
+    # tags
+    transcript
+    # transcript_timestamped
+    # nsfw
+  }
+}
+
 mutation InsertIndex($object: indexes_insert_input = {}) {
   insert_indexes_one(object: $object) {
     id
@@ -19,8 +30,17 @@ mutation InsertEmbeddings($objects: [index_embeddings_insert_input!] = []) {
   }
 }
 
+mutation InsertEmbeddingsGTE($objects: [index_embeddings_gte_insert_input!] = []) {
+  insert_index_embeddings_gte(objects: $objects) {
+    affected_rows
+    returning {
+      id
+    }
+  }
+}
+
 query GetMatchIndexes($query_embedding: vector, $match_threshold: float8 = "0.81", $limit: Int) {
-  match_indexes(
+  match_indexes_gte(
     args: { match_threshold: $match_threshold, query_embedding: $query_embedding }
     limit: $limit
     distinct_on: id
@@ -32,17 +52,17 @@ query GetMatchIndexes($query_embedding: vector, $match_threshold: float8 = "0.81
 
 query GetMatchEmbeddingsByIndex(
   $_index_id: uuid = ""
-  $match_threshold: float8 = 0.82
+  $match_threshold: float8 = 0.65
   $query_embedding: vector
-  $where: index_embeddings_bool_exp = {}
-  $order_by: [index_embeddings_order_by!] = {}
+  $where: index_embeddings_gte_bool_exp = {}
+  $order_by: [index_embeddings_gte_order_by!] = {}
 ) {
-  match_embeddings(
+  match_embeddings_gte(
     args: { _index_id: $_index_id, match_threshold: $match_threshold, query_embedding: $query_embedding }
     where: $where
     order_by: $order_by
   ) {
-    content
+    # content
     id
     start_time
     end_time
@@ -82,10 +102,7 @@ query GetIndexAggregate {
 fragment indexesFragment on indexes {
   duration_seconds
   id
-  nsfw
   status
-  tags
-  transcript
   updated_at
   video_id
   video_source

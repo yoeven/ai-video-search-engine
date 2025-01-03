@@ -11,7 +11,7 @@ import { NextFetchEvent, NextResponse } from "next/server";
 import baseEdgeHandlerWrapper, { NextRequestCustom } from "src/helpers/baseEdgeHandlerWrapper";
 import { handleError } from "src/helpers/error";
 import { gqlServerClient } from "src/helpers/graphqlServerClient";
-import { summary } from "src/helpers/jigsawstack";
+import { jigsaw } from "src/helpers/jigsawstack";
 import { HandlerConfig } from "src/types";
 
 export const config = {
@@ -20,7 +20,7 @@ export const config = {
 
 const tokenSplitter = new TokenTextSplitter({
   encodingName: "cl100k_base",
-  chunkSize: 4000,
+  chunkSize: 20000,
   chunkOverlap: 0,
 });
 
@@ -56,7 +56,17 @@ const handler = async (req: NextRequestCustom, con: NextFetchEvent) => {
         throw new Error("Text to summarize is empty");
       }
 
-      const summaryResults = await Promise.all([summary(textToSummarize, "text"), summary(textToSummarize, "points")]);
+      const summaryResults = await Promise.all([
+        jigsaw.summary({
+          text: textToSummarize,
+          type: "text",
+        }),
+        jigsaw.summary({
+          text: textToSummarize,
+          type: "points",
+          max_points: 5,
+        }),
+      ]);
 
       const summaryTextResult = summaryResults?.[0];
       const summaryPointsResult = summaryResults?.[1];
@@ -75,15 +85,15 @@ const handler = async (req: NextRequestCustom, con: NextFetchEvent) => {
           },
         },
         _set: {
-          summary_text: summaryTextResult,
-          summary_points: summaryPointsResult,
+          summary_text: summaryTextResult.summary,
+          summary_points: summaryPointsResult.summary,
         },
       });
 
       con.waitUntil(updateRequestPromise);
 
-      summaryText = summaryTextResult;
-      summaryPoints = summaryPointsResult;
+      summaryText = summaryTextResult.summary;
+      summaryPoints = summaryPointsResult.summary;
     }
 
     return NextResponse.json(

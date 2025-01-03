@@ -4288,7 +4288,16 @@ export type GetIndexesQueryVariables = Exact<{
 }>;
 
 
-export type GetIndexesQuery = { __typename?: 'query_root', indexes: Array<{ __typename?: 'indexes', duration_seconds: any, id: any, nsfw: boolean, status: string, tags: any, transcript?: string | null, updated_at: any, video_id: string, video_source: string, video_url: string, active: boolean, created_at: any, title?: string | null, similarity?: any | null }> };
+export type GetIndexesQuery = { __typename?: 'query_root', indexes: Array<{ __typename?: 'indexes', duration_seconds: any, id: any, status: string, updated_at: any, video_id: string, video_source: string, video_url: string, active: boolean, created_at: any, title?: string | null, similarity?: any | null }> };
+
+export type GetIndexesFullQueryVariables = Exact<{
+  where?: InputMaybe<Indexes_Bool_Exp>;
+  order_by?: InputMaybe<Array<Indexes_Order_By> | Indexes_Order_By>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+}>;
+
+
+export type GetIndexesFullQuery = { __typename?: 'query_root', indexes: Array<{ __typename?: 'indexes', transcript?: string | null, duration_seconds: any, id: any, status: string, updated_at: any, video_id: string, video_source: string, video_url: string, active: boolean, created_at: any, title?: string | null, similarity?: any | null }> };
 
 export type InsertIndexMutationVariables = Exact<{
   object?: InputMaybe<Indexes_Insert_Input>;
@@ -4304,6 +4313,13 @@ export type InsertEmbeddingsMutationVariables = Exact<{
 
 export type InsertEmbeddingsMutation = { __typename?: 'mutation_root', insert_index_embeddings?: { __typename?: 'index_embeddings_mutation_response', affected_rows: number, returning: Array<{ __typename?: 'index_embeddings', id: any }> } | null };
 
+export type InsertEmbeddingsGteMutationVariables = Exact<{
+  objects?: InputMaybe<Array<Index_Embeddings_Gte_Insert_Input> | Index_Embeddings_Gte_Insert_Input>;
+}>;
+
+
+export type InsertEmbeddingsGteMutation = { __typename?: 'mutation_root', insert_index_embeddings_gte?: { __typename?: 'index_embeddings_gte_mutation_response', affected_rows: number, returning: Array<{ __typename?: 'index_embeddings_gte', id: any }> } | null };
+
 export type GetMatchIndexesQueryVariables = Exact<{
   query_embedding?: InputMaybe<Scalars['vector']['input']>;
   match_threshold?: InputMaybe<Scalars['float8']['input']>;
@@ -4311,18 +4327,18 @@ export type GetMatchIndexesQueryVariables = Exact<{
 }>;
 
 
-export type GetMatchIndexesQuery = { __typename?: 'query_root', match_indexes: Array<{ __typename?: 'indexes', duration_seconds: any, id: any, nsfw: boolean, status: string, tags: any, transcript?: string | null, updated_at: any, video_id: string, video_source: string, video_url: string, active: boolean, created_at: any, title?: string | null, similarity?: any | null }> };
+export type GetMatchIndexesQuery = { __typename?: 'query_root', match_indexes_gte: Array<{ __typename?: 'indexes', duration_seconds: any, id: any, status: string, updated_at: any, video_id: string, video_source: string, video_url: string, active: boolean, created_at: any, title?: string | null, similarity?: any | null }> };
 
 export type GetMatchEmbeddingsByIndexQueryVariables = Exact<{
   _index_id?: InputMaybe<Scalars['uuid']['input']>;
   match_threshold?: InputMaybe<Scalars['float8']['input']>;
   query_embedding?: InputMaybe<Scalars['vector']['input']>;
-  where?: InputMaybe<Index_Embeddings_Bool_Exp>;
-  order_by?: InputMaybe<Array<Index_Embeddings_Order_By> | Index_Embeddings_Order_By>;
+  where?: InputMaybe<Index_Embeddings_Gte_Bool_Exp>;
+  order_by?: InputMaybe<Array<Index_Embeddings_Gte_Order_By> | Index_Embeddings_Gte_Order_By>;
 }>;
 
 
-export type GetMatchEmbeddingsByIndexQuery = { __typename?: 'query_root', match_embeddings: Array<{ __typename?: 'index_embeddings', content: string, id: any, start_time?: any | null, end_time?: any | null, duration_time?: any | null, similarity?: any | null }> };
+export type GetMatchEmbeddingsByIndexQuery = { __typename?: 'query_root', match_embeddings_gte: Array<{ __typename?: 'index_embeddings_gte', id: any, start_time?: any | null, end_time?: any | null, duration_time?: any | null, similarity?: any | null }> };
 
 export type GetIndexSummaryQueryVariables = Exact<{
   id: Scalars['uuid']['input'];
@@ -4344,7 +4360,7 @@ export type GetIndexAggregateQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type GetIndexAggregateQuery = { __typename?: 'query_root', indexes_aggregate: { __typename?: 'indexes_aggregate', aggregate?: { __typename?: 'indexes_aggregate_fields', count: number, sum?: { __typename?: 'indexes_sum_fields', duration_seconds?: any | null } | null } | null } };
 
-export type IndexesFragmentFragment = { __typename?: 'indexes', duration_seconds: any, id: any, nsfw: boolean, status: string, tags: any, transcript?: string | null, updated_at: any, video_id: string, video_source: string, video_url: string, active: boolean, created_at: any, title?: string | null, similarity?: any | null };
+export type IndexesFragmentFragment = { __typename?: 'indexes', duration_seconds: any, id: any, status: string, updated_at: any, video_id: string, video_source: string, video_url: string, active: boolean, created_at: any, title?: string | null, similarity?: any | null };
 
 export type GetUsersQueryVariables = Exact<{
   where?: InputMaybe<Users_Bool_Exp>;
@@ -4364,10 +4380,7 @@ export const IndexesFragmentFragmentDoc = gql`
     fragment indexesFragment on indexes {
   duration_seconds
   id
-  nsfw
   status
-  tags
-  transcript
   updated_at
   video_id
   video_source
@@ -4408,6 +4421,14 @@ export const GetIndexesDocument = gql`
   }
 }
     ${IndexesFragmentFragmentDoc}`;
+export const GetIndexesFullDocument = gql`
+    query GetIndexesFull($where: indexes_bool_exp = {}, $order_by: [indexes_order_by!] = {}, $limit: Int) {
+  indexes(where: $where, order_by: $order_by, limit: $limit) {
+    ...indexesFragment
+    transcript
+  }
+}
+    ${IndexesFragmentFragmentDoc}`;
 export const InsertIndexDocument = gql`
     mutation InsertIndex($object: indexes_insert_input = {}) {
   insert_indexes_one(object: $object) {
@@ -4425,9 +4446,19 @@ export const InsertEmbeddingsDocument = gql`
   }
 }
     `;
+export const InsertEmbeddingsGteDocument = gql`
+    mutation InsertEmbeddingsGTE($objects: [index_embeddings_gte_insert_input!] = []) {
+  insert_index_embeddings_gte(objects: $objects) {
+    affected_rows
+    returning {
+      id
+    }
+  }
+}
+    `;
 export const GetMatchIndexesDocument = gql`
     query GetMatchIndexes($query_embedding: vector, $match_threshold: float8 = "0.81", $limit: Int) {
-  match_indexes(
+  match_indexes_gte(
     args: {match_threshold: $match_threshold, query_embedding: $query_embedding}
     limit: $limit
     distinct_on: id
@@ -4438,13 +4469,12 @@ export const GetMatchIndexesDocument = gql`
 }
     ${IndexesFragmentFragmentDoc}`;
 export const GetMatchEmbeddingsByIndexDocument = gql`
-    query GetMatchEmbeddingsByIndex($_index_id: uuid = "", $match_threshold: float8 = 0.82, $query_embedding: vector, $where: index_embeddings_bool_exp = {}, $order_by: [index_embeddings_order_by!] = {}) {
-  match_embeddings(
+    query GetMatchEmbeddingsByIndex($_index_id: uuid = "", $match_threshold: float8 = 0.65, $query_embedding: vector, $where: index_embeddings_gte_bool_exp = {}, $order_by: [index_embeddings_gte_order_by!] = {}) {
+  match_embeddings_gte(
     args: {_index_id: $_index_id, match_threshold: $match_threshold, query_embedding: $query_embedding}
     where: $where
     order_by: $order_by
   ) {
-    content
     id
     start_time
     end_time

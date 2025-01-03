@@ -4,10 +4,10 @@ import { memo } from "react";
 import Masonry from "react-masonry-css";
 
 interface IProps {
-  results: GetMatchIndexesQuery["match_indexes"];
+  results: GetMatchIndexesQuery["match_indexes_gte"];
   searchEmbeddingQuery: any[];
-  onSummaryClick: (index: GetMatchIndexesQuery["match_indexes"][0]) => void;
-  onChatClick: (index: GetMatchIndexesQuery["match_indexes"][0]) => void;
+  onSummaryClick: (index: GetMatchIndexesQuery["match_indexes_gte"][0]) => void;
+  onChatClick: (index: GetMatchIndexesQuery["match_indexes_gte"][0]) => void;
 }
 
 const ResultList: React.FC<IProps> = ({ results, searchEmbeddingQuery, onSummaryClick, onChatClick }) => {

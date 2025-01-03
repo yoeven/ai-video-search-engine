@@ -7,7 +7,6 @@ import {
   GetMatchIndexesQuery,
   GetMatchIndexesQueryVariables,
 } from "@graphql/generated/graphql";
-import { pipeline } from "@xenova/transformers";
 import Icon from "components/BaseComponents/Icon";
 import Image from "components/BaseComponents/Image";
 import Input from "components/BaseComponents/Input";
@@ -24,9 +23,10 @@ import toast from "react-hot-toast";
 import { IoMdMenu } from "react-icons/io";
 import Masonry from "react-masonry-css";
 import { signOut } from "src/helpers/authClientService";
-import { embedText } from "src/helpers/embedding";
+import { embedJSS } from "src/helpers/embedding";
 import { gqlClient } from "src/helpers/graphqlClient";
 import { gqlServerClient } from "src/helpers/graphqlServerClient";
+import { jigsaw } from "src/helpers/jigsawstack";
 import { useAuth } from "src/providers/AuthContext";
 import { usePlatform } from "src/providers/PlatformContext";
 
@@ -57,7 +57,7 @@ const Home: NextPage<IProps> = ({ sumDurationSeconds, sumVideos }) => {
   const [inputValue, setInputValue] = useState<string>("");
   const [query, setQuery] = useState<string>("");
   const [suggestions, setSuggestions] = useState<string[]>([]);
-  const [results, setResults] = useState<GetMatchIndexesQuery["match_indexes"]>([]);
+  const [results, setResults] = useState<GetMatchIndexesQuery["match_indexes_gte"]>([]);
   const [searchEmbeddingQuery, setSearchEmbeddingQuery] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -76,14 +76,8 @@ const Home: NextPage<IProps> = ({ sumDurationSeconds, sumVideos }) => {
   }, [inputValue]);
 
   const onInputChange = async (query: string) => {
-    const encodedQuery = encodeURIComponent(query);
-    let baseurl = process.env.NODE_ENV == "production" ? "/api/suggestions" : `https://avse.vercel.app/api/suggestions`;
-    baseurl += `?query=${encodedQuery}`;
-
-    console.log(baseurl);
-    const res = await fetch(baseurl);
-    const data = await res.json();
-    setSuggestions(data?.suggestions?.length ? data.suggestions : []);
+    const res = await jigsaw.web.search_suggestions(query);
+    setSuggestions(res?.suggestions?.length ? res.suggestions : []);
   };
 
   const onSearch = async (value: string) => {
@@ -92,26 +86,38 @@ const Home: NextPage<IProps> = ({ sumDurationSeconds, sumVideos }) => {
       return;
     }
     setLoading(true);
-    const pipe = await pipeline("feature-extraction", "Supabase/gte-small");
-    const e = await embedText(value, pipe);
-    const searchEmbeddingQuery = e[0].embedding;
+    const e = await embedJSS({
+      text: value,
+      type: "text",
+    });
+
+    const searchEmbeddingQuery = e.embeddings[0];
+
+    console.log("searchEmbeddingQuery: ", JSON.stringify(searchEmbeddingQuery));
 
     const resp = await gqlClient.query<GetMatchIndexesQuery, GetMatchIndexesQueryVariables>({
       query: GetMatchIndexesDocument,
       variables: {
         query_embedding: JSON.stringify(searchEmbeddingQuery),
-        match_threshold: 0.85,
+        match_threshold: 0.6,
         limit: 100,
       },
     });
 
-    if (resp.data.match_indexes.length <= 0) {
+    console.log(
+      "ids: ",
+      resp.data.match_indexes_gte.map((i) => i.id)
+    );
+
+    if (resp.data.match_indexes_gte.length <= 0) {
       toast.error("No results found. Try indexing more related videos to your question", {
         duration: 10000,
       });
     }
 
-    setResults(resp.data.match_indexes);
+    console.log("results: ", resp.data.match_indexes_gte.length);
+
+    setResults(resp.data.match_indexes_gte);
     setSearchEmbeddingQuery(searchEmbeddingQuery);
     setLoading(false);
   };

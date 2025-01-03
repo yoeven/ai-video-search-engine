@@ -1,5 +1,5 @@
-import fetch from "cross-fetch";
 import { GraphQLClient } from "graphql-request";
+import ky from "ky";
 
 const hasuraEndPoint = process.env.NEXT_PUBLIC_HASURA_ENDPOINT_URL || "";
 
@@ -10,5 +10,5 @@ export const gqlServerClient = new GraphQLClient(hasuraEndPoint, {
     "x-hasura-admin-secret": hasuraAdminSecret,
     "content-type": "application/json",
   },
-  fetch: fetch,
+  fetch: ky,
 });

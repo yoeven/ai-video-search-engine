@@ -10,41 +10,48 @@ import Image from "components/BaseComponents/Image";
 import { memo, useEffect, useState } from "react";
 import { FaPlay } from "react-icons/fa";
 import { gqlClient } from "src/helpers/graphqlClient";
+import { getYTThumbnail } from "src/utils";
 
 interface IProps {
-  index: GetMatchIndexesQuery["match_indexes"][0];
+  index: GetMatchIndexesQuery["match_indexes_gte"][0];
   indexCount: number;
   searchEmbeddingQuery: any[];
-  onSummaryClick: (index: GetMatchIndexesQuery["match_indexes"][0]) => void;
-  onChatClick: (index: GetMatchIndexesQuery["match_indexes"][0]) => void;
+  onSummaryClick: (index: GetMatchIndexesQuery["match_indexes_gte"][0]) => void;
+  onChatClick: (index: GetMatchIndexesQuery["match_indexes_gte"][0]) => void;
 }
 
 const IndexCard: React.FC<IProps> = ({ index, indexCount, searchEmbeddingQuery, onSummaryClick, onChatClick }) => {
-  const [relevantContent, setRelevantContent] = useState<GetMatchEmbeddingsByIndexQuery["match_embeddings"]>();
+  const [relevantContent, setRelevantContent] = useState<GetMatchEmbeddingsByIndexQuery["match_embeddings_gte"]>();
   const [showVideo, setShowVideo] = useState<boolean>(false);
   const [playWhenReady, setPlayWhenReady] = useState<boolean>(false);
+  const [thumbnail, setThumbnail] = useState<string | null>(null);
 
   useEffect(() => {
     init();
   }, []);
 
   const init = async () => {
-    const resp = await gqlClient.query<GetMatchEmbeddingsByIndexQuery, GetMatchEmbeddingsByIndexQueryVariables>({
-      query: GetMatchEmbeddingsByIndexDocument,
-      variables: {
-        query_embedding: JSON.stringify(searchEmbeddingQuery),
-        match_threshold: 0.85,
-        _index_id: index.id,
-        where: {
-          start_time: {
-            _is_null: false,
+    const [resp, thumbnailURL] = await Promise.all([
+      gqlClient.query<GetMatchEmbeddingsByIndexQuery, GetMatchEmbeddingsByIndexQueryVariables>({
+        query: GetMatchEmbeddingsByIndexDocument,
+        variables: {
+          query_embedding: JSON.stringify(searchEmbeddingQuery),
+          match_threshold: 0.5,
+          _index_id: index.id,
+          where: {
+            start_time: {
+              _is_null: false,
+            },
           },
         },
-      },
-    });
+      }),
+      getYTThumbnail(index.video_id),
+    ]);
 
-    const matchedEmbeddings = resp.data.match_embeddings;
+    const matchedEmbeddings = resp.data.match_embeddings_gte;
+
     setRelevantContent(matchedEmbeddings);
+    setThumbnail(thumbnailURL);
   };
 
   useEffect(() => {
@@ -88,8 +95,11 @@ const IndexCard: React.FC<IProps> = ({ index, indexCount, searchEmbeddingQuery, 
         ) : (
           <>
             <Image
-              src={`https://img.youtube.com/vi/${index.video_id}/maxres2.jpg
-`}
+              src={
+                thumbnail ||
+                `https://img.youtube.com/vi/${index.video_id}/maxres2.jpg
+`
+              }
               h={"100%"}
               objectFit={"cover"}
               alt={index.title || ""}
@@ -119,7 +129,7 @@ const IndexCard: React.FC<IProps> = ({ index, indexCount, searchEmbeddingQuery, 
 
               {relevantContent ? (
                 <Text mt={"1rem"} fontWeight={"500"}>
-                  {endTime && startTime ? `${endTime - startTime}s clip` : "Full Video"}
+                  {endTime != null && startTime != null ? `${endTime - startTime}s clip` : "Full Video"}
                 </Text>
               ) : null}
             </Flex>
@@ -132,9 +142,9 @@ const IndexCard: React.FC<IProps> = ({ index, indexCount, searchEmbeddingQuery, 
         </Text>
         <Flex mt={"1rem"} gap={"0.5rem"}>
           <Button onClick={() => onChatClick(index)} flex={1} size={"sm"} bgColor={"black"} color={"white"}>
-            Chat with Video
+            Ask
           </Button>
-          <Button onClick={() => onSummaryClick(index)} variant={"outline"} size={"sm"}>
+          <Button onClick={() => onSummaryClick(index)} flex={1} variant={"outline"} size={"sm"}>
             Summary
           </Button>
         </Flex>
@@ -142,8 +152,5 @@ const IndexCard: React.FC<IProps> = ({ index, indexCount, searchEmbeddingQuery, 
     </Flex>
   );
 };
-
-//maxres1
-//`https://i.ytimg.com/vi/${index.video_id}/hq2.jpg`
 
 export default memo(IndexCard);
