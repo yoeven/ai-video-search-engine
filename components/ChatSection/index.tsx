@@ -1,5 +1,6 @@
 import { Flex, Spinner, Text, useDisclosure, useOutsideClick } from "@chakra-ui/react";
 import { GetMatchIndexesQuery } from "@graphql/generated/graphql";
+import Avatar from "boring-avatars";
 import Icon from "components/BaseComponents/Icon";
 import Input from "components/BaseComponents/Input";
 import { useAnimate } from "framer-motion";
@@ -12,7 +13,6 @@ import { useAuth } from "src/providers/AuthContext";
 import { usePlatform } from "src/providers/PlatformContext";
 import { ChatMessage } from "src/types";
 import { v4 as uuidv4 } from "uuid";
-import Avatar from "boring-avatars";
 
 export interface IChatSectionRef {
   open: (index: GetMatchIndexesQuery["match_indexes_gte"][0]) => void;

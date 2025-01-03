@@ -1,4 +1,4 @@
-import { GetIndexesFullDocument, GetIndexesFullQueryVariables, GetIndexesFullQuery } from "@graphql/generated/graphql";
+import { GetIndexesFullDocument, GetIndexesFullQuery, GetIndexesFullQueryVariables } from "@graphql/generated/graphql";
 import { NextFetchEvent, NextResponse } from "next/server";
 import baseEdgeHandlerWrapper, { NextRequestCustom } from "src/helpers/baseEdgeHandlerWrapper";
 import { handleError } from "src/helpers/error";
