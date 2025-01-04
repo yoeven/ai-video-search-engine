@@ -97,7 +97,7 @@ const IndexCard: React.FC<IProps> = ({ index, indexCount, searchEmbeddingQuery, 
             <Image
               src={
                 thumbnail ||
-                `https://img.youtube.com/vi/${index.video_id}/maxres2.jpg
+                `https://img.youtube.com/vi/${index.video_id}/hqdefault.jpg
 `
               }
               h={"100%"}

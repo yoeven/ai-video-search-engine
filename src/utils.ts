@@ -80,6 +80,7 @@ export const getYTThumbnail = async (video_id: string) => {
 
     const resp = await fetch(fullURL, {
       method: "HEAD",
+      mode: "no-cors",
     }).catch((err) => {
       return null;
     });
