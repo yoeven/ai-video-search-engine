@@ -1,8 +1,7 @@
 {
   "functions": {
     "pages/api/video/index.ts": {
-      "maxDuration": 300,
-      "memory": 3008
+      "maxDuration": 300
     }
   }
 }

@@ -2,10 +2,7 @@
 const nextConfig = {
   reactStrictMode: false,
   compiler: {
-    removeConsole: process.env.NODE_ENV === "production" ? true : false,
-  },
-  experimental: {
-    serverComponentsExternalPackages: ["sharp", "onnxruntime-node"],
+    removeConsole: process.env?.VERCEL_ENV === "production" ? true : false,
   },
   async headers() {
     return [

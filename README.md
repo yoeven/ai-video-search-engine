@@ -38,7 +38,6 @@ So I built this to showcase that it's very much possible with the technology and
 - `admin/indexChannelVideos.ts` Script to index large number of videos locally with youtube channels
 - `.env.example` Keys needed to run to project
 
-
 ## FAQ
 Doesn't youtube do this?
 - Not really, Youtube doesn't search the transcribed audio of the video but instead relies on the written content of the uploader such as title, description, tags. While all the audio content goes un-indexed.
@@ -48,6 +47,4 @@ How's this stack gonna handle millions of videos?
 
 ## What's next?
 - Add TikTok as a video source
-- Add https://replicate.com/vaibhavs10/incredibly-fast-whisper to transcribe audio
 - Improve query performance significantly
-- Page to view all active chats
