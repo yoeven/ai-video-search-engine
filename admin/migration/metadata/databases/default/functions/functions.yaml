@@ -1,2 +1,2 @@
-- "!include public_match_embeddings.yaml"
-- "!include public_match_indexes.yaml"
+- "!include public_match_embeddings_gte.yaml"
+- "!include public_match_indexes_gte.yaml"

@@ -1,5 +1,5 @@
 table:
-  name: index_embeddings
+  name: index_embeddings_gte
   schema: public
 object_relationships:
   - name: index
@@ -9,16 +9,16 @@ select_permissions:
   - role: public
     permission:
       columns:
-        - content
-        - created_at
-        - duration_time
         - embedding
+        - duration_time
         - end_time
-        - id
-        - index_id
         - similarity
         - start_time
+        - content
+        - created_at
         - updated_at
+        - id
+        - index_id
       filter: {}
   - role: user
     permission:

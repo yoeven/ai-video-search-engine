@@ -21,15 +21,6 @@ mutation InsertIndex($object: indexes_insert_input = {}) {
   }
 }
 
-mutation InsertEmbeddings($objects: [index_embeddings_insert_input!] = []) {
-  insert_index_embeddings(objects: $objects) {
-    affected_rows
-    returning {
-      id
-    }
-  }
-}
-
 mutation InsertEmbeddingsGTE($objects: [index_embeddings_gte_insert_input!] = []) {
   insert_index_embeddings_gte(objects: $objects) {
     affected_rows

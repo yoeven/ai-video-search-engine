@@ -1,5 +1,4 @@
 - "!include auth_users.yaml"
-- "!include public_chats.yaml"
-- "!include public_index_embeddings.yaml"
+- "!include public_index_embeddings_gte.yaml"
 - "!include public_indexes.yaml"
 - "!include public_users.yaml"

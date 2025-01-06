@@ -2,12 +2,12 @@ table:
   name: indexes
   schema: public
 array_relationships:
-  - name: embeddings
+  - name: embeddings_gte
     using:
       foreign_key_constraint_on:
         column: index_id
         table:
-          name: index_embeddings
+          name: index_embeddings_gte
           schema: public
 select_permissions:
   - role: public
