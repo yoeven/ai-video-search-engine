@@ -347,22 +347,27 @@ const Home: NextPage<IProps> = ({ sumDurationSeconds, sumVideos }) => {
         <Flex flexWrap={"wrap"} justifyContent={"center"} gap={"0.5rem"}>
           {[
             {
+              name: "Supabase",
               img_url: "/supabase.png",
               url: "https://supabase.com",
             },
             {
+              name: "Vercel",
               img_url: "/vercel.png",
               url: "https://vercel.com",
             },
             {
+              name: "JigsawStack",
               img_url: "/jigsawstack.jpg",
               url: "https://jigsawstack.com",
             },
             {
+              name: "Hasura",
               img_url: "/hasura.png",
               url: "https://hasura.com",
             },
             {
+              name: "Fly",
               img_url: "/flyio.png",
               url: "https://fly.io",
             },
@@ -380,7 +385,7 @@ const Home: NextPage<IProps> = ({ sumDurationSeconds, sumVideos }) => {
                 borderRadius={"md"}
                 borderColor={"gray.300"}
               >
-                <Image src={brand.img_url} objectFit={"contain"} alt={"Supabase"} borderRadius={"md"} />
+                <Image src={brand.img_url} objectFit={"contain"} alt={brand.name} borderRadius={"md"} />
               </Flex>
             </Box>
           ))}
