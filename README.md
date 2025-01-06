@@ -53,6 +53,9 @@ How's this stack gonna handle millions of videos?
 What happened to the previous version
 - The previous version used `gte-small` embedding model which had a pretty small context length and only supports English with a lower retrieval score. You can find the older version in a branch `archive/v1`. The current version uses a newer model with support for over 75+ languages and has a larger context size of 8000+ allowing for smaller embedding outputs and a smaller database.
 
+How can I get v1 embeddings
+- We've dumped the enitre DB snapshot of the index and index_embedding table from v1 here: https://huggingface.co/datasets/yoeven/ai-video-searchengine-archive
+
 ## What's next?
 - Add TikTok as a video source
 - Improve query speed significantly
