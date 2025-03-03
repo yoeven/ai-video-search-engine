@@ -76,8 +76,12 @@ const Home: NextPage<IProps> = ({ sumDurationSeconds, sumVideos }) => {
   }, [inputValue]);
 
   const onInputChange = async (query: string) => {
-    const res = await jigsaw.web.search_suggestions(query);
-    setSuggestions(res?.suggestions?.length ? res.suggestions : []);
+    if (query.length < 100) {
+      const res = await jigsaw.web.search_suggestions(query);
+      setSuggestions(res?.suggestions?.length ? res.suggestions : []);
+    } else {
+      setSuggestions([]);
+    }
   };
 
   const onSearch = async (value: string) => {
